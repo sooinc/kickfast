@@ -1,0 +1,30 @@
+const Sequelize = require('sequelize')
+const db = require('../db')
+
+const Proxy = db.define('proxy', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  description: {
+    type: Sequelize.TEXT,
+  },
+  subscriptionLength: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  dataAllowance: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  proxyStatus: {
+    type: Sequelize.ENUM(['inactive', 'active', 'expired']),
+    allowNull: false,
+    defaultValue: 'inactive',
+  },
+})
+
+module.exports = Proxy

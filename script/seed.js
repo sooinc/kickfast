@@ -1,15 +1,67 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Proxy, Order, OrderItem} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
   const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
+    User.create({
+      email: 'gavin@email.com',
+      password: '123',
+      name: 'Gavin Li',
+      ipAddress: '72.111.155.60',
+      role: 'user',
+    }),
+    User.create({
+      email: 'sooin@email.com',
+      password: '123',
+      name: 'Sooin Chung',
+      ipAddress: '70.123.456.78',
+      role: 'admin',
+    }),
+  ])
+
+  const proxies = await Promise.all([
+    Proxy.create({
+      name: '1GB - 1 Month',
+      description: '1 GB available for 30 days',
+      subscriptionLength: 30,
+      dataAllowance: 1,
+      proxyStatus: 'inactive',
+    }),
+    Proxy.create({
+      name: '1GB - 1 Week',
+      description: '1 GB available for 7 days',
+      subscriptionLength: 7,
+      dataAllowance: 1,
+      proxyStatus: 'inactive',
+    }),
+    Proxy.create({
+      name: '1GB - 1 Day',
+      description: '1 GB available for 1 day',
+      subscriptionLength: 1,
+      dataAllowance: 1,
+      proxyStatus: 'inactive',
+    }),
+  ])
+
+  const orders = await Promise.all([
+    Order.create({status: 'pending', userId: 1}),
+    Order.create({status: 'fulfilled', userId: 1}),
+    Order.create({status: 'pending', userId: 2}),
+    Order.create({status: 'fulfilled', userId: 2}),
+  ])
+
+  const orderItems = await Promise.all([
+    OrderItem.create({orderId: 1, proxyId: 1}),
+    OrderItem.create({orderId: 1, proxyId: 2}),
+    OrderItem.create({orderId: 2, proxyId: 1}),
+    OrderItem.create({orderId: 3, proxyId: 2}),
+    OrderItem.create({orderId: 3, proxyId: 3}),
+    OrderItem.create({orderId: 4, proxyId: 2}),
   ])
 
   console.log(`seeded ${users.length} users`)
