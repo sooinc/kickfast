@@ -1,7 +1,7 @@
 {
-  "name": "boilermaker",
+  "name": "kickfast",
   "version": "2.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "Here to get your kicks to you fast",
   "engines": {
     "node": ">= 7.0.0"
   },
@@ -38,7 +38,7 @@
       "git add"
     ]
   },
-  "author": "Fullstack Academy of Code",
+  "author": "Sooin Chung",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
@@ -94,7 +94,7 @@
     "mocha": "^6.1.4",
     "nodemon": "^1.18.3",
     "npm-merge-driver": "^2.3.5",
-    "prettier": "1.11.1",
+    "prettier": "2.0.5",
     "react-test-renderer": "^16.4.2",
     "redux-devtools-extension": "^2.13.5",
     "redux-mock-store": "^1.5.3",
