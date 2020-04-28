@@ -12,7 +12,7 @@ const Proxy = db.define('proxy', {
   description: {
     type: Sequelize.TEXT,
   },
-  subscriptionLength: {
+  subscriptionDays: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
@@ -24,6 +24,10 @@ const Proxy = db.define('proxy', {
     type: Sequelize.ENUM(['inactive', 'active', 'expired']),
     allowNull: false,
     defaultValue: 'inactive',
+  },
+  price: {
+    type: Sequelize.DECIMAL(16, 2),
+    allowNull: false,
   },
 })
 

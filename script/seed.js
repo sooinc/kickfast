@@ -28,23 +28,26 @@ async function seed() {
     Proxy.create({
       name: '1GB - 1 Month',
       description: '1 GB available for 30 days',
-      subscriptionLength: 30,
+      subscriptionDays: 30,
       dataAllowance: 1,
       proxyStatus: 'inactive',
+      price: 99.99,
     }),
     Proxy.create({
       name: '1GB - 1 Week',
       description: '1 GB available for 7 days',
-      subscriptionLength: 7,
+      subscriptionDays: 7,
       dataAllowance: 1,
       proxyStatus: 'inactive',
+      price: 49.99,
     }),
     Proxy.create({
       name: '1GB - 1 Day',
       description: '1 GB available for 1 day',
-      subscriptionLength: 1,
+      subscriptionDays: 1,
       dataAllowance: 1,
       proxyStatus: 'inactive',
+      price: 24.99,
     }),
   ])
 
