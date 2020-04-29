@@ -1,12 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {fetchAllProxy} from '../store/shop'
+import {fetchCart} from '../store/cart'
 import ProxyTile from '../components/proxy-tile'
 
-export class Shop extends React.Component {
-  async componentDidMount() {
-    await this.props.fetchAllProxyDispatch()
+export class Cart extends React.Component {
+  componentDidMount() {
+    this.props.fetchCartDispatch()
   }
 
   render() {
@@ -32,14 +32,14 @@ export class Shop extends React.Component {
 }
 
 const stateToProps = (state) => ({
-  status: state.proxyReducer.status,
-  proxies: state.proxyReducer.proxies,
+  status: state.cart.status,
+  proxies: state.cart.products,
 })
 
 const dispatchToProps = (dispatch) => ({
-  fetchAllProxyDispatch: () => dispatch(fetchAllProxy()),
+  fetchCartDispatch: () => dispatch(fetchCart()),
 })
 
-const ConnectedShop = connect(stateToProps, dispatchToProps)(Shop)
+const ConnectedCart = connect(stateToProps, dispatchToProps)(Cart)
 
-export default ConnectedShop
+export default ConnectedCart

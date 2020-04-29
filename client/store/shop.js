@@ -64,7 +64,7 @@ export const proxyReducer = (state = initialState, action) => {
       }
     case GOT_ERROR:
       console.log(action.error)
-      return {...status, status: 'error'}
+      return {...state, status: 'error'}
     default:
       return state
   }

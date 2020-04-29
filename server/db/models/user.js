@@ -53,6 +53,28 @@ module.exports = User
 /**
  * instanceMethods
  */
+
+//user's pending cart
+User.prototype.getCart = function (options = {}) {
+  const Order = db.model('order')
+  const mergedOptions = {
+    ...options,
+    where: {
+      ...(options.where || {}),
+      ...{status: 'pending', userId: this.id},
+    },
+  }
+  return Order.findOne(mergedOptions)
+}
+
+User.prototype.getOrCreateCart = async function () {
+  const Order = db.model('order')
+  const [cart] = await Order.findOrCreate({
+    where: {userId: this.id, status: 'pending'},
+  })
+  return cart
+}
+
 User.prototype.correctPassword = function (candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
 }
