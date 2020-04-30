@@ -3,18 +3,19 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import {addToCart} from '../store/cart'
-import AddToCartButton from '../components/addtocartButton'
+import AddToCartButton from './addtocart-button'
 
 class ProxyTile extends React.Component {
   constructor() {
     super()
+    this.state = {quantity: 1}
     this.handleAddToCart = this.handleAddToCart.bind(this)
   }
 
   handleAddToCart(event) {
     event.preventDefault()
     let proxyId = event.target.id
-    this.props.addToCart(proxyId, 1)
+    this.props.addToCartDispatch(proxyId, this.state.quantity)
   }
 
   render() {
@@ -25,8 +26,8 @@ class ProxyTile extends React.Component {
       <div className="card card-hover product-card">
         <div>
           <AddToCartButton
-            productId={proxy.id}
             className="pure-button product-card-button button-small"
+            productId={proxy.id}
             singleProduct={proxy.name}
             handleAddToCart={this.handleAddToCart}
           />
@@ -45,7 +46,7 @@ class ProxyTile extends React.Component {
 }
 
 const dispatchToProps = (dispatch) => ({
-  addToCartDispatch: (proxyId) => dispatch(addToCart(proxyId)),
+  addToCartDispatch: (proxyId, newQty) => dispatch(addToCart(proxyId, newQty)),
 })
 
 const ConnectedProxyTile = connect(null, dispatchToProps)(ProxyTile)

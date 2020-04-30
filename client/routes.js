@@ -25,7 +25,7 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route exact path="/shop" component={ConnectedShop} />
         <Route exact path="/shop/:proxyId" component={ConnectedSingleShop} />
-        <Route path="/cart" component={ConnectedCart} />
+        <Route exact path="/cart" component={ConnectedCart} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         {isLoggedIn && (
@@ -34,8 +34,8 @@ class Routes extends Component {
             <Route path="/home" component={UserHome} />
           </Switch>
         )}
-        {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        {/* Displays our Shop component as a fallback */}
+        <Route component={ConnectedShop} />
       </Switch>
     )
   }

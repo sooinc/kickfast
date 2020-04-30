@@ -1,15 +1,14 @@
-const router = require('express').Router()
-const {getCart} = require('../util')
+const router = require('express').Router({mergeParams: true})
+const {getCart, getOrCreateCart, updateQuantity} = require('../util')
 
 module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    let order = await getCart(req)
-    //getCart checks user v guest and returns order that's pending accordingly
+    const cart = await getCart(req)
 
-    if (order) {
-      res.json(order.proxies)
+    if (cart) {
+      res.json(cart.proxies)
     } else {
       res.json([])
     }
@@ -18,6 +17,18 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-//if user, check for existing pending order. If no pending order, create an order using userID.
-//if guest, check for existing pending order. If no pending order, create an Order and add to session.
-// router.post('/:proxyId', async (req, res, next) => {})
+router.post('/:proxyId', async (req, res, next) => {
+  try {
+    const proxyId = req.params.proxyId
+
+    const cart = await getOrCreateCart(req)
+    await updateQuantity(cart, proxyId, req.body.quantity)
+    const updatedCart = await cart.getProxies({
+      through: {attributes: ['quantity']},
+    })
+
+    res.status(201).json(updatedCart)
+  } catch (err) {
+    next(err)
+  }
+})

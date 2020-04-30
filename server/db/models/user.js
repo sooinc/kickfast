@@ -67,7 +67,7 @@ User.prototype.getCart = function (options = {}) {
   return Order.findOne(mergedOptions)
 }
 
-User.prototype.getOrCreateCart = async function () {
+User.prototype.getOrCreateUserCart = async function () {
   const Order = db.model('order')
   const [cart] = await Order.findOrCreate({
     where: {userId: this.id, status: 'pending'},

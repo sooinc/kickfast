@@ -1,9 +1,6 @@
-const {Order, Proxy} = require('./db/models')
+const {Order, Proxy, OrderItem} = require('./db/models')
 
-//if req.user is true, then use user.getCart method to get their pending order.
-//if req.user is false, it's a guest, so check if they already have a cart in their session.
 async function getCart(req) {
-  let userOrder
   let option = {
     include: [
       {
@@ -13,17 +10,67 @@ async function getCart(req) {
       },
     ],
   }
+  //if req.user is true, then use user.getCart method to get their pending order.
+  //if req.user is false, it's a guest, so check if they already have a cart in their session.
+  let cart
   if (req.user) {
-    userOrder = await req.user.getCart(option)
+    cart = await req.user.getCart(option)
   } else {
     const cartId = req.session.cartId
     if (cartId) {
-      userOrder = await Order.findCartByPk(cartId, option)
+      cart = await Order.findCartByPk(cartId, option)
     } else {
-      userOrder = null
+      cart = null
     }
   }
-  return userOrder
+  return cart
 }
 
-module.exports = {getCart}
+async function getOrCreateCart(req) {
+  //if user, check for existing pending order. If no pending order, create an order using userID.
+  //if guest, check for existing pending order. If no pending order, create an Order and add to session.
+  let cart
+  if (req.user) {
+    cart = await req.user.getOrCreateUserCart()
+  } else {
+    const cartId = req.session.cartId
+    if (cartId) {
+      cart = await Order.findCartByPk(cartId)
+    } else {
+      cart = await Order.create()
+      req.session.cartId = cart.id
+    }
+  }
+  return cart
+}
+
+async function updateQuantity(cart, proxyId, newQty) {
+  const item = await OrderItem.findOne({
+    where: {
+      orderId: cart.id,
+      proxyId: proxyId,
+    },
+  })
+
+  let itemQty
+  if (item) {
+    itemQty = item.quantity
+  } else {
+    itemQty = 0
+  }
+
+  let finalQty = itemQty + newQty
+
+  const proxy = await Proxy.findByPk(proxyId)
+  if (finalQty > 0) {
+    return OrderItem.upsert({
+      orderId: cart.id,
+      proxyId: proxyId,
+      quantity: finalQty,
+    })
+  } else {
+    return cart.removeProxy(proxy)
+  }
+}
+
+module.exports = {getCart, getOrCreateCart, updateQuantity}

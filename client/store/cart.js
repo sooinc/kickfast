@@ -2,7 +2,6 @@ import axios from 'axios'
 
 const GOT_CART = 'GOT_CART'
 const GOT_ERROR = 'GOT_ERROR'
-const LATEST_ORDER = 'LATEST_ORDER'
 
 const gotCart = (products) => ({
   type: GOT_CART,
@@ -13,11 +12,6 @@ const gotError = (error, failedAction) => ({
   type: GOT_ERROR,
   error,
   failedAction,
-})
-
-const latestOrder = (order) => ({
-  type: LATEST_ORDER,
-  order,
 })
 
 export const fetchCart = () => {
@@ -31,11 +25,12 @@ export const fetchCart = () => {
   }
 }
 
-export const addToCart = (productId, newQty = 1) => {
+export const addToCart = (proxyId, newQty = 1) => {
   return async (dispatch) => {
     try {
       const quantity = {quantity: newQty}
-      const {data} = await axios.post(`api/cart/${productId}`, quantity)
+      const {data} = await axios.post(`/api/cart/${proxyId}`, quantity)
+      console.log('inside thunk', data)
       dispatch(gotCart(data))
     } catch (err) {
       console.log('not able to add to cart', err)

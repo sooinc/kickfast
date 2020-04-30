@@ -1,16 +1,17 @@
 import React from 'react'
 import {connect} from 'react-redux'
+
 import {fetchSingleProxy} from '../store/shop'
-// import {addToCart} from '../store/cart'
+import {addToCart} from '../store/cart'
+import AddToCartButton from '../components/addtocart-button'
 // import QuantityDropdown from '../components/QuantityDropdown'
-// import AddToCartButton from '../components/AddToCartButton'
 
 class SingleShop extends React.Component {
   constructor() {
     super()
     this.state = {quantity: 1}
+    this.handleAddToCart = this.handleAddToCart.bind(this)
     // this.handleQtyChange = this.handleQtyChange.bind(this)
-    // this.handleAddToCart = this.handleAddToCart.bind(this)
   }
 
   componentDidMount() {
@@ -18,11 +19,11 @@ class SingleShop extends React.Component {
     this.props.fetchSingleProxyDispatch(proxyId)
   }
 
-  // handleAddToCart(event) {
-  //   event.preventDefault()
-  //   let productId = event.target.id
-  //   this.props.addToCartDispatch(productId, this.state.quantity)
-  // }
+  handleAddToCart(event) {
+    event.preventDefault()
+    let proxyId = event.target.id
+    this.props.addToCartDispatch(proxyId, this.state.quantity)
+  }
 
   // handleQtyChange(value) {
   //   this.setState({
@@ -31,46 +32,51 @@ class SingleShop extends React.Component {
   // }
 
   render() {
-    let singleProxy = this.props.singleProxy
+    let {singleProxy} = this.props
     let proxyId = this.props.proxyId
-    return (
-      <div className="page-wide single-product-page">
-        <div className="single-product-main">
-          <h1>{singleProxy.name}</h1>
-          <h3>${singleProxy.price}</h3>
-          <p>{singleProxy.description}</p>
-        </div>
-        {/* <div className="single-product-controls">
-          <div className="card">
-            <AddToCartButton
-              className="pure-button button-primary button-large"
-              productId={productId}
-              singleProduct={singleProduct.name}
-              handleAddToCart={this.handleAddToCart}
-            />
-            <QuantityDropdown handleQtyChange={this.handleQtyChange} />
+
+    switch (this.props.status) {
+      case 'loading':
+        return <div>loading...</div>
+      case 'error':
+        return <div>Couldn't load product. Please try again!</div>
+      case 'done':
+        return (
+          <div className="page-wide single-product-page">
+            <div className="single-product-main">
+              <h1>{singleProxy.name}</h1>
+              <h3>${singleProxy.price}</h3>
+              <p>{singleProxy.description}</p>
+            </div>
+            <div className="single-product-controls">
+              <div className="card">
+                <AddToCartButton
+                  className="pure-button button-primary button-large"
+                  productId={proxyId}
+                  singleProduct={singleProxy.name}
+                  handleAddToCart={this.handleAddToCart}
+                />
+                {/* <QuantityDropdown handleQtyChange={this.handleQtyChange} /> */}
+              </div>
+            </div>
           </div>
-        </div> */}
-      </div>
-    )
+        )
+      default:
+        console.error('unknown products status')
+    }
   }
 }
 
-const stateToProps = (state, ownProps) => {
-  return {
-    status: state.proxyReducer.status,
-    singleProxy: state.proxyReducer.singleProxy,
-    proxyId: ownProps.match.params.proxyId,
-  }
-}
+const stateToProps = (state, ownProps) => ({
+  status: state.proxyReducer.status,
+  proxyId: ownProps.match.params.proxyId,
+  singleProxy: state.proxyReducer.singleProxy,
+})
 
-const dispatchToProps = (dispatch) => {
-  return {
-    fetchSingleProxyDispatch: (proxyId) => dispatch(fetchSingleProxy(proxyId)),
-    // addToCartDispatch: (productId, updatedProduct) =>
-    //   dispatch(addToCart(productId, updatedProduct))
-  }
-}
+const dispatchToProps = (dispatch) => ({
+  fetchSingleProxyDispatch: (proxyId) => dispatch(fetchSingleProxy(proxyId)),
+  addToCartDispatch: (proxyId, newQty) => dispatch(addToCart(proxyId, newQty)),
+})
 
 const ConnectedSingleShop = connect(stateToProps, dispatchToProps)(SingleShop)
 
