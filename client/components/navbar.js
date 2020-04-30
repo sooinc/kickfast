@@ -6,29 +6,50 @@ import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <h1>KICKFAST</h1>
     <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-          <Link to="/shop">Shop</Link>
-          <Link to="/cart">Cart</Link>
+      <div className="nav-left">
+        <div className="nav-left-header">
+          <h1>KICKFAST</h1>
         </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/shop">Shop</Link>
-          <Link to="/cart">Cart</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
+      </div>
+      <div className="nav-right">
+        {isLoggedIn ? (
+          <div className="nav-right">
+            {/* The navbar will show these links after you log in */}
+            <div className="nav-right-links">
+              <Link to="/shop">Shop</Link>
+            </div>
+            <div className="nav-right-links">
+              <Link to="/home">Account</Link>
+            </div>
+            <div className="nav-right-links">
+              <a href="#" onClick={handleClick}>
+                Logout
+              </a>
+            </div>
+            <div className="nav-right-links">
+              <Link to="/cart">Cart</Link>
+            </div>
+          </div>
+        ) : (
+          <div className="nav-right">
+            {/* The navbar will show these links before you log in */}
+            <div className="nav-right-links">
+              <Link to="/shop">Shop</Link>
+            </div>
+            <div className="nav-right-links">
+              <Link to="/signup">Sign Up</Link>
+            </div>
+            <div className="nav-right-links">
+              <Link to="/login">Login</Link>
+            </div>
+            <div className="nav-right-links">
+              <Link to="/cart">Cart</Link>
+            </div>
+          </div>
+        )}
+      </div>
     </nav>
-    <hr />
   </div>
 )
 
