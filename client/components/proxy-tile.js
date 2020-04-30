@@ -24,14 +24,6 @@ class ProxyTile extends React.Component {
 
     return (
       <div className="card card-hover product-card">
-        <div>
-          <AddToCartButton
-            className="pure-button product-card-button button-small"
-            productId={proxy.id}
-            singleProduct={proxy.name}
-            handleAddToCart={this.handleAddToCart}
-          />
-        </div>
         <div className="product-card-body">
           <Link to={toProxy} className="product-link">
             {proxy.name}
@@ -39,6 +31,14 @@ class ProxyTile extends React.Component {
           <Link to={toProxy} className="price">
             ${proxy.price}
           </Link>
+        </div>
+        <div>
+          <AddToCartButton
+            className="pure-button product-card-button button-small"
+            productId={proxy.id}
+            singleProduct={proxy.name}
+            handleAddToCart={this.handleAddToCart}
+          />
         </div>
       </div>
     )

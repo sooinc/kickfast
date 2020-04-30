@@ -30,7 +30,6 @@ export const addToCart = (proxyId, newQty = 1) => {
     try {
       const quantity = {quantity: newQty}
       const {data} = await axios.post(`/api/cart/${proxyId}`, quantity)
-      console.log('inside thunk', data)
       dispatch(gotCart(data))
     } catch (err) {
       console.log('not able to add to cart', err)

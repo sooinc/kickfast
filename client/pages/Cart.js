@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {fetchCart} from '../store/cart'
+import CartTile from '../components/cart-tile'
 
 export class Cart extends React.Component {
   componentDidMount() {
@@ -20,12 +21,11 @@ export class Cart extends React.Component {
           return (
             <div>
               <div>
+                <h1>Your Shopping Cart</h1>
+              </div>
+              <div>
                 {cartItems.map((item) => (
-                  <div key={item.id}>
-                    <p key={item.name}>Name: {item.name}</p>
-                    <p key={item.price}>Price: {item.price}</p>
-                    <p key={item.id}>Quantity: {item.orderItem.quantity}</p>
-                  </div>
+                  <CartTile item={item} showControls={true} key={item.id} />
                 ))}
               </div>
             </div>
