@@ -32,7 +32,19 @@ export const addToCart = (proxyId, newQty = 1) => {
       const {data} = await axios.post(`/api/cart/${proxyId}`, quantity)
       dispatch(gotCart(data))
     } catch (err) {
-      console.log('not able to add to cart', err)
+      dispatch(gotError(err, {type: GOT_CART}))
+    }
+  }
+}
+
+export const deleteCartItem = (proxyId) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.delete(`/api/cart/${proxyId}`)
+      dispatch(gotCart(data))
+      console.log('inside thunk', data)
+    } catch (err) {
+      dispatch(gotError(err, {type: GOT_CART}))
     }
   }
 }

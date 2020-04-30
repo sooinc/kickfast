@@ -31,6 +31,7 @@ async function getOrCreateCart(req) {
   //if guest, check for existing pending order. If no pending order, create an Order and add to session.
   let cart
   if (req.user) {
+    console.log('im a user')
     cart = await req.user.getOrCreateUserCart()
   } else {
     const cartId = req.session.cartId

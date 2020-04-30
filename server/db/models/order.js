@@ -10,7 +10,7 @@ const Order = db.define('order', {
 })
 
 //guest's pending cart
-Order.findCartByPk = function (pk, options = {}) {
+Order.findCartByPk = async function (pk, options = {}) {
   const mergedOptions = {
     ...options,
     where: {
@@ -18,7 +18,8 @@ Order.findCartByPk = function (pk, options = {}) {
       ...{status: 'pending'},
     },
   }
-  return Order.findByPk(pk, mergedOptions)
+  let order = await Order.findByPk(pk, mergedOptions)
+  return order
 }
 
 module.exports = Order

@@ -2,15 +2,14 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import {addToCart} from '../store/cart'
-
-//need delete thunk
+import {addToCart, deleteCartItem} from '../store/cart'
 
 class CartTile extends React.Component {
   constructor() {
     super()
     this.handleIncrease = this.handleIncrease.bind(this)
     this.handleDecrease = this.handleDecrease.bind(this)
+    // this.handleDelete = this.handleDelete.bind(this)
   }
 
   async handleIncrease(event) {
@@ -27,6 +26,12 @@ class CartTile extends React.Component {
       await this.props.addToCartDispatch(item.id, -1)
     }
   }
+
+  // async handleDelete(event) {
+  //   event.preventDefault()
+  //   const {item} = this.props
+  //   await this.props.deleteCartItemDispatch(item.id)
+  // }
 
   render() {
     const {item, showControls = false} = this.props
@@ -79,7 +84,7 @@ class CartTile extends React.Component {
                 <button
                   className="deleteBtn"
                   type="button"
-                  onClick={() => this.props.deleteItem(item.id)}
+                  onClick={() => this.props.deleteCartItemDispatch(item.id)}
                 >
                   Remove From Cart
                 </button>
@@ -98,6 +103,7 @@ class CartTile extends React.Component {
 
 const dispatchToProps = (dispatch) => ({
   addToCartDispatch: (proxyId, newQty) => dispatch(addToCart(proxyId, newQty)),
+  deleteCartItemDispatch: (proxyId) => dispatch(deleteCartItem(proxyId)),
 })
 
 const ConnectedCartTile = connect(null, dispatchToProps)(CartTile)

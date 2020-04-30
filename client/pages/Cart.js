@@ -11,6 +11,8 @@ export class Cart extends React.Component {
 
   render() {
     const {cartItems} = this.props
+    console.log('inside component', this.props.status)
+    console.log('inside componenet', cartItems.length)
     switch (this.props.status) {
       case 'loading':
         return <div>loading...</div>
