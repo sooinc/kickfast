@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import '../css/cart.css'
 import {fetchCart} from '../store/cart'
 import CartTile from '../components/cart-tile'
 
@@ -11,8 +12,6 @@ export class Cart extends React.Component {
 
   render() {
     const {cartItems} = this.props
-    console.log('inside component', this.props.status)
-    console.log('inside componenet', cartItems.length)
     switch (this.props.status) {
       case 'loading':
         return <div>loading...</div>
@@ -35,7 +34,7 @@ export class Cart extends React.Component {
         } else {
           return (
             <div id="empty-cart">
-              <h1>Your cart is empty... </h1>
+              <h1 className="empty-cart">Your cart is empty... </h1>
               {/* <img src="/images/sad-flower.png"></img> */}
             </div>
           )

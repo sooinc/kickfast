@@ -9,7 +9,6 @@ class CartTile extends React.Component {
     super()
     this.handleIncrease = this.handleIncrease.bind(this)
     this.handleDecrease = this.handleDecrease.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
   }
 
   async handleIncrease(event) {
@@ -26,12 +25,6 @@ class CartTile extends React.Component {
       await this.props.addToCartDispatch(item.id, -1)
     }
   }
-
-  // async handleDelete(event) {
-  //   event.preventDefault()
-  //   const {item} = this.props
-  //   await this.props.deleteCartItemDispatch(item.id)
-  // }
 
   render() {
     const {item, showControls = false} = this.props
