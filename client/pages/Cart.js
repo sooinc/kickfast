@@ -10,6 +10,12 @@ export class Cart extends React.Component {
     this.props.fetchCartDispatch()
   }
 
+  total() {
+    return this.props.cartItems
+      .map((item) => item.price * item.orderItem.quantity)
+      .reduce((currTotal, itemTotal) => currTotal + itemTotal)
+  }
+
   render() {
     const {cartItems} = this.props
     switch (this.props.status) {
@@ -20,14 +26,27 @@ export class Cart extends React.Component {
       case 'done':
         if (cartItems.length > 0) {
           return (
-            <div>
-              <div>
-                <h1>Your Shopping Cart</h1>
-              </div>
-              <div>
+            <div className="cart">
+              <div className="cartTile-container">
+                <div className="cartTile-header">
+                  <h1>Your Shopping Cart</h1>
+                </div>
                 {cartItems.map((item) => (
                   <CartTile item={item} showControls={true} key={item.id} />
                 ))}
+              </div>
+              <div className="cart-total">
+                <h2 className="cart-total-inside">Subtotal</h2>
+                <h3 className="cart-total-inside">
+                  ${this.total().toFixed(2)}
+                </h3>
+                <button
+                  className="cart-total-inside"
+                  type="button"
+                  // onClick={() => this.props.deleteCartItemDispatch(item.id)}
+                >
+                  Proceed To Payment
+                </button>
               </div>
             </div>
           )

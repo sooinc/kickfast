@@ -1,0 +1,36 @@
+.proxy-tile-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+.proxy-tile {
+  width: 250px;
+  height: 260px;
+  border: 5px solid #191716;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.single-proxy-container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 40px;
+}
+
+.single-proxy-details-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
+
+.single-proxy-controls-container {
+  display: flex;
+}
+
+.single-proxy-addtocart {
+  margin-left: 10px;
+}

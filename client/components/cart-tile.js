@@ -36,52 +36,53 @@ class CartTile extends React.Component {
       quantity === 1 ? null : <span>(${(+item.price).toFixed(2)} each)</span>
 
     return (
-      <div>
-        <div>
-          <div>
-            <h3>Image goes here</h3>
-          </div>
-          <div>
-            <Link to={`/shop/${item.id}`}>{item.name}</Link>
-            <p>
-              {price}
-              {unitPrice}
-            </p>
-          </div>
+      <div className="cartItem-container">
+        <div className="cartItem-image">
+          <img
+            src="https://images-na.ssl-images-amazon.com/images/I/41CyuoxrPvL._AC_SY355_.jpg"
+            alt="smiley face"
+            width="90"
+            height="90"
+          />
+        </div>
+        <div className="cartItem-name-price">
+          <Link to={`/shop/${item.id}`}>{item.name}</Link>
+          <p>
+            {price}
+            {unitPrice}
+          </p>
         </div>
         {showControls ? (
-          <div>
-            <div className="cartItem-controls">
-              <div className="cartItem-controls-quantity">
-                <label>Quantity</label>
-                <button
-                  id={item.id}
-                  className="quantityBtn"
-                  type="button"
-                  onClick={this.handleDecrease}
-                  disabled={quantity <= 1}
-                >
-                  -
-                </button>
-                <p>{quantity}</p>
-                <button
-                  id={item.id}
-                  className="quantityBtn"
-                  type="button"
-                  onClick={this.handleIncrease}
-                >
-                  +
-                </button>
-              </div>
-              <div className="cartItem-controls-delete">
-                <button
-                  className="deleteBtn"
-                  type="button"
-                  onClick={() => this.props.deleteCartItemDispatch(item.id)}
-                >
-                  Remove From Cart
-                </button>
-              </div>
+          <div className="cartItem-controls-container">
+            <div className="cartItem-controls-quantity">
+              <label>Quantity</label>
+              <button
+                id={item.id}
+                className="quantityBtn"
+                type="button"
+                onClick={this.handleDecrease}
+                disabled={quantity <= 1}
+              >
+                -
+              </button>
+              <p>{quantity}</p>
+              <button
+                id={item.id}
+                className="quantityBtn"
+                type="button"
+                onClick={this.handleIncrease}
+              >
+                +
+              </button>
+            </div>
+            <div className="cartItem-controls-delete">
+              <button
+                className="deleteBtn"
+                type="button"
+                onClick={() => this.props.deleteCartItemDispatch(item.id)}
+              >
+                Remove From Cart
+              </button>
             </div>
           </div>
         ) : (

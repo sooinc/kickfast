@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
+import '../css/shop.css'
 import {addToCart} from '../store/cart'
 import AddToCartButton from './addtocart-button'
 
@@ -23,23 +24,26 @@ class ProxyTile extends React.Component {
     const toProxy = `/shop/${proxy.id}`
 
     return (
-      <div className="card card-hover product-card">
-        <div className="product-card-body">
-          <Link to={toProxy} className="product-link">
-            {proxy.name}
-          </Link>
-          <Link to={toProxy} className="price">
-            ${proxy.price}
-          </Link>
-        </div>
-        <div>
-          <AddToCartButton
-            className="pure-button product-card-button button-small"
-            productId={proxy.id}
-            singleProduct={proxy.name}
-            handleAddToCart={this.handleAddToCart}
+      <div className="proxy-tile">
+        <Link to={toProxy}>
+          <img
+            className="proxy-tile-image"
+            src="https://images-na.ssl-images-amazon.com/images/I/41CyuoxrPvL._AC_SY355_.jpg"
+            alt="smiley face"
+            width="150"
+            height="150"
           />
-        </div>
+        </Link>
+        <Link to={toProxy} className="product-link">
+          {proxy.name}
+        </Link>
+        <p> ${proxy.price}</p>
+        <AddToCartButton
+          className="proxy-tile-addtocart"
+          productId={proxy.id}
+          singleProduct={proxy.name}
+          handleAddToCart={this.handleAddToCart}
+        />
       </div>
     )
   }
