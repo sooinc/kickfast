@@ -15,13 +15,13 @@ const defaultUser = {}
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
+const getUser = (user, error) => ({type: GET_USER, user, error})
 const removeUser = () => ({type: REMOVE_USER})
 
 /**
  * THUNK CREATORS
  */
-export const me = () => async dispatch => {
+export const me = () => async (dispatch) => {
   try {
     const res = await axios.get('/auth/me')
     dispatch(getUser(res.data || defaultUser))
@@ -30,23 +30,68 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, method) => async dispatch => {
-  let res
-  try {
-    res = await axios.post(`/auth/${method}`, {email, password})
-  } catch (authError) {
-    return dispatch(getUser({error: authError}))
-  }
+export const login = (email, password, redirect = '/home') => {
+  return async (dispatch) => {
+    let res
+    try {
+      res = await axios.post(`/auth/login`, {email, password})
+    } catch (authError) {
+      return dispatch(getUser(null, authError))
+    }
 
-  try {
-    dispatch(getUser(res.data))
-    history.push('/home')
-  } catch (dispatchOrHistoryErr) {
-    console.error(dispatchOrHistoryErr)
+    try {
+      dispatch(getUser(res.data))
+      if (redirect) {
+        history.push(redirect)
+      }
+    } catch (dispatchOrHistoryErr) {
+      console.error(dispatchOrHistoryErr)
+    }
   }
 }
 
-export const logout = () => async dispatch => {
+export const signup = (
+  name,
+  ipAddress,
+  email,
+  password,
+  redirect = '/home'
+) => {
+  return async (dispatch) => {
+    let res
+    try {
+      res = await axios.post(`/auth/signup`, {name, ipAddress, email, password})
+    } catch (authError) {
+      return dispatch(getUser(null, authError))
+    }
+    try {
+      dispatch(getUser(res.data))
+      if (redirect) {
+        history.push(redirect)
+      }
+    } catch (dispatchOrHistoryErr) {
+      console.error(dispatchOrHistoryErr)
+    }
+  }
+}
+
+// export const auth = (email, password, method) => async dispatch => {
+//   let res
+//   try {
+//     res = await axios.post(`/auth/${method}`, {email, password})
+//   } catch (authError) {
+//     return dispatch(getUser({error: authError}))
+//   }
+
+//   try {
+//     dispatch(getUser(res.data))
+//     history.push('/home')
+//   } catch (dispatchOrHistoryErr) {
+//     console.error(dispatchOrHistoryErr)
+//   }
+// }
+
+export const logout = () => async (dispatch) => {
   try {
     await axios.post('/auth/logout')
     dispatch(removeUser())
@@ -59,10 +104,14 @@ export const logout = () => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = defaultUser, action) {
+export default function (state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
-      return action.user
+      if (!action.error) {
+        return action.user
+      } else {
+        return {...state, error: action.error}
+      }
     case REMOVE_USER:
       return defaultUser
     default:

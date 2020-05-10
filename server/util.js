@@ -74,4 +74,40 @@ async function updateQuantity(cart, proxyId, newQty) {
   }
 }
 
-module.exports = {getCart, getOrCreateCart, updateQuantity}
+//For saveToUser function
+function getUserCart(req) {
+  return req.user ? req.user.getCart() : null
+}
+
+//For saveToUser function
+function getGuestCart(req) {
+  const cartId = req.session.cartId
+  if (cartId) {
+    return Order.findCartByPk(cartId)
+  } else {
+    return null
+  }
+}
+
+async function saveToUser(req) {
+  console.log('inside savetouser')
+  if (req.user && req.session.cartId) {
+    const guestCart = await getGuestCart(req)
+    const userCart = await getUserCart(req)
+
+    if (guestCart && !userCart) {
+      guestCart.setUser(req.user)
+      req.session.cartId = null
+    } else {
+      await userCart.mergeFrom(guestCart)
+      req.session.cartId = null
+      await guestCart.destroy()
+    }
+  }
+}
+module.exports = {
+  getCart,
+  getOrCreateCart,
+  updateQuantity,
+  saveToUser,
+}
