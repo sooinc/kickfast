@@ -2,11 +2,19 @@ import React from 'react'
 import {Navbar} from './components'
 import Routes from './routes'
 
+import {loadStripe} from '@stripe/stripe-js'
+import {Elements} from '@stripe/react-stripe-js'
+import {stripePK} from '../secrets'
+
+const promise = loadStripe(stripePK)
+
 const App = () => {
   return (
     <div>
-      <Navbar />
-      <Routes />
+      <Elements stripe={promise}>
+        <Navbar />
+        <Routes />
+      </Elements>
     </div>
   )
 }

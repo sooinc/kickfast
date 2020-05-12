@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import '../css/cart.css'
@@ -40,13 +41,8 @@ export class Cart extends React.Component {
                 <h3 className="cart-total-inside">
                   ${this.total().toFixed(2)}
                 </h3>
-                <button
-                  className="cart-total-inside"
-                  type="button"
-                  // onClick={() => this.props.deleteCartItemDispatch(item.id)}
-                >
-                  Proceed To Payment
-                </button>
+                {/* need to pass down cartItems*/}
+                <Link to="/checkout">Proceed To Checkout</Link>
               </div>
             </div>
           )

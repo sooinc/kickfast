@@ -90,15 +90,16 @@ function getGuestCart(req) {
 }
 
 async function saveToUser(req) {
-  console.log('inside savetouser')
   if (req.user && req.session.cartId) {
     const guestCart = await getGuestCart(req)
     const userCart = await getUserCart(req)
 
     if (guestCart && !userCart) {
+      //when you signup
       guestCart.setUser(req.user)
       req.session.cartId = null
     } else {
+      // when you login
       await userCart.mergeFrom(guestCart)
       req.session.cartId = null
       await guestCart.destroy()
