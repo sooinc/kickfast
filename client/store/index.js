@@ -5,11 +5,13 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import {proxyReducer} from './shop'
 import cart from './cart'
+import checkout from './checkout'
 
 const reducer = combineReducers({
   user,
   proxyReducer,
   cart,
+  checkout,
 })
 
 const middleware = composeWithDevTools(
