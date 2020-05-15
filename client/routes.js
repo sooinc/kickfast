@@ -20,22 +20,28 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
+    const guest = !isLoggedIn
 
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
+        <Route exact path="/" component={ConnectedShop} />
         <Route exact path="/shop" component={ConnectedShop} />
         <Route exact path="/shop/:proxyId" component={ConnectedSingleShop} />
         <Route exact path="/cart" component={ConnectedCart} />
         <Route exact path="/checkout" component={Checkout} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+
+        {/* Routes for guest visitors only */}
+        {guest && <Route path="/login" component={Login} />}
+        {guest && <Route path="/signup" component={Signup} />}
+
+        {/* Routes for loggedIn visitors only */}
         {isLoggedIn && (
           <Switch>
-            {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
           </Switch>
         )}
+
         {/* Displays our Shop component as a fallback */}
         <Route component={ConnectedShop} />
       </Switch>
