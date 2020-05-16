@@ -21,10 +21,6 @@ const Signup = (props) => {
             <input name="name" type="text" />
           </div>
           <div className="pure-control-group">
-            <label htmlFor="name">IP Address</label>
-            <input name="ip" type="text" />
-          </div>
-          <div className="pure-control-group">
             <label htmlFor="email">Email</label>
             <input name="email" type="text" />
           </div>
@@ -59,10 +55,9 @@ const mapDispatch = (dispatch) => {
     handleSubmit(evt) {
       evt.preventDefault()
       const name = evt.target.name.value
-      const ip = evt.target.ip.value
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(signup(name, ip, email, password))
+      dispatch(signup(name, email, password))
     },
   }
 }

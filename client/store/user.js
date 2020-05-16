@@ -50,17 +50,11 @@ export const login = (email, password, redirect = '/home') => {
   }
 }
 
-export const signup = (
-  name,
-  ipAddress,
-  email,
-  password,
-  redirect = '/home'
-) => {
+export const signup = (name, email, password, redirect = '/home') => {
   return async (dispatch) => {
     let res
     try {
-      res = await axios.post(`/auth/signup`, {name, ipAddress, email, password})
+      res = await axios.post(`/auth/signup`, {name, email, password})
     } catch (authError) {
       return dispatch(getUser(null, authError))
     }

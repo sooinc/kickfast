@@ -12,14 +12,14 @@ async function seed() {
       email: 'gavin@email.com',
       password: '123',
       name: 'Gavin Li',
-      ipAddress: '72.111.155.60',
+      ipAddress: ['72.111.155.60'],
       role: 'user',
     }),
     User.create({
       email: 'sooin@email.com',
       password: '123',
       name: 'Sooin Chung',
-      ipAddress: '70.123.456.78',
+      ipAddress: ['70.123.456.78', '23.435.656.66', '353.566.777.77'],
       role: 'admin',
     }),
   ])

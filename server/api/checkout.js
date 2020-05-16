@@ -9,8 +9,10 @@ module.exports = router
 const calculateOrderAmount = (cartItems) => {
   let total = cartItems
     .map((item) => item.price * item.orderItem.quantity)
-    .reduce((currTotal, itemTotal) => currTotal + itemTotal)
-  return total * 100
+    .reduce((currTotal, itemTotal) => {
+      return currTotal + itemTotal
+    }, 0)
+  return Math.floor(total)
 }
 
 //confirm checkout

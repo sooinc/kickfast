@@ -1,3 +1,18 @@
+.checkout {
+  display: flex;
+  flex-direction: row;
+}
+
+.checkout-form {
+  flex-basis: 60%;
+}
+
+.cart-items {
+  flex-basis: 40%;
+  border: 1px solid #191716;
+  height: 400px;
+}
+
 .result-message {
   line-height: 22px;
   font-size: 16px;

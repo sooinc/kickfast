@@ -1,26 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js'
-import {checkout} from '../store/checkout'
 
 export function CheckoutForm(props) {
   const [succeeded, setSucceeded] = useState(false)
   const [error, setError] = useState(null)
   const [processing, setProcessing] = useState('')
   const [disabled, setDisabled] = useState(true)
-  // const [clientSecret, setClientSecret] = useState('')
   const stripe = useStripe()
   const elements = useElements()
-
-  //by using hook, you tell react that your component
-  // needs to do smth after render
-  useEffect(() => {
-    async function loadClientSecret() {
-      await props.checkoutDispatch(props.cartItems)
-      // await setClientSecret(props.clientSecret)
-    }
-    loadClientSecret()
-  }, [])
 
   const cardStyle = {
     style: {
@@ -43,22 +31,32 @@ export function CheckoutForm(props) {
   const handleChange = (event) => {
     //listen for changes in the cardElement
     //and display any errors as the customer types their card details
+    console.log('event error', event.error)
+    console.log('event empty', event.empty)
     setDisabled(event.empty)
     setError(event.error ? event.error.message : '')
   }
 
   const handleSubmit = async (event) => {
-    console.log('hi')
     event.preventDefault()
     setProcessing(true)
     console.log('inside handleSubmit', props.clientSecret)
     const payload = await stripe.confirmCardPayment(props.clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
-        // billing_details: {
-        //   name: event.target.name.value,
-        // },
+        billing_details: {
+          name: event.target.name.value,
+          address: {
+            line1: event.target.line1.value,
+            line2: event.target.line2.value,
+            city: event.target.city.value,
+            state: event.target.state.value,
+            postal_code: event.target.zip.value,
+            country: event.target.country.value,
+          },
+        },
       },
+      receipt_email: event.target.email.value,
     })
     console.log('this is payload', payload)
     if (payload.error) {
@@ -73,6 +71,56 @@ export function CheckoutForm(props) {
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
+      <h2>Billing Information</h2>
+      <label>
+        Name
+        <input name="name" type="text" onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Email
+        <input name="email" type="text" onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Address: Line1
+        <input name="line1" type="text" onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Address: Line2
+        <input name="line2" type="text" onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        City
+        <input name="city" type="text" onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        State
+        <input name="state" onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Zip
+        <input name="zip" onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        Country
+        <input name="country" onChange={handleChange} />
+      </label>
+      <br />
+
+      <h2>Confirm IP Address</h2>
+      <label>
+        IP Address
+        <input name="ip" onChange={handleChange} />
+      </label>
+      <br />
+
+      <h2>Payment Information</h2>
       <CardElement
         id="card-element"
         options={cardStyle}
@@ -107,14 +155,9 @@ export function CheckoutForm(props) {
 }
 
 const stateToProps = (state) => ({
-  cartItems: state.cart.products,
-  clientSecret: state.checkout.secret,
+  user: state.user,
 })
 
-const dispatchToProps = (dispatch) => ({
-  checkoutDispatch: (cartItems) => dispatch(checkout(cartItems)),
-})
+const ConnectedCheckoutForm = connect(stateToProps, null)(CheckoutForm)
 
-const ConnectedCheckout = connect(stateToProps, dispatchToProps)(CheckoutForm)
-
-export default ConnectedCheckout
+export default ConnectedCheckoutForm

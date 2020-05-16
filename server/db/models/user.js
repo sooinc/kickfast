@@ -35,8 +35,7 @@ const User = db.define('user', {
     allowNull: false,
   },
   ipAddress: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: Sequelize.ARRAY(Sequelize.STRING),
   },
   role: {
     type: Sequelize.ENUM(['admin', 'user']),

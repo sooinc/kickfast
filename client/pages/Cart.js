@@ -11,7 +11,7 @@ export class Cart extends React.Component {
     this.props.fetchCartDispatch()
   }
 
-  total() {
+  total = () => {
     return this.props.cartItems
       .map((item) => item.price * item.orderItem.quantity)
       .reduce((currTotal, itemTotal) => currTotal + itemTotal)
@@ -36,13 +36,45 @@ export class Cart extends React.Component {
                   <CartTile item={item} showControls={true} key={item.id} />
                 ))}
               </div>
+
               <div className="cart-total">
                 <h2 className="cart-total-inside">Subtotal</h2>
                 <h3 className="cart-total-inside">
                   ${this.total().toFixed(2)}
                 </h3>
-                {/* need to pass down cartItems*/}
-                <Link to="/checkout">Proceed To Checkout</Link>
+
+                {this.props.user.id ? (
+                  <div>
+                    {/* <p>
+                      Email for Receipt Confirmation: {this.props.user.email}
+                    </p>
+                    <Link to="/home">To Edit Email</Link> */}
+                    <div>
+                      <Link
+                        to={{
+                          pathname: '/checkout',
+                          state: {
+                            cartItems: cartItems,
+                          },
+                        }}
+                        className="able"
+                      >
+                        Proceed To Checkout
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <Link to="/signup">Signup</Link>
+                    <p>or</p>
+                    <Link to="login">Login</Link>
+                    <div>
+                      <Link to={null} className="disable">
+                        Proceed To Checkout
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )
@@ -63,6 +95,7 @@ export class Cart extends React.Component {
 const stateToProps = (state) => ({
   status: state.cart.status,
   cartItems: state.cart.products,
+  user: state.user,
 })
 
 const dispatchToProps = (dispatch) => ({
