@@ -9,13 +9,26 @@ export class CheckoutForm extends React.Component {
   constructor() {
     super()
     this.state = {
+      name: '',
       email: '',
-      ipAddress: '',
-      formErrors: {email: '', ipAddress: ''},
-      notValid: true,
-
+      line1: '',
+      line2: '',
+      city: '',
+      state: '',
+      zip: '',
+      country: '',
       newIp: '',
       newIpDisable: false,
+      formErrors: {
+        name: ' ',
+        email: ' ',
+        line1: ' ',
+        city: ' ',
+        state: ' ',
+        country: ' ',
+        zip: ' ',
+      },
+      notValid: true,
 
       succeeded: false,
       error: null,
@@ -39,9 +52,27 @@ export class CheckoutForm extends React.Component {
     let selectLen = document.getElementById('select').options.length
 
     switch (fieldName) {
+      case 'name':
+        if (value.length > 1) fieldValidateErrors.name = ''
+        break
       case 'email':
         email = value.match(/^\S+@\S+\.\S+$/i)
         fieldValidateErrors.email = email ? '' : 'is invalid'
+        break
+      case 'line1':
+        if (value.length > 1) fieldValidateErrors.line1 = ''
+        break
+      case 'city':
+        if (value.length > 1) fieldValidateErrors.city = ''
+        break
+      case 'state':
+        if (value.length > 1) fieldValidateErrors.state = ''
+        break
+      case 'zip':
+        if (value > 1) fieldValidateErrors.zip = ''
+        break
+      case 'country':
+        if (value.length > 1) fieldValidateErrors.country = ''
         break
       case 'newIp':
         if (selectLen >= 4) {
@@ -69,7 +100,11 @@ export class CheckoutForm extends React.Component {
     let isInvalid = 'is invalid'
     let formErrors = this.state.formErrors
     for (let key in formErrors) {
-      if (formErrors[key] === isRequired || formErrors[key] === isInvalid) {
+      if (
+        formErrors[key] === isRequired ||
+        formErrors[key] === isInvalid ||
+        formErrors[key] === ' '
+      ) {
         this.setState({notValid: true})
         return
       }
@@ -103,13 +138,7 @@ export class CheckoutForm extends React.Component {
 
   handleSubmit = async () => {
     event.preventDefault()
-    const {email} = this.state
-    let fieldValidateErrors = this.state.formErrors
-    if (email.length < 1) {
-      fieldValidateErrors.email = 'is required'
-      this.setState({formErrors: fieldValidateErrors}, this.validateForm)
-      return
-    }
+    const {email, name, line1, line2, city, state, country, zip} = this.state
 
     const {stripe, elements} = this.props
     this.setState({processing: true})
@@ -117,17 +146,17 @@ export class CheckoutForm extends React.Component {
     const payload = await stripe.confirmCardPayment(this.props.clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
-        // billing_details: {
-        //   name: event.target.name.value,
-        //   address: {
-        //     line1: event.target.line1.value,
-        //     line2: event.target.line2.value,
-        //     city: event.target.city.value,
-        //     state: event.target.state.value,
-        //     postal_code: event.target.zip.value,
-        //     country: event.target.country.value,
-        //   },
-        // },
+        billing_details: {
+          name: name,
+          address: {
+            line1: line1,
+            line2: line2,
+            city: city,
+            state: state,
+            postal_code: zip,
+            country: country,
+          },
+        },
       },
       receipt_email: email,
     })
@@ -157,22 +186,28 @@ export class CheckoutForm extends React.Component {
     return (
       <div className="checkout">
         <div className="checkout-form">
-          <FormErrors formErrors={this.state.formErrors} />
           <form id="payment-form" onSubmit={this.handleSubmit}>
             <h2>Billing Information</h2>
             <label>
-              Name
-              <input name="name" type="text" onChange={this.handleFormChange} />
+              Name*
+              <input
+                type="text"
+                name="name"
+                value={this.state.name}
+                onChange={this.handleFormChange}
+              />
+              {formErrors.name && (
+                <p className="error-message">{formErrors.name}</p>
+              )}
             </label>
             <br />
             <label>
-              Email
+              Email*
               <input
+                type="text"
                 name="email"
                 value={this.state.email}
-                type="text"
                 onChange={this.handleFormChange}
-                className="form-control"
               />
               {formErrors.email && (
                 <p className="error-message">{formErrors.email}</p>
@@ -180,47 +215,87 @@ export class CheckoutForm extends React.Component {
             </label>
             <br />
             <label>
-              Address: Line1
+              Address: Line1*
               <input
-                name="line1"
                 type="text"
+                name="line1"
+                value={this.state.line1}
                 onChange={this.handleFormChange}
               />
+              {formErrors.line1 && (
+                <p className="error-message">{formErrors.line1}</p>
+              )}
             </label>
             <br />
             <label>
               Address: Line2
               <input
-                name="line2"
                 type="text"
+                name="line2"
+                value={this.state.line2}
                 onChange={this.handleFormChange}
               />
+              {formErrors.line2 && (
+                <p className="error-message">{formErrors.line2}</p>
+              )}
             </label>
             <br />
             <label>
-              City
-              <input name="city" type="text" onChange={this.handleFormChange} />
+              City*
+              <input
+                type="text"
+                name="city"
+                value={this.state.city}
+                onChange={this.handleFormChange}
+              />
+              {formErrors.city && (
+                <p className="error-message">{formErrors.city}</p>
+              )}
             </label>
             <br />
             <label>
-              State
-              <input name="state" onChange={this.handleFormChange} />
+              State*
+              <input
+                type="text"
+                name="state"
+                value={this.state.state}
+                onChange={this.handleFormChange}
+              />
+              {formErrors.state && (
+                <p className="error-message">{formErrors.state}</p>
+              )}
             </label>
             <br />
             <label>
-              Zip
-              <input name="zip" onChange={this.handleFormChange} />
+              Zip*
+              <input
+                type="text"
+                name="zip"
+                value={this.state.zip}
+                onChange={this.handleFormChange}
+              />
+              {formErrors.zip && (
+                <p className="error-message">{formErrors.zip}</p>
+              )}
             </label>
             <br />
             <label>
-              Country
-              <input name="country" onChange={this.handleFormChange} />
+              Country*
+              <input
+                type="text"
+                name="country"
+                value={this.state.country}
+                onChange={this.handleFormChange}
+              />
+              {formErrors.country && (
+                <p className="error-message">{formErrors.country}</p>
+              )}
             </label>
             <br />
 
             <h2>Confirm IP Address</h2>
             <label>
-              IP Address
+              IP Address*
               <select id="select" name="ip" onChange={this.handleFormChange}>
                 <option value={null}>-- select --</option>
                 {ipAddress
@@ -308,6 +383,7 @@ export class CheckoutForm extends React.Component {
               </p>
             )}
           </form>
+          <FormErrors formErrors={this.state.formErrors} />
         </div>
       </div>
     )
