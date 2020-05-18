@@ -12,7 +12,8 @@ const calculateOrderAmount = (cartItems) => {
     .reduce((currTotal, itemTotal) => {
       return currTotal + itemTotal
     }, 0)
-  return Math.floor(total)
+  // return Math.floor(total)
+  return 100000
 }
 
 //confirm checkout

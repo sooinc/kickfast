@@ -2,9 +2,9 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import '../css/cart.css'
 import {fetchCart} from '../store/cart'
 import CartTile from '../components/cart-tile'
+import '../css/cart.css'
 
 export class Cart extends React.Component {
   componentDidMount() {
