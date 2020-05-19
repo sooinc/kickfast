@@ -12,7 +12,7 @@ export class Checkout extends React.Component {
   componentDidMount() {
     // const {cartItems} = this.props.location.state
     this.props.fetchCartDispatch()
-    this.props.checkoutDispatch() //this.props.cartItems
+    this.props.checkoutDispatch()
   }
 
   total = () => {

@@ -4,8 +4,6 @@ import history from '../history'
 const CLIENT_SECRET = 'CLIENT_SECRET'
 const CONFIRMATION = 'CONFIRMATION'
 const GOT_ERROR = 'GOT_ERROR'
-const GOT_EMAIL = 'GOT_EMAIL'
-const GOT_IP = 'GOT_IP'
 
 const clientSecret = (secret) => ({
   type: CLIENT_SECRET,
@@ -21,16 +19,6 @@ const gotError = (error, failedAction) => ({
   type: GOT_ERROR,
   error,
   failedAction,
-})
-
-const gotEmail = (billingEmail) => ({
-  type: GOT_EMAIL,
-  billingEmail,
-})
-
-const gotIp = (ip) => ({
-  type: GOT_IP,
-  ip,
 })
 
 const options = {
@@ -51,10 +39,17 @@ export const checkout = () => {
   }
 }
 
-export const getConfirmation = (newIp, redirect = '/confirmation') => {
+export const getConfirmation = (
+  newIp,
+  billingEmail,
+  redirect = '/confirmation'
+) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.post('/api/checkout/confirmation', {newIp})
+      const {data} = await axios.post('/api/checkout/confirmation', {
+        newIp,
+        billingEmail,
+      })
       dispatch(confirmation(data))
       history.push(redirect)
     } catch (err) {
@@ -63,13 +58,13 @@ export const getConfirmation = (newIp, redirect = '/confirmation') => {
   }
 }
 
-export const orderDetails = (email, ip) => {
-  return (dispatch) => {
+export const getConfirmedOrder = () => {
+  return async (dispatch) => {
     try {
-      dispatch(gotEmail(email))
-      dispatch(gotIp(ip))
+      const {data} = await axios.get('/api/checkout/confirmation')
+      dispatch(confirmation(data))
     } catch (err) {
-      console.log('something went wrong getting billing email')
+      dispatch(gotError(err, {type: CONFIRMATION}))
     }
   }
 }
@@ -78,8 +73,6 @@ const initialState = {
   secret: '',
   confirmedOrder: {},
   status: 'loading',
-  billingEmail: '',
-  ip: '',
 }
 
 export default function (state = initialState, action) {
@@ -87,14 +80,14 @@ export default function (state = initialState, action) {
     case CLIENT_SECRET:
       return {...state, secret: action.secret, status: 'done'}
     case CONFIRMATION:
-      return {...state, confirmedOrder: action.confirmedOrder, status: 'done'}
+      return {
+        ...state,
+        confirmedOrder: action.confirmedOrder,
+        status: 'done',
+      }
     case GOT_ERROR:
       console.log(action.error)
       return {...state, status: 'error'}
-    case GOT_EMAIL:
-      return {...state, billingEmail: action.billingEmail}
-    case GOT_IP:
-      return {...state, ip: action.ip}
     default:
       return state
   }

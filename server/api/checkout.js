@@ -13,7 +13,7 @@ const calculateOrderAmount = (cartItems) => {
     .reduce((currTotal, itemTotal) => {
       return currTotal + itemTotal
     }, 0)
-  return total * 100
+  return Math.round(total * 100)
 }
 
 //proceed to checkout
@@ -29,7 +29,7 @@ router.post('/', async (req, res, next) => {
     })
     //Send publishable key(?) and PaymentIntent details to client
     //publishableKey: process.env.STRIPE_PUBLISHABLE_KEY OR publishableKey: stripePK,
-    res.send({
+    res.status(201).send({
       clientSecret: paymentIntent.client_secret,
     })
   } catch (err) {
@@ -41,7 +41,9 @@ router.post('/', async (req, res, next) => {
 router.post('/confirmation', async (req, res, next) => {
   try {
     const newIp = req.body.newIp
+    const billingEmail = req.body.billingEmail
     console.log('newIp', newIp)
+    console.log('billingEmail', billingEmail)
 
     const user = await User.findByPk(req.user.id)
     console.log('before existing IP', user.ipAddress)
@@ -55,13 +57,37 @@ router.post('/confirmation', async (req, res, next) => {
     console.log('after existing IP', user.ipAddress)
 
     const order = await getCart(req)
-    await order.update({status: 'fulfilled'})
+    await order.update({
+      status: 'fulfilled',
+      ipAddress: newIp,
+      billingEmail: billingEmail,
+    })
     req.session.cartId = null
     const confirmedOrder = await Order.findByPk(order.id, {
       include: [{model: Proxy}],
       through: {attributes: ['quantity']},
     })
     res.status(201).json(confirmedOrder)
+  } catch (err) {
+    next(err)
+  }
+})
+
+//for confirmation page
+router.get('/confirmation', async (req, res, next) => {
+  try {
+    const confirmedOrder = await Order.findAll({
+      limit: 1,
+      include: [
+        {
+          model: Proxy,
+          through: {attributes: ['quantity']},
+        },
+      ],
+      where: {status: 'fulfilled'},
+      order: [['createdAt', 'DESC']],
+    })
+    res.status(200).json(confirmedOrder[0])
   } catch (err) {
     next(err)
   }

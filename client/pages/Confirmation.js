@@ -2,7 +2,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
+import {getConfirmedOrder} from '../store/checkout'
+
 class Confirmation extends React.Component {
+  componentDidMount() {
+    this.props.getConfirmedOrder()
+  }
+
   total = (cart) => {
     return cart
       .map((item) => item.price * item.orderItem.quantity)
@@ -13,8 +19,8 @@ class Confirmation extends React.Component {
   }
 
   render() {
-    let {status, order, user, billingEmail, ip} = this.props
-    let guest = 'there' //for later
+    console.log('this is inside confirmation', this.props.order)
+    let {user, status, order} = this.props
     switch (status) {
       case 'loading':
         return <div>loading...</div>
@@ -28,16 +34,13 @@ class Confirmation extends React.Component {
       case 'done':
         return (
           <div>
-            <h1>Hey {user.name || guest},</h1>
-            <div id="confirmation-page">
-              <h2> Your order is confirmed!</h2>
-            </div>
+            <h1>Hey {user.name},</h1>
             <h3>
               Thanks for shopping at KickFast. Please check your email (
-              {billingEmail}) for your receipt!
+              {order.billingEmail}) for your receipt!
             </h3>
             <h3>Order Confirmation Number:&nbsp;{order.id}</h3>
-            <h3>For I.P. Address:&nbsp;{ip}</h3>
+            <h3>For I.P. Address:&nbsp;{order.ipAddress}</h3>
             {order.proxies.map((item) => (
               <div key={item.id} id="confirmation-tile">
                 <ul>
@@ -66,13 +69,18 @@ class Confirmation extends React.Component {
 }
 
 const stateToProps = (state) => ({
+  user: state.user,
   status: state.checkout.status,
   order: state.checkout.confirmedOrder,
-  billingEmail: state.checkout.billingEmail,
-  ip: state.checkout.ip,
-  user: state.user,
 })
 
-const ConnectedConfirmation = connect(stateToProps, null)(Confirmation)
+const dispatchToProps = (dispatch) => ({
+  getConfirmedOrder: () => dispatch(getConfirmedOrder()),
+})
+
+const ConnectedConfirmation = connect(
+  stateToProps,
+  dispatchToProps
+)(Confirmation)
 
 export default ConnectedConfirmation

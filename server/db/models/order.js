@@ -7,6 +7,12 @@ const Order = db.define('order', {
     allowNull: false,
     defaultValue: 'pending',
   },
+  ipAddress: {
+    type: Sequelize.STRING,
+  },
+  billingEmail: {
+    type: Sequelize.STRING,
+  },
 })
 
 //guest's pending cart
