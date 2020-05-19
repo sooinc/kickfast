@@ -39,11 +39,10 @@ const options = {
   },
 }
 
-export const checkout = (cartItems) => {
+export const checkout = () => {
   return async (dispatch) => {
     try {
-      console.log('inside thunk', cartItems)
-      const {data} = await axios.post('/api/checkout', {cartItems}, options)
+      const {data} = await axios.post('/api/checkout', options)
       dispatch(clientSecret(data.clientSecret))
       console.log('this is clientsecret in thunk', data.clientSecret)
     } catch (err) {
@@ -52,12 +51,10 @@ export const checkout = (cartItems) => {
   }
 }
 
-export const getConfirmation = (ip, redirect = '/confirmation') => {
+export const getConfirmation = (newIp, redirect = '/confirmation') => {
   return async (dispatch) => {
     try {
-      const newIp = {newIp: ip}
-      console.log('in thunk newIP', newIp)
-      const {data} = await axios.post('/api/checkout/confirmation', newIp)
+      const {data} = await axios.post('/api/checkout/confirmation', {newIp})
       dispatch(confirmation(data))
       history.push(redirect)
     } catch (err) {

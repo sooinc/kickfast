@@ -12,7 +12,7 @@ export class Checkout extends React.Component {
   componentDidMount() {
     // const {cartItems} = this.props.location.state
     this.props.fetchCartDispatch()
-    this.props.checkoutDispatch(this.props.cartItems)
+    this.props.checkoutDispatch() //this.props.cartItems
   }
 
   total = () => {
@@ -57,14 +57,14 @@ export class Checkout extends React.Component {
 }
 
 const stateToProps = (state) => ({
-  clientSecret: state.checkout.secret,
   user: state.user,
+  clientSecret: state.checkout.secret,
   cartItems: state.cart.products,
 })
 
 const dispatchToProps = (dispatch) => ({
   fetchCartDispatch: () => dispatch(fetchCart()),
-  checkoutDispatch: (cartItems) => dispatch(checkout(cartItems)),
+  checkoutDispatch: () => dispatch(checkout()),
 })
 
 const ConnectedCheckout = connect(stateToProps, dispatchToProps)(Checkout)

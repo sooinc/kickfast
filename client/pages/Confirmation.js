@@ -14,8 +14,7 @@ class Confirmation extends React.Component {
 
   render() {
     let {status, order, user, billingEmail, ip} = this.props
-    let guest = 'there'
-    console.log(status)
+    let guest = 'there' //for later
     switch (status) {
       case 'loading':
         return <div>loading...</div>
