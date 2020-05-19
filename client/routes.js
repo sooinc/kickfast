@@ -9,6 +9,7 @@ import ConnectedShop from './pages/Shop'
 import ConnectedSingleShop from './pages/SingleShop'
 import ConnectedCart from './pages/Cart'
 import ConnectedCheckout from './pages/Checkout'
+import ConnectedConfirmation from './pages/Confirmation'
 
 /**
  * COMPONENT
@@ -30,6 +31,7 @@ class Routes extends Component {
         <Route exact path="/shop/:proxyId" component={ConnectedSingleShop} />
         <Route exact path="/cart" component={ConnectedCart} />
         <Route exact path="/checkout" component={ConnectedCheckout} />
+        <Route exact path="/confirmation" component={ConnectedConfirmation} />
 
         {/* Routes for guest visitors only */}
         {guest && <Route path="/login" component={Login} />}

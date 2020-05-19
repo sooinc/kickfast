@@ -3,6 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {CardElement} from '@stripe/react-stripe-js'
 
+import {getConfirmation, orderDetails} from '../store/checkout'
 import {FormErrors} from '../components/checkout-form-errors'
 
 export class CheckoutForm extends React.Component {
@@ -17,6 +18,7 @@ export class CheckoutForm extends React.Component {
       state: '',
       zip: '',
       country: '',
+      ip: '',
       newIp: '',
       newIpDisable: false,
       formErrors: {
@@ -168,6 +170,20 @@ export class CheckoutForm extends React.Component {
       this.setState({error: null})
       this.setState({processing: false})
       this.setState({succeeded: true})
+
+      console.log('Successful!')
+      // //need to pass down email, just for frontend confirmation page
+      // console.log(
+      //   'billing email in component',
+      //   payload.paymentIntent.receipt_email
+      // )
+      this.props.orderDetailsDispatch(
+        payload.paymentIntent.receipt_email,
+        this.state.ip
+      )
+      // //need to pass down IP to save in backend
+      // console.log('new ip in component', this.state.ip)
+      this.props.getConfirmationDispatch(this.state.ip)
     }
   }
 
@@ -296,7 +312,12 @@ export class CheckoutForm extends React.Component {
             <h2>Confirm IP Address</h2>
             <label>
               IP Address*
-              <select id="select" name="ip" onChange={this.handleFormChange}>
+              <select
+                id="select"
+                name="ip"
+                value={this.state.ip}
+                onChange={this.handleFormChange}
+              >
                 <option value={null}>-- select --</option>
                 {ipAddress
                   ? ipAddress.map((ip) => {
@@ -394,6 +415,14 @@ const stateToProps = (state) => ({
   user: state.user,
 })
 
-const ConnectedCheckoutForm = connect(stateToProps, null)(CheckoutForm)
+const dispatchToProps = (dispatch) => ({
+  getConfirmationDispatch: (ip) => dispatch(getConfirmation(ip)),
+  orderDetailsDispatch: (email, ip) => dispatch(orderDetails(email, ip)),
+})
+
+const ConnectedCheckoutForm = connect(
+  stateToProps,
+  dispatchToProps
+)(CheckoutForm)
 
 export default ConnectedCheckoutForm

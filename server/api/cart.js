@@ -4,6 +4,7 @@ const {getCart, getOrCreateCart, updateQuantity} = require('../util')
 
 module.exports = router
 
+//get all cartItems aka cart
 router.get('/', async (req, res, next) => {
   try {
     const cart = await getCart(req)
@@ -18,6 +19,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+//update cartItem
 router.post('/:proxyId', async (req, res, next) => {
   try {
     const proxyId = req.params.proxyId
@@ -34,6 +36,7 @@ router.post('/:proxyId', async (req, res, next) => {
   }
 })
 
+//delete cartItem
 router.delete('/:proxyId', async (req, res, next) => {
   try {
     const cart = await getCart(req)
