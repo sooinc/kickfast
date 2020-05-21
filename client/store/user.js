@@ -30,7 +30,7 @@ export const me = () => async (dispatch) => {
   }
 }
 
-export const login = (email, password, redirect = '/home') => {
+export const login = (email, password, redirect = null) => {
   return async (dispatch) => {
     let res
     try {
@@ -41,6 +41,7 @@ export const login = (email, password, redirect = '/home') => {
 
     try {
       dispatch(getUser(res.data))
+      history.goBack()
       if (redirect) {
         history.push(redirect)
       }
@@ -50,7 +51,7 @@ export const login = (email, password, redirect = '/home') => {
   }
 }
 
-export const signup = (name, email, password, redirect = '/home') => {
+export const signup = (name, email, password, redirect = null) => {
   return async (dispatch) => {
     let res
     try {
@@ -60,6 +61,7 @@ export const signup = (name, email, password, redirect = '/home') => {
     }
     try {
       dispatch(getUser(res.data))
+      history.goBack()
       if (redirect) {
         history.push(redirect)
       }
