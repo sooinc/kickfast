@@ -1,5 +1,4 @@
-//being validated when submitted (useForm-valSubmit)
-export function validateEmail(name, values, compare) {
+export function validateEmail(values, compare) {
   let errors = {}
   if (values.email) {
     let tempEmail = values.email.match(/^\S+@\S+\.\S+$/i)
@@ -15,21 +14,30 @@ export function validateEmail(name, values, compare) {
   return errors
 }
 
-// //being validated during onchange (useForm-valChange)
-// export function validatePassword(name, values) {
-//   let errors = {}
-//   switch (name) {
-//     case 'oldPassword':
-//       if (values.)
-//       break
-//     case 'newPassword':
-//       //something
-//       break
-//     case 'newPassword2':
-//       //somethign
-//       break
-//     default:
-//       break
-//   }
-//   return errors
-// }
+//needing to check if the oldPassword matches
+//and if the newpassword matches the newpassword2 should be in backend
+export function validatePassword(values) {
+  let errors = {}
+
+  if (!values.oldPassword) {
+    errors.oldPassword = 'Required field'
+  }
+
+  if (values.newPassword) {
+    if (values.newPassword.length < 6) {
+      errors.newPassword = 'Password must be at least 6 characters'
+    }
+  } else {
+    errors.newPassword = 'Required field'
+  }
+
+  if (values.newPassword2) {
+    if (values.newPassword !== values.newPassword2) {
+      errors.newPassword2 = 'Passwords do not match'
+    }
+  } else {
+    errors.newPassword2 = 'Required field'
+  }
+
+  return errors
+}

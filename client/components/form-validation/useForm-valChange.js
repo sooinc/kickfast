@@ -8,7 +8,9 @@ const useForm = (validate, callback, compare = null) => {
 
   //Listens to changes in values. if they are runs it thru validate to setError
   useEffect(() => {
-    setErrors(validate(name, values, compare))
+    if (Object.keys(values).length > 0) {
+      setErrors(validate(values, compare))
+    }
   }, [values])
 
   //listens to any changes to error; if there are no keys in error object, set the button disable to false

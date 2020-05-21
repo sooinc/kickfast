@@ -10,7 +10,9 @@ const PasswordForm = () => {
 
   function editPassword() {
     console.log('this is final', values)
-    //this is where we would call the thunk
+    //needing to check if the oldPassword matches
+    //check if it's long enough
+    //and if the newpassword matches the newpassword2 should be in backend
     console.log('bye')
   }
 

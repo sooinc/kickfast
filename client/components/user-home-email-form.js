@@ -12,7 +12,9 @@ const EmailForm = (props) => {
   //validation happens during submit then calls this:
   function editEmail() {
     console.log('final', values)
-    //this is where we would call the thunk
+    //this is where we need to check if the new email exists in database
+    //‘)DROP TABLE Users;—
+    //how to check for mail server??
     console.log('hi')
   }
 
