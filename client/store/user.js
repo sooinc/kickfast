@@ -41,9 +41,10 @@ export const login = (email, password, redirect = null) => {
 
     try {
       dispatch(getUser(res.data))
-      history.goBack()
       if (redirect) {
         history.push(redirect)
+      } else {
+        history.goBack()
       }
     } catch (dispatchOrHistoryErr) {
       console.error(dispatchOrHistoryErr)
@@ -61,9 +62,10 @@ export const signup = (name, email, password, redirect = null) => {
     }
     try {
       dispatch(getUser(res.data))
-      history.goBack()
       if (redirect) {
         history.push(redirect)
+      } else {
+        history.goBack()
       }
     } catch (dispatchOrHistoryErr) {
       console.error(dispatchOrHistoryErr)
