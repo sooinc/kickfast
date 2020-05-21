@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {ElementsConsumer} from '@stripe/react-stripe-js'
 
 import {fetchCart} from '../store/cart'
@@ -51,6 +52,7 @@ export class Checkout extends React.Component {
           <h2>Total</h2>
           <p>{this.total().toFixed(2)}</p>
         </div>
+        <Link to="/cart">Back</Link>
       </div>
     )
   }

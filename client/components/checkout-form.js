@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {CardElement} from '@stripe/react-stripe-js'
 
 import {getConfirmation} from '../store/checkout'
-import {FormErrors} from '../components/checkout-form-errors'
+import {FormErrors} from '../components/form-validation/checkout-form-errors'
 
 export class CheckoutForm extends React.Component {
   constructor() {
@@ -130,6 +130,7 @@ export class CheckoutForm extends React.Component {
     this.setState({newIp: ''})
   }
 
+  //this is only for stripe CardElement onChange
   handleChange = (event) => {
     this.setState({disabled: event.empty})
     if (event.error) {
