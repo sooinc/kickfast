@@ -47,7 +47,12 @@ router.post('/confirmation', async (req, res, next) => {
 
     const user = await User.findByPk(req.user.id)
     console.log('before existing IP', user.ipAddress)
-    if (user.ipAddress.length < 3) {
+
+    if (user.ipAddress === null) {
+      await user.update({
+        ipAddress: db.fn('array_append', db.col('ipAddress'), newIp),
+      })
+    } else if (user.ipAddress.length < 3) {
       if (!user.ipAddress.includes(newIp)) {
         await user.update({
           ipAddress: db.fn('array_append', db.col('ipAddress'), newIp),
