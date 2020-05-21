@@ -38,6 +38,32 @@ export function validatePassword(values) {
   } else {
     errors.newPassword2 = 'Required field'
   }
+  return errors
+}
+
+export function validateSignup(values) {
+  let errors = {}
+
+  if (!values.name) {
+    errors.name = 'Required field'
+  }
+
+  if (values.email) {
+    let tempEmail = values.email.match(/^\S+@\S+\.\S+$/i)
+    if (!tempEmail) {
+      errors.email = 'Email address needs to be a valid email'
+    }
+  } else {
+    errors.email = 'Required field'
+  }
+
+  if (values.password) {
+    if (values.password.length < 6) {
+      errors.password = 'Password must be at least 6 characters'
+    }
+  } else {
+    errors.password = 'Required field'
+  }
 
   return errors
 }

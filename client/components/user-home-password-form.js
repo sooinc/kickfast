@@ -1,6 +1,6 @@
 import React from 'react'
 import useForm from './form-validation/useForm-valChange'
-import {validatePassword} from './form-validation/editprofile-form-errors'
+import {validatePassword} from './form-validation/auth-form-errors'
 
 const PasswordForm = () => {
   const {values, errors, isDisabled, handleChange, handleSubmit} = useForm(
@@ -22,8 +22,8 @@ const PasswordForm = () => {
         <label>
           Old Password*
           <input
-            type="password"
             name="oldPassword"
+            type="password"
             value={values.oldPassword || ''}
             onChange={handleChange}
           />
@@ -34,8 +34,8 @@ const PasswordForm = () => {
         <label>
           New Password*
           <input
-            type="password"
             name="newPassword"
+            type="password"
             value={values.newPassword || ''}
             onChange={handleChange}
           />
@@ -46,8 +46,8 @@ const PasswordForm = () => {
         <label>
           Re-type New Password*
           <input
-            type="password"
             name="newPassword2"
+            type="password"
             value={values.newPassword2 || ''}
             onChange={handleChange}
           />

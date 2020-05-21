@@ -1,11 +1,15 @@
+/* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
 import {signup} from '../store/user'
+import useForm from './form-validation/useForm-valChange'
+import {validateSignup} from './form-validation/auth-form-errors'
 
 /**
  * COMPONENT
  */
 const Signup = (props) => {
+  const {values, errors, isDisabled, handleChange} = useForm(validateSignup)
   const {handleSubmit, error} = props
 
   return (
@@ -18,18 +22,42 @@ const Signup = (props) => {
         <fieldset>
           <div className="pure-control-group">
             <label htmlFor="name">Name</label>
-            <input name="name" type="text" />
+            <input
+              name="name"
+              type="text"
+              value={values.name || ''}
+              onChange={handleChange}
+            />
+            {errors.name && <p className="error-message">{errors.name}</p>}
           </div>
           <div className="pure-control-group">
             <label htmlFor="email">Email</label>
-            <input name="email" type="text" />
+            <input
+              name="email"
+              type="text"
+              value={values.email || ''}
+              onChange={handleChange}
+            />
+            {errors.email && <p className="error-message">{errors.email}</p>}
           </div>
           <div className="pure-control-group">
             <label htmlFor="password">Password</label>
-            <input name="password" type="password" />
+            <input
+              name="password"
+              type="password"
+              value={values.password || ''}
+              onChange={handleChange}
+            />
+            {errors.password && (
+              <p className="error-message">{errors.password}</p>
+            )}
           </div>
           <div className="pure-controls">
-            <button className="pure-button button-primary" type="submit">
+            <button
+              className="pure-button button-primary"
+              type="submit"
+              disabled={isDisabled || false}
+            >
               Sign Up
             </button>
           </div>

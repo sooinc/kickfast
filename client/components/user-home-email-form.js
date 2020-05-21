@@ -1,6 +1,6 @@
 import React from 'react'
 import useForm from './form-validation/useForm-valChange'
-import {validateEmail} from './form-validation/editprofile-form-errors'
+import {validateEmail} from './form-validation/auth-form-errors'
 
 const EmailForm = (props) => {
   const {values, errors, isDisabled, handleChange, handleSubmit} = useForm(
@@ -24,8 +24,8 @@ const EmailForm = (props) => {
         <label>
           Email*
           <input
-            type="text"
             name="email"
+            type="text"
             value={values.email || ''}
             onChange={handleChange}
           />
