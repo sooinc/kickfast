@@ -1,6 +1,8 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import useForm from './form-validation/useForm-valChange'
 import {validateEmail} from './form-validation/auth-form-errors'
+import {editEmail} from '../store/user'
 
 const EmailForm = (props) => {
   const {values, errors, isDisabled, handleChange, handleSubmit} = useForm(
@@ -12,9 +14,11 @@ const EmailForm = (props) => {
   //validation happens during submit then calls this:
   function editEmail() {
     console.log('final', values)
-    //this is where we need to check if the new email exists in database
-    //‘)DROP TABLE Users;—
-    //how to check for mail server??
+    props.editEmail(values.email)
+    //even need handle even if there is an error
+    //need to make error doesnt show
+    values.email = ''
+
     console.log('hi')
   }
 
@@ -39,4 +43,10 @@ const EmailForm = (props) => {
   )
 }
 
-export default EmailForm
+const dispatchToProps = (dispatch) => ({
+  editEmail: (email) => dispatch(editEmail(email)),
+})
+
+const ConnectedEmailForm = connect(null, dispatchToProps)(EmailForm)
+
+export default ConnectedEmailForm

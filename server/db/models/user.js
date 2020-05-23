@@ -7,6 +7,7 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false,
+    notEmpty: true,
     validate: {
       isEmail: true,
     },
@@ -16,6 +17,8 @@ const User = db.define('user', {
   },
   password: {
     type: Sequelize.STRING,
+    allowNull: false,
+    notEmpty: true,
     // Making `.password` act like a func hides it when serializing to JSON.
     // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
@@ -36,6 +39,7 @@ const User = db.define('user', {
   },
   ipAddress: {
     type: Sequelize.ARRAY(Sequelize.STRING),
+    // isIP: true,
   },
   role: {
     type: Sequelize.ENUM(['admin', 'user']),

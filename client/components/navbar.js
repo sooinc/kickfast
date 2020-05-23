@@ -20,7 +20,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
               <Link to="/shop">Shop</Link>
             </div>
             <div className="nav-right-links">
-              <Link to="/home">Account</Link>
+              <Link to="/userhome">Account</Link>
             </div>
             <div className="nav-right-links">
               <a href="#" onClick={handleClick}>

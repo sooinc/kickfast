@@ -40,7 +40,7 @@ class Routes extends Component {
         {/* Routes for loggedIn visitors only */}
         {isLoggedIn && (
           <Switch>
-            <Route path="/home" component={UserHome} />
+            <Route path="/userhome" component={UserHome} />
           </Switch>
         )}
 

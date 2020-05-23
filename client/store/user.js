@@ -6,17 +6,13 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
-
-/**
- * INITIAL STATE
- */
-const defaultUser = {}
-
 /**
  * ACTION CREATORS
  */
 const getUser = (user, error) => ({type: GET_USER, user, error})
 const removeUser = () => ({type: REMOVE_USER})
+
+const defaultUser = {}
 
 /**
  * THUNK CREATORS
@@ -73,6 +69,21 @@ export const signup = (name, email, password, redirect = null) => {
   }
 }
 
+export const editEmail = (email) => async (dispatch) => {
+  let res
+  try {
+    res = await axios.put(`/auth/edit-email`, {email})
+  } catch (authError) {
+    return dispatch(getUser(null, authError))
+  }
+  try {
+    dispatch(getUser(res.data))
+    history.push('/userhome')
+  } catch (dispatchOrHistoryErr) {
+    console.error(dispatchOrHistoryErr)
+  }
+}
+
 // export const auth = (email, password, method) => async dispatch => {
 //   let res
 //   try {
@@ -93,15 +104,12 @@ export const logout = () => async (dispatch) => {
   try {
     await axios.post('/auth/logout')
     dispatch(removeUser())
-    history.push('/login')
+    history.push('/home')
   } catch (err) {
     console.error(err)
   }
 }
 
-/**
- * REDUCER
- */
 export default function (state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:

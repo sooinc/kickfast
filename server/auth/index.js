@@ -42,6 +42,29 @@ router.post('/signup', async (req, res, next) => {
   }
 })
 
+router.put('/edit-email', async (req, res, next) => {
+  try {
+    const newEmail = req.body.email
+    const user = await User.findByPk(req.user.id)
+
+    if (newEmail === user.email) {
+      res.status(401).send('Same as previous email.')
+    } else {
+      await user.update({email: newEmail})
+      res.status(201).send(user)
+    }
+  } catch (err) {
+    console.log('this is err name', err.name)
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      res.status(401).send('Update Failed: User already exists in system.')
+    } else if (err.name === 'SequelizeValidationError') {
+      res.status(401).send('Update Failed: Email is not a valid email.')
+    } else {
+      next(err)
+    }
+  }
+})
+
 router.post('/logout', (req, res) => {
   req.logout()
   req.session.destroy()

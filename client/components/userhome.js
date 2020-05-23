@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
-import EmailForm from './user-home-email-form'
-import PasswordForm from './user-home-password-form'
+import EmailForm from './edit-email-form'
+import PasswordForm from './edit-password-form'
 
 export const UserHome = (props) => {
   const [showEditEmail, setShowEditEmail] = useState(false)
@@ -55,6 +55,15 @@ export const UserHome = (props) => {
 
         {showEditEmail ? <EmailForm email={email} /> : null}
         {showEditPassword ? <PasswordForm /> : null}
+
+        <div className="pure-controls">
+          {console.log('this is error', props.error)}
+          {props.error && props.error.response && (
+            <span className="pure-form-message">
+              {props.error.response.data}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -63,6 +72,7 @@ export const UserHome = (props) => {
 const mapState = (state) => {
   return {
     user: state.user,
+    error: state.user.error,
   }
 }
 
