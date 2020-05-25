@@ -12,14 +12,14 @@ async function seed() {
       email: 'gavin@gmail.com',
       password: '123',
       name: 'Gavin Li',
-      ipAddress: ['72.111.155.60'],
+      ipAddress: ['72.225.184.88'],
       role: 'user',
     }),
     User.create({
       email: 'sooin@gmail.com',
-      password: '123',
+      password: '123456',
       name: 'Sooin Chung',
-      ipAddress: ['70.123.456.78', '23.435.656.66', '353.566.777.77'],
+      ipAddress: [],
       role: 'admin',
     }),
   ])
@@ -68,6 +68,8 @@ async function seed() {
   ])
 
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${proxies.length} proxies`)
+  console.log(`seeded ${orders.length} orders`)
   console.log(`seeded successfully`)
 }
 

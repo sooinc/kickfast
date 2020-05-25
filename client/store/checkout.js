@@ -87,7 +87,7 @@ export default function (state = initialState, action) {
       }
     case GOT_ERROR:
       console.log(action.error)
-      return {...state, status: 'error'}
+      return {...state, status: 'error', error: action.error}
     default:
       return state
   }

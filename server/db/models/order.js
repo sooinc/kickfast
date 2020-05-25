@@ -9,6 +9,9 @@ const Order = db.define('order', {
   },
   ipAddress: {
     type: Sequelize.STRING,
+    validate: {
+      isIPv4: true,
+    },
   },
   billingEmail: {
     type: Sequelize.STRING,

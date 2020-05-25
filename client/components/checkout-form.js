@@ -21,7 +21,7 @@ export class CheckoutForm extends React.Component {
       country: '',
       ip: '',
       newIp: '',
-      newIpDisable: false,
+      newIpDisable: true,
       formErrors: {
         name: ' ',
         email: ' ',
@@ -30,6 +30,7 @@ export class CheckoutForm extends React.Component {
         state: ' ',
         country: ' ',
         zip: ' ',
+        ipAddress: ' ',
       },
       notValid: true,
 
@@ -44,6 +45,7 @@ export class CheckoutForm extends React.Component {
     const name = event.target.name
     const value = event.target.value
     console.log('inside on change', value)
+    console.log('inside on change', name)
     this.setState({[name]: value}, () => {
       this.validateField(name, value)
     })
@@ -52,6 +54,7 @@ export class CheckoutForm extends React.Component {
   validateField = (fieldName, value) => {
     let fieldValidateErrors = this.state.formErrors
     let email = this.state.email
+    let newIp = this.state.newIp
     let selectLen = document.getElementById('select').options.length
 
     switch (fieldName) {
@@ -78,14 +81,27 @@ export class CheckoutForm extends React.Component {
         if (value.length > 1) fieldValidateErrors.country = ''
         break
       case 'newIp':
+        console.log('i am newIP')
+        newIp = value.match(
+          /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
+        )
         if (selectLen >= 4) {
           fieldValidateErrors.ipAddress =
             'Not able to add more. Please select from the 3 IPs'
           this.setState({newIpDisable: true})
           this.setState({newIp: ''})
+        } else if (newIp) {
+          fieldValidateErrors.ipAddress = ''
+          this.setState({newIpDisable: false})
+        } else if (!newIp) {
+          fieldValidateErrors.ipAddress = 'is invalid'
+          this.setState({newIpDisable: true})
+        } else {
+          this.setState({newIpDisable: false})
         }
         break
       case 'ip':
+        console.log('i am ip')
         if (value === '-- select --' || value === null) {
           fieldValidateErrors.ipAddress = 'is invalid'
         } else {
@@ -117,13 +133,13 @@ export class CheckoutForm extends React.Component {
 
   addNewIp = (event) => {
     event.preventDefault()
-    let newId = this.state.newIp
+    let newIp = this.state.newIp
 
-    if (newId.length) {
+    if (newIp.length) {
       let select = document.getElementById('select')
       let option = document.createElement('option')
-      option.value = newId
-      option.innerHTML = newId
+      option.value = newIp
+      option.innerHTML = newIp
       select.appendChild(option)
       option.selected = 'selected'
     }

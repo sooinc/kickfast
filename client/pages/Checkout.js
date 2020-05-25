@@ -27,7 +27,7 @@ export class Checkout extends React.Component {
 
   render() {
     // const {cartItems} = this.props.location.state
-    const {cartItems} = this.props
+    const {cartItems, error} = this.props
     const {ipAddress} = this.props.user
     return (
       <div className="checkout">
@@ -42,6 +42,12 @@ export class Checkout extends React.Component {
               />
             )}
           </ElementsConsumer>
+          <div className="pure-controls">
+            {console.log('this is error', error)}
+            {error && error.response && (
+              <span className="pure-form-message">{error.response.data}</span>
+            )}
+          </div>
         </div>
         <div className="cart-items">
           {cartItems
@@ -51,8 +57,8 @@ export class Checkout extends React.Component {
             : null}
           <h2>Total</h2>
           <p>{this.total().toFixed(2)}</p>
+          <Link to="/cart">Back</Link>
         </div>
-        <Link to="/cart">Back</Link>
       </div>
     )
   }
@@ -62,6 +68,7 @@ const stateToProps = (state) => ({
   user: state.user,
   clientSecret: state.checkout.secret,
   cartItems: state.cart.products,
+  error: state.checkout.error,
 })
 
 const dispatchToProps = (dispatch) => ({

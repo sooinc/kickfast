@@ -3,7 +3,6 @@ const stripe = require('stripe')(stripeSK)
 const router = require('express').Router({mergeParams: true})
 const {Order, Proxy, User} = require('../db/models')
 const {getCart} = require('../util')
-const db = require('../db')
 
 module.exports = router
 
@@ -40,26 +39,28 @@ router.post('/', async (req, res, next) => {
 //proceed to confirmation (once payment is confirmed)
 router.post('/confirmation', async (req, res, next) => {
   try {
-    const newIp = req.body.newIp
+    let newIp = req.body.newIp
     const billingEmail = req.body.billingEmail
     console.log('newIp', newIp)
     console.log('billingEmail', billingEmail)
 
     const user = await User.findByPk(req.user.id)
-    console.log('before existing IP', user.ipAddress)
+    console.log('before IP', user.ipAddress)
 
-    if (user.ipAddress === null) {
+    if (newIp === '' || newIp === null) {
+      res.status(401).send('Not a valid IP address. Please try again.')
+      return
+    } else if (user.ipAddress === null) {
       await user.update({
-        ipAddress: db.fn('array_append', db.col('ipAddress'), newIp),
+        ipAddress: [newIp],
       })
-    } else if (user.ipAddress.length < 3) {
-      if (!user.ipAddress.includes(newIp)) {
-        await user.update({
-          ipAddress: db.fn('array_append', db.col('ipAddress'), newIp),
-        })
-      }
+    } else if (user.ipAddress.length < 3 && !user.ipAddress.includes(newIp)) {
+      await user.update({
+        ipAddress: [...user.ipAddress, newIp],
+      })
     }
-    console.log('after existing IP', user.ipAddress)
+
+    console.log('after IP', user.ipAddress)
 
     const order = await getCart(req)
     await order.update({

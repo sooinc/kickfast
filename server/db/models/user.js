@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const Sequelize = require('sequelize')
 const db = require('../db')
+const validator = require('validator')
 
 const User = db.define('user', {
   email: {
@@ -39,7 +40,19 @@ const User = db.define('user', {
   },
   ipAddress: {
     type: Sequelize.ARRAY(Sequelize.STRING),
-    // isIP: true,
+    validate: {
+      isValidIp4: function (value) {
+        console.log('inside validator', value)
+        let values = Array.isArray(value) ? value : [value]
+
+        values.forEach(function (val) {
+          if (!validator.isIP(val, '4')) {
+            throw new Error('This is not a valid IPv4 address')
+          }
+        })
+        return value
+      },
+    },
   },
   role: {
     type: Sequelize.ENUM(['admin', 'user']),
