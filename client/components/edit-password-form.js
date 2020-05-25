@@ -1,18 +1,25 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import useForm from './form-validation/useForm-valChange'
 import {validatePassword} from './form-validation/auth-form-errors'
+import {editPassword} from '../store/user'
 
-const PasswordForm = () => {
+const PasswordForm = (props) => {
   const {values, errors, isDisabled, handleChange, handleSubmit} = useForm(
     validatePassword,
-    editPassword
+    editPasswordCB
   )
 
-  function editPassword() {
+  function editPasswordCB() {
     console.log('this is final', values)
-    //needing to check if the oldPassword matches
-    //check if it's long enough
-    //and if the newpassword matches the newpassword2 should be in backend
+    props.editPassword(
+      values.oldPassword,
+      values.newPassword,
+      values.newPassword2
+    )
+    values.oldPassword = ''
+    values.newPassword = ''
+    values.newPassword2 = ''
     console.log('bye')
   }
 
@@ -63,4 +70,11 @@ const PasswordForm = () => {
   )
 }
 
-export default PasswordForm
+const dispatchToProps = (dispatch) => ({
+  editPassword: (oldPW, newPW, newPW2) =>
+    dispatch(editPassword(oldPW, newPW, newPW2)),
+})
+
+const ConnectedPasswordForm = connect(null, dispatchToProps)(PasswordForm)
+
+export default ConnectedPasswordForm

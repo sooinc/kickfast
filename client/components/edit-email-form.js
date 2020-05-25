@@ -7,12 +7,11 @@ import {editEmail} from '../store/user'
 const EmailForm = (props) => {
   const {values, errors, isDisabled, handleChange, handleSubmit} = useForm(
     validateEmail,
-    editEmail,
+    editEmailCB,
     props.email
   )
 
-  //validation happens during submit then calls this:
-  function editEmail() {
+  function editEmailCB() {
     console.log('final', values)
     props.editEmail(values.email)
     //even need handle even if there is an error

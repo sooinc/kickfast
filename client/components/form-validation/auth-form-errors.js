@@ -20,7 +20,7 @@ export function validatePassword(values) {
   let errors = {}
 
   if (!values.oldPassword) {
-    errors.oldPassword = 'Required field'
+    errors.oldPassword = ' '
   }
 
   if (values.newPassword) {
@@ -28,7 +28,7 @@ export function validatePassword(values) {
       errors.newPassword = 'Password must be at least 6 characters'
     }
   } else {
-    errors.newPassword = 'Required field'
+    errors.newPassword = ' '
   }
 
   if (values.newPassword2) {
@@ -36,7 +36,7 @@ export function validatePassword(values) {
       errors.newPassword2 = 'Passwords do not match'
     }
   } else {
-    errors.newPassword2 = 'Required field'
+    errors.newPassword2 = ' '
   }
   return errors
 }
@@ -45,7 +45,7 @@ export function validateSignup(values) {
   let errors = {}
 
   if (!values.name) {
-    errors.name = 'Required field'
+    errors.name = ' '
   }
 
   if (values.email) {
@@ -54,7 +54,7 @@ export function validateSignup(values) {
       errors.email = 'Email address needs to be a valid email'
     }
   } else {
-    errors.email = 'Required field'
+    errors.email = ' '
   }
 
   if (values.password) {
@@ -62,7 +62,7 @@ export function validateSignup(values) {
       errors.password = 'Password must be at least 6 characters'
     }
   } else {
-    errors.password = 'Required field'
+    errors.password = ' '
   }
 
   return errors

@@ -84,6 +84,25 @@ export const editEmail = (email) => async (dispatch) => {
   }
 }
 
+export const editPassword = (oldPW, newPW, newPW2) => async (dispatch) => {
+  let res
+  try {
+    res = await axios.put(`/auth/edit-password`, {
+      oldPW,
+      newPW,
+      newPW2,
+    })
+  } catch (authError) {
+    return dispatch(getUser(null, authError))
+  }
+  try {
+    dispatch(getUser(res.data))
+    history.push('/userhome')
+  } catch (dispatchOrHistoryErr) {
+    console.error(dispatchOrHistoryErr)
+  }
+}
+
 // export const auth = (email, password, method) => async dispatch => {
 //   let res
 //   try {

@@ -35,7 +35,9 @@ router.post('/signup', async (req, res, next) => {
     }
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
-      res.status(401).send('User already exists')
+      res.status(401).send('Update Failed: User already exists in system.')
+    } else if (err.name === 'SequelizeValidationError') {
+      res.status(401).send('Update Failed: Email is not a valid email.')
     } else {
       next(err)
     }
@@ -62,6 +64,28 @@ router.put('/edit-email', async (req, res, next) => {
     } else {
       next(err)
     }
+  }
+})
+
+router.put('/edit-password', async (req, res, next) => {
+  try {
+    const oldPW = req.body.oldPW
+    const newPW = req.body.newPW
+    const newPW2 = req.body.newPW2
+    const user = await User.findByPk(req.user.id)
+
+    if (user.correctPassword(oldPW)) {
+      if (newPW.length >= 6 && newPW === newPW2) {
+        await user.update({password: newPW})
+        res.status(201).send(user)
+      } else {
+        res.status(401).send('Update Failed: Something went wrong.')
+      }
+    } else {
+      res.status(401).send('Update Failed: Incorrect password entered.')
+    }
+  } catch (err) {
+    next(err)
   }
 })
 
