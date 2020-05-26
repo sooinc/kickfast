@@ -52,9 +52,7 @@ async function seed() {
   ])
 
   const orders = await Promise.all([
-    Order.create({status: 'pending', userId: 1}),
     Order.create({status: 'fulfilled', userId: 1}),
-    Order.create({status: 'pending', userId: 2}),
     Order.create({status: 'fulfilled', userId: 2}),
   ])
 
@@ -62,9 +60,6 @@ async function seed() {
     OrderItem.create({orderId: 1, proxyId: 1}),
     OrderItem.create({orderId: 1, proxyId: 2}),
     OrderItem.create({orderId: 2, proxyId: 1}),
-    OrderItem.create({orderId: 3, proxyId: 2}),
-    OrderItem.create({orderId: 3, proxyId: 3}),
-    OrderItem.create({orderId: 4, proxyId: 2}),
   ])
 
   console.log(`seeded ${users.length} users`)

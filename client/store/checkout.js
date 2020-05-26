@@ -4,6 +4,7 @@ import history from '../history'
 const CLIENT_SECRET = 'CLIENT_SECRET'
 const CONFIRMATION = 'CONFIRMATION'
 const GOT_ERROR = 'GOT_ERROR'
+const UPDATE_IP = 'UPDATE_IP'
 
 const clientSecret = (secret) => ({
   type: CLIENT_SECRET,
@@ -21,6 +22,11 @@ const gotError = (error, failedAction) => ({
   failedAction,
 })
 
+const updateIp = (status) => ({
+  type: UPDATE_IP,
+  status,
+})
+
 const options = {
   headers: {
     'Content-Type': 'application/json',
@@ -35,6 +41,29 @@ export const checkout = () => {
       console.log('this is clientsecret in thunk', data.clientSecret)
     } catch (err) {
       dispatch(gotError(err, {type: CLIENT_SECRET}))
+    }
+  }
+}
+
+export const updatingIp = (newIp) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.put('/api/checkout/updateIp', {newIp})
+      console.log('Updating IP:', data)
+      dispatch(updateIp(data))
+    } catch (err) {
+      dispatch(gotError(err, {type: CONFIRMATION}))
+    }
+  }
+}
+
+export const removingIp = (newIp) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.put('/api/checkout/removeIp', {newIp})
+      console.log('User IP:', data)
+    } catch (err) {
+      dispatch(gotError(err, {type: CONFIRMATION}))
     }
   }
 }
@@ -84,6 +113,11 @@ export default function (state = initialState, action) {
         ...state,
         confirmedOrder: action.confirmedOrder,
         status: 'done',
+      }
+    case UPDATE_IP:
+      return {
+        ...state,
+        status: action.status,
       }
     case GOT_ERROR:
       console.log(action.error)

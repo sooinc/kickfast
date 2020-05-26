@@ -4,7 +4,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {CardElement} from '@stripe/react-stripe-js'
 
-import {getConfirmation} from '../store/checkout'
+import {updatingIp, removingIp, getConfirmation} from '../store/checkout'
 import {FormErrors} from '../components/form-validation/checkout-form-errors'
 
 export class CheckoutForm extends React.Component {
@@ -44,8 +44,8 @@ export class CheckoutForm extends React.Component {
   handleFormChange = (event) => {
     const name = event.target.name
     const value = event.target.value
-    console.log('inside on change', value)
-    console.log('inside on change', name)
+    // console.log('inside on change', value)
+    // console.log('inside on change', name)
     this.setState({[name]: value}, () => {
       this.validateField(name, value)
     })
@@ -81,7 +81,6 @@ export class CheckoutForm extends React.Component {
         if (value.length > 1) fieldValidateErrors.country = ''
         break
       case 'newIp':
-        console.log('i am newIP')
         newIp = value.match(
           /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
         )
@@ -101,7 +100,6 @@ export class CheckoutForm extends React.Component {
         }
         break
       case 'ip':
-        console.log('i am ip')
         if (value === '-- select --' || value === null) {
           fieldValidateErrors.ipAddress = 'is invalid'
         } else {
@@ -124,6 +122,7 @@ export class CheckoutForm extends React.Component {
         formErrors[key] === isInvalid ||
         formErrors[key] === ' '
       ) {
+        // console.log('formerrors', formErrors)
         this.setState({notValid: true})
         return
       }
@@ -158,43 +157,68 @@ export class CheckoutForm extends React.Component {
 
   handleSubmit = async () => {
     event.preventDefault()
-    const {email, name, line1, line2, city, state, country, zip} = this.state
+    const {
+      email,
+      name,
+      line1,
+      line2,
+      city,
+      state,
+      country,
+      zip,
+      ip,
+    } = this.state
 
     const {stripe, elements} = this.props
     this.setState({processing: true})
     console.log('inside handleSubmit', this.props.clientSecret)
-    const payload = await stripe.confirmCardPayment(this.props.clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: name,
-          address: {
-            line1: line1,
-            line2: line2,
-            city: city,
-            state: state,
-            postal_code: zip,
-            country: country,
-          },
-        },
-      },
-      receipt_email: email,
-    })
-    console.log('this is payload', payload)
-    if (payload.error) {
-      this.setState({error: `Payment failed ${payload.error.message}`})
+
+    //this just adds ip to user
+    await this.props.updatingIp(ip)
+
+    if (this.props.status === 'error') {
+      if (this.props.error) {
+        this.setState({
+          error: `Payment failed: ${this.props.error.response.data}`,
+        })
+      }
       this.setState({processing: false})
     } else {
-      this.setState({error: null})
-      this.setState({processing: false})
-      this.setState({succeeded: true})
+      const payload = await stripe.confirmCardPayment(this.props.clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: name,
+            address: {
+              line1: line1,
+              line2: line2,
+              city: city,
+              state: state,
+              postal_code: zip,
+              country: country,
+            },
+          },
+        },
+        receipt_email: email,
+      })
+      console.log('this is payload', payload)
+      if (payload.error) {
+        this.setState({error: `Payment failed ${payload.error.message}`})
+        this.setState({processing: false})
 
-      console.log('Successful!')
-      //this adds IP to user; adds IP & billingEmail to Order; sets Order to fulfilled; clears req.session.cart
-      this.props.getConfirmationDispatch(
-        this.state.ip,
-        payload.paymentIntent.receipt_email
-      )
+        if (this.props.status === 'Existing IP.') {
+          console.log('no action')
+        } else {
+          await this.props.removingIp(ip)
+        }
+      } else {
+        this.setState({error: null})
+        this.setState({processing: false})
+        this.setState({succeeded: true})
+        // removes cart thunk and attach to order
+        await this.props.getConfirmationDispatch(ip, email)
+        console.log('Successful!')
+      }
     }
   }
 
@@ -332,7 +356,11 @@ export class CheckoutForm extends React.Component {
                 <option value={null}>-- select --</option>
                 {ipAddress
                   ? ipAddress.map((ip) => {
-                      return <option value={ip}>{ip}</option>
+                      return (
+                        <option key={ip} value={ip}>
+                          {ip}
+                        </option>
+                      )
                     })
                   : null}
               </select>
@@ -384,7 +412,6 @@ export class CheckoutForm extends React.Component {
               name="cardElement"
               onChange={this.handleChange}
             />
-
             <button
               disabled={processing || disabled || notValid || succeeded}
               id="submit"
@@ -424,9 +451,13 @@ export class CheckoutForm extends React.Component {
 
 const stateToProps = (state) => ({
   user: state.user,
+  error: state.checkout.error,
+  status: state.checkout.status,
 })
 
 const dispatchToProps = (dispatch) => ({
+  updatingIp: (ip) => dispatch(updatingIp(ip)),
+  removingIp: (ip) => dispatch(removingIp(ip)),
   getConfirmationDispatch: (ip, email) => dispatch(getConfirmation(ip, email)),
   // orderDetailsDispatch: (email, ip) => dispatch(orderDetails(email, ip)),
 })

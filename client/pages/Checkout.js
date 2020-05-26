@@ -42,12 +42,12 @@ export class Checkout extends React.Component {
               />
             )}
           </ElementsConsumer>
-          <div className="pure-controls">
+          {/* <div className="pure-controls">
             {console.log('this is error', error)}
             {error && error.response && (
               <span className="pure-form-message">{error.response.data}</span>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="cart-items">
           {cartItems

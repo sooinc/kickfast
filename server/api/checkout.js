@@ -36,31 +36,71 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-//proceed to confirmation (once payment is confirmed)
-router.post('/confirmation', async (req, res, next) => {
+//add IP to user or send err
+router.put('/updateIp', async (req, res, next) => {
   try {
     let newIp = req.body.newIp
-    const billingEmail = req.body.billingEmail
-    console.log('newIp', newIp)
-    console.log('billingEmail', billingEmail)
-
     const user = await User.findByPk(req.user.id)
-    console.log('before IP', user.ipAddress)
 
     if (newIp === '' || newIp === null) {
       res.status(401).send('Not a valid IP address. Please try again.')
       return
-    } else if (user.ipAddress === null) {
+    }
+
+    if (user.ipAddress === null) {
       await user.update({
         ipAddress: [newIp],
       })
-    } else if (user.ipAddress.length < 3 && !user.ipAddress.includes(newIp)) {
+      res.status(202).send('IP has been added to user profile.')
+      return
+    }
+
+    if (user.ipAddress.includes(newIp)) {
+      res.status(202).send('Existing IP.')
+    } else if (user.ipAddress.length < 3) {
       await user.update({
         ipAddress: [...user.ipAddress, newIp],
       })
+      res.status(202).send('IP has been added to user profile.')
+    } else if (user.ipAddress.length >= 3) {
+      res
+        .status(401)
+        .send('Not able to add IP. Please use 1 of the 3 on your account.')
     }
+  } catch (err) {
+    next(err)
+  }
+})
 
-    console.log('after IP', user.ipAddress)
+//delete IP to user and send user.Ip
+router.put('/removeIp', async (req, res, next) => {
+  try {
+    let newIp = req.body.newIp
+    const user = await User.findByPk(req.user.id)
+
+    console.log('newIp', newIp)
+    console.log('user.ipAddress', user.ipAddress)
+
+    let finalIp = user.ipAddress.filter((ip) => {
+      return ip !== newIp
+    })
+
+    console.log('this is finalIp', finalIp)
+
+    await user.update({
+      ipAddress: finalIp,
+    })
+    res.status(201).send(user.ipAddress)
+  } catch (err) {
+    next(err)
+  }
+})
+
+//proceed to confirmation (once IP and payment is confirmed)
+router.post('/confirmation', async (req, res, next) => {
+  try {
+    let newIp = req.body.newIp
+    let billingEmail = req.body.billingEmail
 
     const order = await getCart(req)
     await order.update({
@@ -73,7 +113,11 @@ router.post('/confirmation', async (req, res, next) => {
       include: [{model: Proxy}],
       through: {attributes: ['quantity']},
     })
-    res.status(201).json(confirmedOrder)
+    if (confirmedOrder) {
+      res.status(201).json(confirmedOrder)
+    } else {
+      res.status(404).send('something went wrong')
+    }
   } catch (err) {
     next(err)
   }
@@ -98,3 +142,39 @@ router.get('/confirmation', async (req, res, next) => {
     next(err)
   }
 })
+
+//proceed to confirmation (once payment is confirmed)
+// router.post('/confirmation', async (req, res, next) => {
+//   try {
+// let newIp = req.body.newIp
+// const billingEmail = req.body.billingEmail
+// const user = await User.findByPk(req.user.id)
+
+// if (newIp === '' || newIp === null) {
+//   res.status(401).send('Not a valid IP address. Please try again.')
+//   return
+// } else if (user.ipAddress === null) {
+//   await user.update({
+//     ipAddress: [newIp],
+//   })
+// } else if (user.ipAddress.length < 3 && !user.ipAddress.includes(newIp)) {
+//   await user.update({
+//     ipAddress: [...user.ipAddress, newIp],
+//   })
+// }
+//     const order = await getCart(req)
+//     await order.update({
+//       status: 'fulfilled',
+//       ipAddress: newIp,
+//       billingEmail: billingEmail,
+//     })
+//     req.session.cartId = null
+//     const confirmedOrder = await Order.findByPk(order.id, {
+//       include: [{model: Proxy}],
+//       through: {attributes: ['quantity']},
+//     })
+//     res.status(201).json(confirmedOrder)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
