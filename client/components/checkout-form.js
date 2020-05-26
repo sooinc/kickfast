@@ -3,6 +3,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {CardElement} from '@stripe/react-stripe-js'
+import {CountryDropdown, RegionDropdown} from 'react-country-region-selector'
 
 import {updatingIp, removingIp, getConfirmation} from '../store/checkout'
 import {FormErrors} from '../components/form-validation/checkout-form-errors'
@@ -16,7 +17,7 @@ export class CheckoutForm extends React.Component {
       line1: '',
       line2: '',
       city: '',
-      state: '',
+      region: '',
       zip: '',
       country: '',
       ip: '',
@@ -27,7 +28,7 @@ export class CheckoutForm extends React.Component {
         email: ' ',
         line1: ' ',
         city: ' ',
-        state: ' ',
+        region: ' ',
         country: ' ',
         zip: ' ',
         ipAddress: ' ',
@@ -46,6 +47,18 @@ export class CheckoutForm extends React.Component {
     const value = event.target.value
     // console.log('inside on change', value)
     // console.log('inside on change', name)
+    this.setState({[name]: value}, () => {
+      this.validateField(name, value)
+    })
+  }
+
+  handleDropDown = (value) => {
+    let name
+    if (value === 'CA' || value === 'US' || value === 'GB') {
+      name = 'country'
+    } else {
+      name = 'region'
+    }
     this.setState({[name]: value}, () => {
       this.validateField(name, value)
     })
@@ -71,8 +84,8 @@ export class CheckoutForm extends React.Component {
       case 'city':
         if (value.length > 1) fieldValidateErrors.city = ''
         break
-      case 'state':
-        if (value.length > 1) fieldValidateErrors.state = ''
+      case 'region':
+        if (value.length > 1) fieldValidateErrors.region = ''
         break
       case 'zip':
         if (value > 1) fieldValidateErrors.zip = ''
@@ -163,7 +176,7 @@ export class CheckoutForm extends React.Component {
       line1,
       line2,
       city,
-      state,
+      region,
       country,
       zip,
       ip,
@@ -193,7 +206,7 @@ export class CheckoutForm extends React.Component {
               line1: line1,
               line2: line2,
               city: city,
-              state: state,
+              state: region,
               postal_code: zip,
               country: country,
             },
@@ -305,15 +318,45 @@ export class CheckoutForm extends React.Component {
             </label>
             <br />
             <label>
-              State*
-              <input
-                type="text"
-                name="state"
-                value={this.state.state}
-                onChange={this.handleFormChange}
+              Country*
+              <CountryDropdown
+                name="country"
+                value={this.state.country}
+                whitelist={['US', 'CA', 'GB']}
+                labelType="short"
+                valueType="short"
+                onChange={(val) => this.handleDropDown(val)}
               />
-              {formErrors.state && (
-                <p className="error-message">{formErrors.state}</p>
+              {/* <input
+                type="text"
+                name="country"
+                value={this.state.country}
+                onChange={this.handleFormChange}
+              /> */}
+              {formErrors.country && (
+                <p className="error-message">{formErrors.country}</p>
+              )}
+            </label>
+            <br />
+            <label>
+              State*
+              <RegionDropdown
+                name="region"
+                country={this.state.country}
+                value={this.state.region}
+                countryValueType="short"
+                labelType="short"
+                valueType="short"
+                onChange={(val, name) => this.handleDropDown(val, name)}
+              />
+              {/* <input
+                type="text"
+                name="region"
+                value={this.state.region}
+                onChange={this.handleFormChange}
+              /> */}
+              {formErrors.region && (
+                <p className="error-message">{formErrors.region}</p>
               )}
             </label>
             <br />
@@ -327,19 +370,6 @@ export class CheckoutForm extends React.Component {
               />
               {formErrors.zip && (
                 <p className="error-message">{formErrors.zip}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              Country*
-              <input
-                type="text"
-                name="country"
-                value={this.state.country}
-                onChange={this.handleFormChange}
-              />
-              {formErrors.country && (
-                <p className="error-message">{formErrors.country}</p>
               )}
             </label>
             <br />
