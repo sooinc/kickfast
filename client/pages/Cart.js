@@ -65,9 +65,29 @@ export class Cart extends React.Component {
                   </div>
                 ) : (
                   <div>
-                    <Link to="/signup">Signup</Link>
+                    {/* <Link to="/signup">Signup</Link> */}
+                    <Link
+                      to={{
+                        pathname: '/signup',
+                        state: {
+                          from: 'cart',
+                        },
+                      }}
+                    >
+                      Signup
+                    </Link>
                     <p>or</p>
-                    <Link to="login">Login</Link>
+                    <Link
+                      to={{
+                        pathname: '/login',
+                        state: {
+                          from: 'cart',
+                        },
+                      }}
+                    >
+                      Login
+                    </Link>
+                    {/* <Link to="login">Login</Link> */}
                     <div>
                       <Link to={null} className="disable">
                         Proceed To Checkout

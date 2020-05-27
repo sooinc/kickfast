@@ -7,7 +7,17 @@ import {fetchCart} from '../store/cart'
  * COMPONENT
  */
 const Login = (props) => {
-  const {handleSubmit, error} = props
+  const {error} = props
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const email = event.target.email.value
+    const password = event.target.password.value
+    const path = props.location.state ? `/${props.location.state.from}` : null
+    await props.login(email, password, path)
+    await props.fetchCart()
+    // dispatch(login(email, password)).then(() => dispatch(fetchCart()))
+  }
 
   return (
     <div>
@@ -47,16 +57,10 @@ const mapState = (state) => {
   }
 }
 
-const mapDispatch = (dispatch) => {
-  return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      const email = evt.target.email.value
-      const password = evt.target.password.value
-      dispatch(login(email, password)).then(() => dispatch(fetchCart()))
-    },
-  }
-}
+const mapDispatch = (dispatch) => ({
+  login: (email, password, path) => dispatch(login(email, password, path)),
+  fetchCart: () => dispatch(fetchCart()),
+})
 
 export const ConnectedLogin = connect(mapState, mapDispatch)(Login)
 

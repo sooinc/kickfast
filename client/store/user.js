@@ -40,7 +40,7 @@ export const login = (email, password, redirect = null) => {
       if (redirect) {
         history.push(redirect)
       } else {
-        history.goBack()
+        history.push('/shop')
       }
     } catch (dispatchOrHistoryErr) {
       console.error(dispatchOrHistoryErr)
@@ -58,10 +58,11 @@ export const signup = (name, email, password, redirect = null) => {
     }
     try {
       dispatch(getUser(res.data))
+      console.log('inside signup thunk', redirect)
       if (redirect) {
         history.push(redirect)
       } else {
-        history.goBack()
+        history.push('/shop')
       }
     } catch (dispatchOrHistoryErr) {
       console.error(dispatchOrHistoryErr)

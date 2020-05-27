@@ -1,16 +1,26 @@
 /* eslint-disable complexity */
 import React from 'react'
 import {connect} from 'react-redux'
-import {signup} from '../store/user'
 import useForm from './form-validation/useForm-valChange'
 import {validateSignup} from './form-validation/auth-form-errors'
+import {signup} from '../store/user'
 
 /**
  * COMPONENT
  */
 const Signup = (props) => {
   const {values, errors, isDisabled, handleChange} = useForm(validateSignup)
-  const {handleSubmit, error} = props
+  const {error} = props
+  console.log(props.location.state)
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const name = event.target.name.value
+    const email = event.target.email.value
+    const password = event.target.password.value
+    const path = props.location.state ? `/${props.location.state.from}` : null
+    props.signup(name, email, password, path)
+  }
 
   return (
     <div>
@@ -78,17 +88,10 @@ const mapState = (state) => {
   }
 }
 
-const mapDispatch = (dispatch) => {
-  return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      const name = evt.target.name.value
-      const email = evt.target.email.value
-      const password = evt.target.password.value
-      dispatch(signup(name, email, password))
-    },
-  }
-}
+const mapDispatch = (dispatch) => ({
+  signup: (name, email, password, path) =>
+    dispatch(signup(name, email, password, path)),
+})
 
 export const ConnectedSignup = connect(mapState, mapDispatch)(Signup)
 
