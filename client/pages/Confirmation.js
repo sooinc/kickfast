@@ -3,10 +3,12 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import {getConfirmedOrder} from '../store/checkout'
+import {me} from '../store/user'
 
 class Confirmation extends React.Component {
   componentDidMount() {
     this.props.getConfirmedOrder()
+    this.props.me()
   }
 
   total = (cart) => {
@@ -76,6 +78,7 @@ const stateToProps = (state) => ({
 
 const dispatchToProps = (dispatch) => ({
   getConfirmedOrder: () => dispatch(getConfirmedOrder()),
+  me: () => dispatch(me()),
 })
 
 const ConnectedConfirmation = connect(

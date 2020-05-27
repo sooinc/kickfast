@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import EmailForm from './edit-email-form'
 import PasswordForm from './edit-password-form'
+// import {me} from '../store/user'
 
 export const UserHome = (props) => {
   const [showEditEmail, setShowEditEmail] = useState(false)
@@ -38,8 +39,8 @@ export const UserHome = (props) => {
         <h4>IP Addresses:</h4>
         <ul>
           {ipAddress
-            ? ipAddress.map((ip, index) => {
-                return <li key={index}>{ip}</li>
+            ? ipAddress.map((ip) => {
+                return <li key={ip}>{ip}</li>
               })
             : null}
         </ul>
@@ -69,11 +70,13 @@ export const UserHome = (props) => {
   )
 }
 
-const mapState = (state) => {
-  return {
-    user: state.user,
-    error: state.user.error,
-  }
-}
+const mapState = (state) => ({
+  user: state.user,
+  error: state.user.error,
+})
 
-export default connect(mapState)(UserHome)
+// const mapDispatch = (dispatch) => ({
+//   me: () => dispatch(me()),
+// })
+
+export default connect(mapState, null)(UserHome)

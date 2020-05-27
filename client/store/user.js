@@ -9,8 +9,8 @@ const REMOVE_USER = 'REMOVE_USER'
 /**
  * ACTION CREATORS
  */
-const getUser = (user, error) => ({type: GET_USER, user, error})
-const removeUser = () => ({type: REMOVE_USER})
+export const getUser = (user, error) => ({type: GET_USER, user, error})
+export const removeUser = () => ({type: REMOVE_USER})
 
 const defaultUser = {}
 

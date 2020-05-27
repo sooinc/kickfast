@@ -45,8 +45,6 @@ export class CheckoutForm extends React.Component {
   handleFormChange = (event) => {
     const name = event.target.name
     const value = event.target.value
-    // console.log('inside on change', value)
-    // console.log('inside on change', name)
     this.setState({[name]: value}, () => {
       this.validateField(name, value)
     })
@@ -135,7 +133,6 @@ export class CheckoutForm extends React.Component {
         formErrors[key] === isInvalid ||
         formErrors[key] === ' '
       ) {
-        // console.log('formerrors', formErrors)
         this.setState({notValid: true})
         return
       }
@@ -222,13 +219,14 @@ export class CheckoutForm extends React.Component {
         if (this.props.status === 'Existing IP.') {
           console.log('no action')
         } else {
+          //removes given ip
           await this.props.removingIp(ip)
         }
       } else {
         this.setState({error: null})
         this.setState({processing: false})
         this.setState({succeeded: true})
-        // removes cart thunk and attach to order
+        //confirmation - cart fulfilled. req cart deleted. order detail added
         await this.props.getConfirmationDispatch(ip, email)
         console.log('Successful!')
       }

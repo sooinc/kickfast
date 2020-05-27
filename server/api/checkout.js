@@ -113,6 +113,7 @@ router.post('/confirmation', async (req, res, next) => {
       include: [{model: Proxy}],
       through: {attributes: ['quantity']},
     })
+
     if (confirmedOrder) {
       res.status(201).json(confirmedOrder)
     } else {
@@ -142,39 +143,3 @@ router.get('/confirmation', async (req, res, next) => {
     next(err)
   }
 })
-
-//proceed to confirmation (once payment is confirmed)
-// router.post('/confirmation', async (req, res, next) => {
-//   try {
-// let newIp = req.body.newIp
-// const billingEmail = req.body.billingEmail
-// const user = await User.findByPk(req.user.id)
-
-// if (newIp === '' || newIp === null) {
-//   res.status(401).send('Not a valid IP address. Please try again.')
-//   return
-// } else if (user.ipAddress === null) {
-//   await user.update({
-//     ipAddress: [newIp],
-//   })
-// } else if (user.ipAddress.length < 3 && !user.ipAddress.includes(newIp)) {
-//   await user.update({
-//     ipAddress: [...user.ipAddress, newIp],
-//   })
-// }
-//     const order = await getCart(req)
-//     await order.update({
-//       status: 'fulfilled',
-//       ipAddress: newIp,
-//       billingEmail: billingEmail,
-//     })
-//     req.session.cartId = null
-//     const confirmedOrder = await Order.findByPk(order.id, {
-//       include: [{model: Proxy}],
-//       through: {attributes: ['quantity']},
-//     })
-//     res.status(201).json(confirmedOrder)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
