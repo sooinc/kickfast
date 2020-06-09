@@ -1,7 +1,7 @@
 const {stripeSK} = require('../../secrets') //stripePK
 const stripe = require('stripe')(stripeSK)
 const router = require('express').Router({mergeParams: true})
-const {Order, Proxy, User} = require('../db/models')
+const {Order, Proxy} = require('../db/models')
 const {getCart} = require('../util')
 
 module.exports = router
@@ -36,76 +36,14 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-//add IP to user or send err
-router.put('/updateIp', async (req, res, next) => {
-  try {
-    let newIp = req.body.newIp
-    const user = await User.findByPk(req.user.id)
-
-    if (newIp === '' || newIp === null) {
-      res.status(401).send('Not a valid IP address. Please try again.')
-      return
-    }
-
-    if (user.ipAddress === null) {
-      await user.update({
-        ipAddress: [newIp],
-      })
-      res.status(202).send('IP has been added to user profile.')
-      return
-    }
-
-    if (user.ipAddress.includes(newIp)) {
-      res.status(202).send('Existing IP.')
-    } else if (user.ipAddress.length < 3) {
-      await user.update({
-        ipAddress: [...user.ipAddress, newIp],
-      })
-      res.status(202).send('IP has been added to user profile.')
-    } else if (user.ipAddress.length >= 3) {
-      res
-        .status(401)
-        .send('Not able to add IP. Please use 1 of the 3 on your account.')
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
-//delete IP to user and send user.Ip
-router.put('/removeIp', async (req, res, next) => {
-  try {
-    let newIp = req.body.newIp
-    const user = await User.findByPk(req.user.id)
-
-    console.log('newIp', newIp)
-    console.log('user.ipAddress', user.ipAddress)
-
-    let finalIp = user.ipAddress.filter((ip) => {
-      return ip !== newIp
-    })
-
-    console.log('this is finalIp', finalIp)
-
-    await user.update({
-      ipAddress: finalIp,
-    })
-    res.status(201).send(user.ipAddress)
-  } catch (err) {
-    next(err)
-  }
-})
-
 //proceed to confirmation (once IP and payment is confirmed)
 router.post('/confirmation', async (req, res, next) => {
   try {
-    let newIp = req.body.newIp
     let billingEmail = req.body.billingEmail
 
     const order = await getCart(req)
     await order.update({
       status: 'fulfilled',
-      ipAddress: newIp,
       billingEmail: billingEmail,
     })
     req.session.cartId = null

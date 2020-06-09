@@ -10,16 +10,14 @@ const PasswordForm = (props) => {
     editPasswordCB
   )
 
-  function editPasswordCB() {
+  async function editPasswordCB() {
     console.log('this is final', values)
-    props.editPassword(
+    await props.editPassword(
       values.oldPassword,
       values.newPassword,
       values.newPassword2
     )
-    values.oldPassword = ''
-    values.newPassword = ''
-    values.newPassword2 = ''
+
     console.log('bye')
   }
 
@@ -65,6 +63,10 @@ const PasswordForm = (props) => {
         <button name="submit" type="submit" disabled={isDisabled || false}>
           Submit Changes
         </button>
+        {/* {isSucceeded && <p>Email has been successfully updated!</p>} */}
+        {/* {error && error.response ? (
+          <span className="pure-form-message">{error.response.data}</span>
+        ) : null} */}
       </form>
     </div>
   )

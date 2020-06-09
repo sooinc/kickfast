@@ -1,12 +1,12 @@
-/* eslint-disable camelcase */
 /* eslint-disable complexity */
+/* eslint-disable camelcase */
 import React from 'react'
 import {connect} from 'react-redux'
 import {CardElement} from '@stripe/react-stripe-js'
 import {CountryDropdown, RegionDropdown} from 'react-country-region-selector'
-
-import {updatingIp, removingIp, getConfirmation} from '../store/checkout'
+import {getConfirmation} from '../store/checkout'
 import {FormErrors} from '../components/form-validation/checkout-form-errors'
+import ConnectedIpList from '../components/checkout-form-ip'
 
 export class CheckoutForm extends React.Component {
   constructor() {
@@ -20,9 +20,6 @@ export class CheckoutForm extends React.Component {
       region: '',
       zip: '',
       country: '',
-      ip: '',
-      newIp: '',
-      newIpDisable: true,
       formErrors: {
         name: ' ',
         email: ' ',
@@ -31,7 +28,6 @@ export class CheckoutForm extends React.Component {
         region: ' ',
         country: ' ',
         zip: ' ',
-        ipAddress: ' ',
       },
       notValid: true,
 
@@ -40,6 +36,7 @@ export class CheckoutForm extends React.Component {
       processing: false,
       disabled: true,
     }
+    this.validateForm = this.validateForm.bind(this)
   }
 
   handleFormChange = (event) => {
@@ -62,11 +59,19 @@ export class CheckoutForm extends React.Component {
     })
   }
 
+  //this is only for stripe CardElement onChange
+  handleChange = (event) => {
+    this.setState({disabled: event.empty})
+    if (event.error) {
+      this.setState({error: event.error.message})
+    } else {
+      this.setState({error: ''})
+    }
+  }
+
   validateField = (fieldName, value) => {
     let fieldValidateErrors = this.state.formErrors
     let email = this.state.email
-    let newIp = this.state.newIp
-    let selectLen = document.getElementById('select').options.length
 
     switch (fieldName) {
       case 'name':
@@ -91,42 +96,23 @@ export class CheckoutForm extends React.Component {
       case 'country':
         if (value.length > 1) fieldValidateErrors.country = ''
         break
-      case 'newIp':
-        newIp = value.match(
-          /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
-        )
-        if (selectLen >= 4) {
-          fieldValidateErrors.ipAddress =
-            'Not able to add more. Please select from the 3 IPs'
-          this.setState({newIpDisable: true})
-          this.setState({newIp: ''})
-        } else if (newIp) {
-          fieldValidateErrors.ipAddress = ''
-          this.setState({newIpDisable: false})
-        } else if (!newIp) {
-          fieldValidateErrors.ipAddress = 'is invalid'
-          this.setState({newIpDisable: true})
-        } else {
-          this.setState({newIpDisable: false})
-        }
-        break
-      case 'ip':
-        if (value === '-- select --' || value === null) {
-          fieldValidateErrors.ipAddress = 'is invalid'
-        } else {
-          fieldValidateErrors.ipAddress = ''
-        }
-        break
       default:
         break
     }
     this.setState({formErrors: fieldValidateErrors}, this.validateForm)
   }
 
-  validateForm() {
+  validateForm = () => {
+    let ipAddress = this.props.user.ipAddress
     let isRequired = 'is required'
     let isInvalid = 'is invalid'
     let formErrors = this.state.formErrors
+
+    if (ipAddress.length < 1) {
+      this.setState({notValid: true})
+      return
+    }
+
     for (let key in formErrors) {
       if (
         formErrors[key] === isRequired ||
@@ -140,58 +126,17 @@ export class CheckoutForm extends React.Component {
     this.setState({notValid: false})
   }
 
-  addNewIp = (event) => {
-    event.preventDefault()
-    let newIp = this.state.newIp
-
-    if (newIp.length) {
-      let select = document.getElementById('select')
-      let option = document.createElement('option')
-      option.value = newIp
-      option.innerHTML = newIp
-      select.appendChild(option)
-      option.selected = 'selected'
-    }
-    this.setState({newIp: ''})
-  }
-
-  //this is only for stripe CardElement onChange
-  handleChange = (event) => {
-    this.setState({disabled: event.empty})
-    if (event.error) {
-      this.setState({error: event.error.message})
-    } else {
-      this.setState({error: ''})
-    }
-  }
-
   handleSubmit = async () => {
     event.preventDefault()
-    const {
-      email,
-      name,
-      line1,
-      line2,
-      city,
-      region,
-      country,
-      zip,
-      ip,
-    } = this.state
-
+    const {email, name, line1, line2, city, region, country, zip} = this.state
     const {stripe, elements} = this.props
     this.setState({processing: true})
     console.log('inside handleSubmit', this.props.clientSecret)
 
-    //this just adds ip to user
-    await this.props.updatingIp(ip)
-
-    if (this.props.status === 'error') {
-      if (this.props.error) {
-        this.setState({
-          error: `Payment failed: ${this.props.error.response.data}`,
-        })
-      }
+    if (this.props.user.ipAddress.length < 1) {
+      this.setState({
+        error: `Payment failed: Need at least 1 Ip on User Account`,
+      })
       this.setState({processing: false})
     } else {
       const payload = await stripe.confirmCardPayment(this.props.clientSecret, {
@@ -215,19 +160,12 @@ export class CheckoutForm extends React.Component {
       if (payload.error) {
         this.setState({error: `Payment failed ${payload.error.message}`})
         this.setState({processing: false})
-
-        if (this.props.status === 'Existing IP.') {
-          console.log('no action')
-        } else {
-          //removes given ip
-          await this.props.removingIp(ip)
-        }
       } else {
         this.setState({error: null})
         this.setState({processing: false})
         this.setState({succeeded: true})
-        //confirmation - cart fulfilled. req cart deleted. order detail added
-        await this.props.getConfirmationDispatch(ip, email)
+        //confirmation - cart fulfilled. req cart deleted. billingEmail added to order detail
+        await this.props.getConfirmationDispatch(email)
         console.log('Successful!')
       }
     }
@@ -242,7 +180,6 @@ export class CheckoutForm extends React.Component {
       error,
       notValid,
       formErrors,
-      newIpDisable,
     } = this.state
 
     return (
@@ -320,17 +257,11 @@ export class CheckoutForm extends React.Component {
               <CountryDropdown
                 name="country"
                 value={this.state.country}
-                whitelist={['US', 'CA', 'GB']}
+                whitelist={['US']}
                 labelType="short"
                 valueType="short"
                 onChange={(val) => this.handleDropDown(val)}
               />
-              {/* <input
-                type="text"
-                name="country"
-                value={this.state.country}
-                onChange={this.handleFormChange}
-              /> */}
               {formErrors.country && (
                 <p className="error-message">{formErrors.country}</p>
               )}
@@ -347,12 +278,6 @@ export class CheckoutForm extends React.Component {
                 valueType="short"
                 onChange={(val, name) => this.handleDropDown(val, name)}
               />
-              {/* <input
-                type="text"
-                name="region"
-                value={this.state.region}
-                onChange={this.handleFormChange}
-              /> */}
               {formErrors.region && (
                 <p className="error-message">{formErrors.region}</p>
               )}
@@ -373,48 +298,10 @@ export class CheckoutForm extends React.Component {
             <br />
 
             <h2>Confirm IP Address</h2>
-            <label>
-              IP Address*
-              <select
-                id="select"
-                name="ip"
-                value={this.state.ip}
-                onChange={this.handleFormChange}
-              >
-                <option value={null}>-- select --</option>
-                {ipAddress
-                  ? ipAddress.map((ip) => {
-                      return (
-                        <option key={ip} value={ip}>
-                          {ip}
-                        </option>
-                      )
-                    })
-                  : null}
-              </select>
-              {ipAddress && ipAddress.length >= 3 ? null : (
-                <div>
-                  <input
-                    id="newIp"
-                    name="newIp"
-                    type="text"
-                    value={this.state.newIp}
-                    onChange={this.handleFormChange}
-                  />
-                  <button
-                    id="addNewIp"
-                    type="button"
-                    onClick={this.addNewIp}
-                    disabled={newIpDisable}
-                  >
-                    Add
-                  </button>
-                </div>
-              )}
-              {formErrors.ipAddress && (
-                <p className="error-message">{formErrors.ipAddress}</p>
-              )}
-            </label>
+            <ConnectedIpList
+              ipAddress={ipAddress}
+              validateForm={this.validateForm}
+            />
             <br />
 
             <h2>Payment Information</h2>
@@ -484,10 +371,7 @@ const stateToProps = (state) => ({
 })
 
 const dispatchToProps = (dispatch) => ({
-  updatingIp: (ip) => dispatch(updatingIp(ip)),
-  removingIp: (ip) => dispatch(removingIp(ip)),
-  getConfirmationDispatch: (ip, email) => dispatch(getConfirmation(ip, email)),
-  // orderDetailsDispatch: (email, ip) => dispatch(orderDetails(email, ip)),
+  getConfirmationDispatch: (email) => dispatch(getConfirmation(email)),
 })
 
 const ConnectedCheckoutForm = connect(

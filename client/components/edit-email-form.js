@@ -1,24 +1,31 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import useForm from './form-validation/useForm-valChange'
 import {validateEmail} from './form-validation/auth-form-errors'
 import {editEmail} from '../store/user'
 
 const EmailForm = (props) => {
-  const {values, errors, isDisabled, handleChange, handleSubmit} = useForm(
-    validateEmail,
-    editEmailCB,
-    props.email
-  )
+  const {
+    values,
+    errors,
+    isDisabled,
+    isSucceeded,
+    handleChange,
+    handleSubmit,
+  } = useForm(validateEmail, editEmailCB, props.email)
+  const {error} = props
+  // const [succeeded, setSucceeded] = useState(false)
 
-  function editEmailCB() {
+  async function editEmailCB() {
     console.log('final', values)
-    props.editEmail(values.email)
-    //even need handle even if there is an error
-    //need to make error doesnt show
-    values.email = ''
-
-    console.log('hi')
+    await props.editEmail(values.email)
+    console.log('error', error)
+    console.log('isSucceeded', isSucceeded)
+    // if (error && error.response) {
+    //   setSucceeded(false)
+    // } else {
+    //   setSucceeded(true)
+    // }
   }
 
   return (
@@ -37,15 +44,24 @@ const EmailForm = (props) => {
         <button name="submit" type="submit" disabled={isDisabled || false}>
           Submit Changes
         </button>
+        {console.log('isSucceeded', isSucceeded)}
+        {isSucceeded && <p>Email has been successfully updated!</p>}
+        {error && error.response ? (
+          <span className="pure-form-message">{error.response.data}</span>
+        ) : null}
       </form>
     </div>
   )
 }
 
-const dispatchToProps = (dispatch) => ({
+const mapState = (state) => ({
+  error: state.user.error,
+})
+
+const mapDispatch = (dispatch) => ({
   editEmail: (email) => dispatch(editEmail(email)),
 })
 
-const ConnectedEmailForm = connect(null, dispatchToProps)(EmailForm)
+const ConnectedEmailForm = connect(mapState, mapDispatch)(EmailForm)
 
 export default ConnectedEmailForm
