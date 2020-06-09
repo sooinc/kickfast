@@ -89,6 +89,66 @@ router.put('/edit-password', async (req, res, next) => {
   }
 })
 
+//add IP to user or send err
+router.put('/addIp', async (req, res, next) => {
+  try {
+    let newIp = req.body.newIp
+    const user = await User.findByPk(req.user.id)
+
+    if (newIp === '' || newIp === null) {
+      res.status(401).send('Not a valid IP address. Please try again.')
+      return
+    }
+
+    if (user.ipAddress === null) {
+      await user.update({
+        ipAddress: [newIp],
+      })
+      res.status(202).send(user) //'IP has been added to user profile.'
+      return
+    }
+
+    if (user.ipAddress.includes(newIp)) {
+      res.status(202).send(user) //'Existing IP.'
+    } else if (user.ipAddress.length < 3) {
+      await user.update({
+        ipAddress: [...user.ipAddress, newIp],
+      })
+      res.status(202).send(user) //'IP has been added to user profile.'
+    } else if (user.ipAddress.length >= 3) {
+      res
+        .status(401)
+        .send('Not able to add IP. Please use 1 of the 3 on your account.')
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+//delete IP to user and send user.Ip
+router.put('/removeIp', async (req, res, next) => {
+  try {
+    let newIp = req.body.newIp
+    const user = await User.findByPk(req.user.id)
+
+    console.log('IP to remove:', newIp)
+    console.log('Current user.ipAddress:', user.ipAddress)
+
+    let finalIp = user.ipAddress.filter((ip) => {
+      return ip !== newIp
+    })
+
+    console.log('Final user.ipAddress:', finalIp)
+
+    await user.update({
+      ipAddress: finalIp,
+    })
+    res.status(201).send(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/logout', (req, res) => {
   req.logout()
   req.session.destroy()

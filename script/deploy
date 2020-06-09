@@ -20,10 +20,14 @@ set -e
 # We trap any program EXIT and run this function.
 # Whether the deploy succeeds or fails, we'll clean up the deploy branch.
 
+#### THE BELOW IS DOING THIS ####
+##This script creates a deploy branch, runs webpack, adds the bundles files to the branch,
+##commits these changes, deploys them to Heroku by git push heroku deploy:master and finally deletes the deploy branch.
+
 function cleanup_at_exit {
   # return to your master branch
   git checkout master
-  
+
   # remove the deploy branch
   git branch -D deploy
 }

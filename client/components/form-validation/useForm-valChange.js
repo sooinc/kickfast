@@ -5,6 +5,18 @@ const useForm = (validate, callback, compare = null) => {
   const [errors, setErrors] = useState({})
   const [isDisabled, setIsDisabled] = useState(true)
   const [isEvaluating, setIsEvaluating] = useState(false)
+  const [isSucceeded, setIsSucceeded] = useState(false)
+
+  useEffect(() => {
+    if (isSucceeded) {
+      for (let key in values) {
+        if (values.hasOwnProperty(key)) {
+          values[key] = ''
+        }
+      }
+      setValues(values)
+    }
+  }, [isSucceeded])
 
   //Listens to changes in values. if they are runs it thru validate to setError
   useEffect(() => {
@@ -27,6 +39,8 @@ const useForm = (validate, callback, compare = null) => {
   const handleSubmit = (event) => {
     if (event) event.preventDefault()
     callback()
+
+    setIsSucceeded(true)
   }
 
   const handleChange = (event) => {
@@ -39,6 +53,7 @@ const useForm = (validate, callback, compare = null) => {
       [name]: event.target.value,
     }))
     setIsEvaluating(true)
+    setIsSucceeded(false)
     console.log('this is values', values)
     console.log('this is errors', errors)
   }

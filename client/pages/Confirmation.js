@@ -42,7 +42,10 @@ class Confirmation extends React.Component {
               {order.billingEmail}) for your receipt!
             </h3>
             <h3>Order Confirmation Number:&nbsp;{order.id}</h3>
-            <h3>For I.P. Address:&nbsp;{order.ipAddress}</h3>
+            <h3>For I.P. Address:</h3>
+            {user.ipAddress.map((ip) => {
+              return <p key={ip}>-{ip}</p>
+            })}
             {order.proxies.map((item) => (
               <div key={item.id} id="confirmation-tile">
                 <ul>

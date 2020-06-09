@@ -79,7 +79,6 @@ export const editEmail = (email) => async (dispatch) => {
   }
   try {
     dispatch(getUser(res.data))
-    history.push('/userhome')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -98,9 +97,30 @@ export const editPassword = (oldPW, newPW, newPW2) => async (dispatch) => {
   }
   try {
     dispatch(getUser(res.data))
-    history.push('/userhome')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
+  }
+}
+
+export const addingIp = (newIp) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.put('/auth/addIp', {newIp})
+      dispatch(getUser(data))
+    } catch (authError) {
+      dispatch(getUser(null, authError))
+    }
+  }
+}
+
+export const removingIp = (newIp) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.put('/auth/removeIp', {newIp})
+      dispatch(getUser(data))
+    } catch (authError) {
+      dispatch(getUser(null, authError))
+    }
   }
 }
 

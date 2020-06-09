@@ -4,7 +4,6 @@ import history from '../history'
 const CLIENT_SECRET = 'CLIENT_SECRET'
 const CONFIRMATION = 'CONFIRMATION'
 const GOT_ERROR = 'GOT_ERROR'
-const UPDATE_IP = 'UPDATE_IP'
 
 const clientSecret = (secret) => ({
   type: CLIENT_SECRET,
@@ -20,11 +19,6 @@ const gotError = (error, failedAction) => ({
   type: GOT_ERROR,
   error,
   failedAction,
-})
-
-const updateIp = (status) => ({
-  type: UPDATE_IP,
-  status,
 })
 
 const options = {
@@ -45,38 +39,10 @@ export const checkout = () => {
   }
 }
 
-export const updatingIp = (newIp) => {
-  return async (dispatch) => {
-    try {
-      const {data} = await axios.put('/api/checkout/updateIp', {newIp})
-      console.log('Updating IP:', data)
-      dispatch(updateIp(data))
-    } catch (err) {
-      dispatch(gotError(err, {type: CONFIRMATION}))
-    }
-  }
-}
-
-export const removingIp = (newIp) => {
-  return async (dispatch) => {
-    try {
-      const {data} = await axios.put('/api/checkout/removeIp', {newIp})
-      console.log('User IP:', data)
-    } catch (err) {
-      dispatch(gotError(err, {type: CONFIRMATION}))
-    }
-  }
-}
-
-export const getConfirmation = (
-  newIp,
-  billingEmail,
-  redirect = '/confirmation'
-) => {
+export const getConfirmation = (billingEmail, redirect = '/confirmation') => {
   return async (dispatch) => {
     try {
       const {data} = await axios.post('/api/checkout/confirmation', {
-        newIp,
         billingEmail,
       })
       dispatch(confirmation(data))
@@ -113,11 +79,6 @@ export default function (state = initialState, action) {
         ...state,
         confirmedOrder: action.confirmedOrder,
         status: 'done',
-      }
-    case UPDATE_IP:
-      return {
-        ...state,
-        status: action.status,
       }
     case GOT_ERROR:
       console.log(action.error)
