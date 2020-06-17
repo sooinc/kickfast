@@ -23,21 +23,43 @@ class ProxyTile extends React.Component {
     const {proxy} = this.props
     const toProxy = `/shop/${proxy.id}`
 
+    // const FancyLink = React.forwardRef((null, ref) => (
+    //   <a className="proxy-name"></a>
+    // ))
+
     return (
       <div className="proxy-tile">
-        <Link to={toProxy}>
-          <img
+        <Link component={FancyLink} to={toProxy}>
+          <p className="proxy-name1">Proxy</p>
+          {proxy.name === '1GB - 1 Month' ? (
+            <div className="proxy-name1">
+              <p>1 Gig </p> <p> 1 Month</p>{' '}
+            </div>
+          ) : null}
+          {proxy.name === '1GB - 1 Week' ? (
+            <div className="proxy-name1">
+              {' '}
+              <p>1 Gig </p> <p> 1 Week</p>
+            </div>
+          ) : null}
+          {proxy.name === '1GB - 1 Day' ? (
+            <div className="proxy-name1">
+              <p>1 Gig </p> <p> 1 Day</p>{' '}
+            </div>
+          ) : null}
+          <p> ${proxy.price}</p>
+        </Link>
+        {/* <img
             className="proxy-tile-image"
             src="https://images-na.ssl-images-amazon.com/images/I/41CyuoxrPvL._AC_SY355_.jpg"
             alt="smiley face"
             width="150"
             height="150"
-          />
-        </Link>
-        <Link to={toProxy} className="product-link">
+          /> */}
+        {/* <Link to={toProxy} className="product-link">
           {proxy.name}
-        </Link>
-        <p> ${proxy.price}</p>
+        </Link> */}
+
         <AddToCartButton
           className="proxy-tile-addtocart"
           productId={proxy.id}

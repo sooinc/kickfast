@@ -1,18 +1,95 @@
+.shop-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home {
+  height: 500px;
+  width: 90%;
+  background-color: #e2b4bd;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.home-images1 {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+}
+
+.home-images2 {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+}
+
+.home-single-image {
+  margin: 50px;
+}
+
+.home-headline {
+  font-family: 'merriweather';
+  color: #2a2828;
+}
+
+.shop {
+  height: 500px;
+  width: 90%;
+  background-color: #e2b4bd;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shop-headline {
+  font-family: 'merriweather';
+  color: #2a2828;
+  margin-top: 40px;
+}
+
 .proxy-tile-container {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
+  margin-top: 20px;
 }
 
 .proxy-tile {
   width: 250px;
   height: 260px;
-  border: 5px solid #191716;
+  margin: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+  /* border: 5px solid #191716; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: center;
+}
+
+a.proxy-name:link,
+a.proxy-name:visited {
+  font-family: 'merriweather';
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #2a2828;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.proxy-name:hover,
+a.proxy-name:active {
+  font-family: 'merriweather';
+  background-color: #e2b4bd;
+  color: white;
 }
 
 .single-proxy-container {

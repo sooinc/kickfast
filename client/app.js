@@ -11,12 +11,10 @@ const promise = loadStripe(stripePK)
 
 const App = () => {
   return (
-    <div>
-      <Elements stripe={promise}>
-        <Navbar />
-        <Routes />
-      </Elements>
-    </div>
+    <Elements stripe={promise}>
+      <Navbar />
+      <Routes />
+    </Elements>
   )
 }
 
