@@ -2,6 +2,9 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Proxy = db.define('proxy', {
+  image: {
+    type: Sequelize.STRING,
+  },
   name: {
     type: Sequelize.STRING,
     allowNull: false,

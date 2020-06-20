@@ -25,25 +25,22 @@ class ProxyTile extends React.Component {
 
     return (
       <div className="proxy-tile">
-        <Link to={toProxy}>
+        <Link className="proxy-tile-link" to={toProxy}>
           <img
             className="proxy-tile-image"
-            src="https://images-na.ssl-images-amazon.com/images/I/41CyuoxrPvL._AC_SY355_.jpg"
-            alt="smiley face"
-            width="150"
+            src={proxy.image}
+            alt={proxy.name}
+            width="160"
             height="150"
           />
+          <p> ${proxy.price}</p>
+          <AddToCartButton
+            className="proxy-tile-addtocart"
+            productId={proxy.id}
+            singleProduct={proxy.name}
+            handleAddToCart={this.handleAddToCart}
+          />
         </Link>
-        <Link to={toProxy} className="product-link">
-          {proxy.name}
-        </Link>
-        <p> ${proxy.price}</p>
-        <AddToCartButton
-          className="proxy-tile-addtocart"
-          productId={proxy.id}
-          singleProduct={proxy.name}
-          handleAddToCart={this.handleAddToCart}
-        />
       </div>
     )
   }

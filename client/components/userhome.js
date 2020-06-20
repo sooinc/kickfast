@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import EmailForm from './edit-email-form'
 import PasswordForm from './edit-password-form'
+import {Button} from '@material-ui/core'
 
 export const UserHome = (props) => {
   const [showEditEmail, setShowEditEmail] = useState(false)
@@ -46,12 +47,24 @@ export const UserHome = (props) => {
       </div>
 
       <div>
-        <button name="Edit" type="button" onClick={handleShowEmail}>
+        <Button
+          name="Edit"
+          type="button"
+          onClick={handleShowEmail}
+          variant="outlined"
+          color="primary"
+        >
           Edit Email
-        </button>
-        <button name="Edit" type="button" onClick={handleShowPassword}>
+        </Button>
+        <Button
+          name="Edit"
+          type="button"
+          onClick={handleShowPassword}
+          variant="outlined"
+          color="primary"
+        >
           Edit Password
-        </button>
+        </Button>
 
         {showEditEmail ? <EmailForm email={email} /> : null}
         {showEditPassword ? <PasswordForm /> : null}
