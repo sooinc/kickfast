@@ -1,4 +1,5 @@
 import React from 'react'
+import {Button} from '@material-ui/core'
 // import {useToasts} from 'react-toast-notifications'
 
 const AddToCartButton = (props) => {
@@ -7,7 +8,9 @@ const AddToCartButton = (props) => {
   // const {addToast} = useToasts()
   return (
     <div>
-      <button
+      <Button
+        variant="outlined"
+        size="small"
         className={className}
         id={productId}
         type="button"
@@ -24,7 +27,7 @@ const AddToCartButton = (props) => {
         }
       >
         Add To Cart
-      </button>
+      </Button>
     </div>
   )
 }

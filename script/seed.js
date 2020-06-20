@@ -26,6 +26,7 @@ async function seed() {
 
   const proxies = await Promise.all([
     Proxy.create({
+      image: '/images/Month.png',
       name: '1GB - 1 Month',
       description: '1 GB available for 30 days',
       subscriptionDays: 30,
@@ -34,6 +35,7 @@ async function seed() {
       price: 99.99,
     }),
     Proxy.create({
+      image: '/images/Week.png',
       name: '1GB - 1 Week',
       description: '1 GB available for 7 days',
       subscriptionDays: 7,
@@ -42,6 +44,7 @@ async function seed() {
       price: 49.99,
     }),
     Proxy.create({
+      image: '/images/Day.png',
       name: '1GB - 1 Day',
       description: '1 GB available for 1 day',
       subscriptionDays: 1,

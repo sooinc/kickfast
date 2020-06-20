@@ -71,6 +71,18 @@ input {
   box-sizing: border-box;
 }
 
+footer {
+  margin-top: 40px;
+  padding: 20px;
+  border-top: 2px solid black;
+  color: black;
+}
+
+footer p {
+  margin: 0;
+  padding: 0;
+}
+
 /* Buttons and links */
 /* button {
   background: #5469d4;

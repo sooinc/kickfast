@@ -25,14 +25,14 @@ export class Shop extends React.Component {
                   className="home-single-image"
                   src="/images/sneakerA.png"
                   alt="sneaker1"
-                  width="120"
+                  width="160"
                   height="120"
                 />
                 <img
                   className="home-single-image"
                   src="/images/sneaker2.png"
                   alt="sneaker2"
-                  width="120"
+                  width="160"
                   height="120"
                 />
               </div>
@@ -42,14 +42,14 @@ export class Shop extends React.Component {
                   className="home-single-image"
                   src="/images/sneaker4.png"
                   alt="sneaker3"
-                  width="120"
+                  width="160"
                   height="120"
                 />
                 <img
                   className="home-single-image"
                   src="/images/sneaker3.png"
                   alt="sneaker4"
-                  width="120"
+                  width="160"
                   height="120"
                 />
               </div>

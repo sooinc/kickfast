@@ -1,5 +1,6 @@
 import React from 'react'
 import {Navbar} from './components'
+import Footer from './components/footer'
 import Routes from './routes'
 
 import {loadStripe} from '@stripe/stripe-js'
@@ -14,6 +15,7 @@ const App = () => {
     <Elements stripe={promise}>
       <Navbar />
       <Routes />
+      <Footer />
     </Elements>
   )
 }

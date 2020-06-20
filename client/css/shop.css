@@ -40,7 +40,7 @@
 .shop {
   height: 500px;
   width: 90%;
-  background-color: #e2b4bd;
+  border: 2px solid black;
   margin-top: 40px;
   margin-bottom: 40px;
   display: flex;
@@ -74,23 +74,27 @@
   align-content: center;
 }
 
-a.proxy-name:link,
-a.proxy-name:visited {
+.proxy-tile p {
   font-family: 'merriweather';
-  background-color: rgba(255, 255, 255, 0.3);
-  color: #2a2828;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+  font-size: 20px;
 }
 
-a.proxy-name:hover,
-a.proxy-name:active {
-  font-family: 'merriweather';
-  background-color: #e2b4bd;
-  color: white;
+a.proxy-tile-link:link,
+a.proxy-tile-link:visited {
+  width: 250px;
+  height: 260px;
 }
+
+a.proxy-tile-link:hover,
+a.proxy-tile-link:active {
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+}
+
+/* .proxy-tile-addtocart {
+
+} */
 
 .single-proxy-container {
   display: flex;
