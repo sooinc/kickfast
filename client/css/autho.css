@@ -1,0 +1,27 @@
+.autho-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 500px;
+  font-family: 'merriweather';
+  color: #2a2828;
+}
+
+.autho-form {
+  border: 2px solid #2a2828;
+  height: auto;
+  min-height: 400px;
+  width: 300px;
+}
+
+.autho-button {
+  margin-left: 90px;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  font-family: 'roboto';
+}

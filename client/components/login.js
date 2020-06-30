@@ -2,10 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {login} from '../store/user'
 import {fetchCart} from '../store/cart'
+import '../css/autho.css'
 
-/**
- * COMPONENT
- */
+import TextField from '@material-ui/core/TextField'
+import {Button} from '@material-ui/core'
+
 const Login = (props) => {
   const {error} = props
 
@@ -20,32 +21,41 @@ const Login = (props) => {
   }
 
   return (
-    <div>
-      <form
-        className="pure-form pure-form-aligned"
-        onSubmit={handleSubmit}
-        name="login"
-      >
-        <fieldset>
-          <div className="pure-control-group">
-            <label htmlFor="email">Email</label>
-            <input name="email" type="text" />
-          </div>
-          <div className="pure-control-group">
-            <label htmlFor="password">Password</label>
-            <input name="password" type="password" />
-          </div>
-          <div className="pure-controls">
-            <button className="pure-button button-primary" type="submit">
-              Log In
-            </button>
-          </div>
-          <div className="pure-controls">
-            {error && error.response && (
-              <span className="pure-form-message">{error.response.data}</span>
-            )}
-          </div>
-        </fieldset>
+    <div className="autho-container">
+      <form className="autho-form" onSubmit={handleSubmit} name="login">
+        <h2>Welcome Back!</h2>
+        <div className="pure-controls">
+          {error && error.response && (
+            <span className="error-message">{error.response.data}</span>
+          )}
+        </div>
+        <div className="pure-control-group">
+          <TextField
+            fullWidth
+            id="outlined-size-normal"
+            variant="outlined"
+            margin="normal"
+            label="Email"
+            name="email"
+            type="text"
+          />
+        </div>
+        <div className="pure-control-group">
+          <TextField
+            fullWidth
+            id="outlined-size-normal"
+            variant="outlined"
+            margin="normal"
+            label="Password"
+            name="password"
+            type="password"
+          />
+        </div>
+        <div className="autho-button">
+          <Button variant="outlined" size="large" type="submit">
+            Login
+          </Button>
+        </div>
       </form>
     </div>
   )

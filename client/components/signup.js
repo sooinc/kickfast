@@ -4,10 +4,11 @@ import {connect} from 'react-redux'
 import useForm from './form-validation/useForm-valChange'
 import {validateSignup} from './form-validation/auth-form-errors'
 import {signup} from '../store/user'
+import '../css/autho.css'
 
-/**
- * COMPONENT
- */
+import TextField from '@material-ui/core/TextField'
+import {Button} from '@material-ui/core'
+
 const Signup = (props) => {
   const {values, errors, isDisabled, handleChange} = useForm(validateSignup)
   const {error} = props
@@ -23,60 +24,68 @@ const Signup = (props) => {
   }
 
   return (
-    <div>
-      <form
-        className="pure-form pure-form-aligned"
-        onSubmit={handleSubmit}
-        name="signup"
-      >
-        <fieldset>
-          <div className="pure-control-group">
-            <label htmlFor="name">Name</label>
-            <input
-              name="name"
-              type="text"
-              value={values.name || ''}
-              onChange={handleChange}
-            />
-            {errors.name && <p className="error-message">{errors.name}</p>}
-          </div>
-          <div className="pure-control-group">
-            <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              type="text"
-              value={values.email || ''}
-              onChange={handleChange}
-            />
-            {errors.email && <p className="error-message">{errors.email}</p>}
-          </div>
-          <div className="pure-control-group">
-            <label htmlFor="password">Password</label>
-            <input
-              name="password"
-              type="password"
-              value={values.password || ''}
-              onChange={handleChange}
-            />
-            {errors.password && (
-              <p className="error-message">{errors.password}</p>
-            )}
-          </div>
-          <div className="pure-controls">
-            <button
-              className="pure-button button-primary"
-              type="submit"
-              disabled={isDisabled || false}
-            >
-              Sign Up
-            </button>
-          </div>
-          <div className="pure-controls">
-            {error && error.response && (
-              <span className="pure-form-message">{error.response.data}</span>
-            )}
-          </div>
-        </fieldset>
+    <div className="autho-container">
+      <form className="autho-form" onSubmit={handleSubmit} name="signup">
+        <h2>Create an Account.</h2>
+        <div className="pure-control-group">
+          <TextField
+            fullWidth
+            id="outlined-size-normal"
+            variant="outlined"
+            margin="normal"
+            label="Name"
+            name="name"
+            type="text"
+            value={values.name || ''}
+            onChange={handleChange}
+          />
+          {errors.name && <p className="error-message">{errors.name}</p>}
+        </div>
+        <div className="pure-control-group">
+          <TextField
+            fullWidth
+            id="outlined-size-normal"
+            variant="outlined"
+            margin="normal"
+            label="Email"
+            name="email"
+            type="text"
+            value={values.email || ''}
+            onChange={handleChange}
+          />
+          {errors.email && <p className="error-message">{errors.email}</p>}
+        </div>
+        <div className="pure-control-group">
+          <TextField
+            fullWidth
+            id="outlined-size-normal"
+            variant="outlined"
+            margin="normal"
+            label="Password"
+            name="password"
+            type="password"
+            value={values.password || ''}
+            onChange={handleChange}
+          />
+          {errors.password && (
+            <p className="error-message">{errors.password}</p>
+          )}
+        </div>
+        <div className="autho-button">
+          <Button
+            variant="outlined"
+            size="large"
+            type="submit"
+            disabled={isDisabled || false}
+          >
+            Sign Up
+          </Button>
+        </div>
+        <div className="pure-controls">
+          {error && error.response && (
+            <span className="error-message">{error.response.data}</span>
+          )}
+        </div>
       </form>
     </div>
   )
