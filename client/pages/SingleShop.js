@@ -46,10 +46,10 @@ class SingleShop extends React.Component {
             <div className="single-proxy-image">
               <img
                 className="proxy-tile-image"
-                src="https://images-na.ssl-images-amazon.com/images/I/41CyuoxrPvL._AC_SY355_.jpg"
-                alt="smiley face"
-                width="200"
-                height="200"
+                src={singleProxy.image}
+                alt={singleProxy.name}
+                width="300"
+                height="250"
               />
             </div>
             <div className="single-proxy-details-container">

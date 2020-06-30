@@ -2,6 +2,7 @@ import React from 'react'
 
 const QuantityDropdown = (props) => (
   <select
+    id="quantity"
     name="quantity"
     onChange={(event) => props.handleQtyChange(event.target.value)}
   >

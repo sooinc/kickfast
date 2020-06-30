@@ -99,17 +99,37 @@ a.proxy-tile-link:active {
 .single-proxy-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  width: 90%;
   margin-left: 40px;
 }
 
 .single-proxy-details-container {
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
+  align-self: flex-start;
+  margin-left: 80px;
+  margin-top: 110px;
+  font-family: 'merriweather';
+  color: #2a2828;
 }
 
 .single-proxy-controls-container {
   display: flex;
+}
+
+.single-proxy-qty {
+  width: 100px;
+  height: 30px;
+}
+
+#quantity {
+  width: 100px;
+  height: 30px;
+  font-family: 'merriweather';
+  color: #2a2828;
 }
 
 .single-proxy-addtocart {
