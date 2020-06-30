@@ -29,6 +29,8 @@ export const addToCart = (proxyId, newQty = 1) => {
   return async (dispatch) => {
     try {
       const quantity = {quantity: newQty}
+      console.log('this is id', proxyId)
+      console.log('this is quant', newQty)
       const {data} = await axios.post(`/api/cart/${proxyId}`, quantity)
       dispatch(gotCart(data))
     } catch (err) {

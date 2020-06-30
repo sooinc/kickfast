@@ -15,7 +15,7 @@ const AddToCartButton = (props) => {
         id={productId}
         type="button"
         onClick={
-          (event) => handleAddToCart(event)
+          (event) => handleAddToCart(event, productId)
           // addToast(
           //   `${singleProduct.toUpperCase()} has been added to your cart!`,
           //   {

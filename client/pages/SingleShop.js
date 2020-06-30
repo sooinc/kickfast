@@ -20,10 +20,9 @@ class SingleShop extends React.Component {
     this.props.fetchSingleProxyDispatch(proxyId)
   }
 
-  handleAddToCart(event) {
+  handleAddToCart(event, id) {
     event.preventDefault()
-    let proxyId = event.target.id
-    this.props.addToCartDispatch(proxyId, this.state.quantity)
+    this.props.addToCartDispatch(id, this.state.quantity)
   }
 
   handleQtyChange(value) {

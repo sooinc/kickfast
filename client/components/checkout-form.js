@@ -103,7 +103,7 @@ export class CheckoutForm extends React.Component {
   }
 
   validateForm = () => {
-    let ipAddress = this.props.user.ipAddress
+    let ipAddress = this.props.user.ipAddress || []
     let isRequired = 'is required'
     let isInvalid = 'is invalid'
     let formErrors = this.state.formErrors
