@@ -82,7 +82,7 @@ export class CheckoutForm extends React.Component {
         break
       case 'email':
         email = value.match(/^\S+@\S+\.\S+$/i)
-        fieldValidateErrors.email = email ? '' : 'is invalid'
+        fieldValidateErrors.email = email ? '' : 'Email is invalid.'
         break
       case 'line1':
         if (value.length > 1) fieldValidateErrors.line1 = ''
@@ -91,7 +91,8 @@ export class CheckoutForm extends React.Component {
         if (value.length > 1) fieldValidateErrors.city = ''
         break
       case 'region':
-        if (value.length > 1) fieldValidateErrors.region = ''
+        if (value.length > 1 && value !== 'Select Region')
+          fieldValidateErrors.region = ''
         break
       case 'zip':
         if (value > 1) fieldValidateErrors.zip = ''
@@ -186,7 +187,7 @@ export class CheckoutForm extends React.Component {
     } = this.state
 
     return (
-      <form id="payment-form" onSubmit={this.handleSubmit}>
+      <form id="billing-form" onSubmit={this.handleSubmit}>
         <h2>Billing Information.</h2>
         <TextField
           required
@@ -201,7 +202,6 @@ export class CheckoutForm extends React.Component {
           onChange={this.handleFormChange}
         />
         {formErrors.name && <p className="error-message">{formErrors.name}</p>}
-
         <TextField
           required
           fullWidth
@@ -217,7 +217,6 @@ export class CheckoutForm extends React.Component {
         {formErrors.email && (
           <p className="error-message">{formErrors.email}</p>
         )}
-
         <TextField
           required
           fullWidth
@@ -231,7 +230,6 @@ export class CheckoutForm extends React.Component {
           onChange={this.handleFormChange}
         />
         {formErrors.line1 && <p className="error-message">{formErrors.line}</p>}
-
         <TextField
           fullWidth
           id="outlined-size-normal"
@@ -246,7 +244,6 @@ export class CheckoutForm extends React.Component {
         {formErrors.line2 && (
           <p className="error-message">{formErrors.line2}</p>
         )}
-
         <TextField
           required
           fullWidth
@@ -261,36 +258,53 @@ export class CheckoutForm extends React.Component {
         />
         {formErrors.city && <p className="error-message">{formErrors.city}</p>}
         <br />
-        <label>
-          Country*
-          <CountryDropdown
-            name="country"
-            value={this.state.country}
-            whitelist={['US']}
-            labelType="short"
-            valueType="short"
-            onChange={(val) => this.handleDropDown(val)}
-          />
-          {formErrors.country && (
-            <p className="error-message">{formErrors.country}</p>
-          )}
-        </label>
+        <div className="country-dropdown">
+          <label className="country-region-dropdown-label">
+            Country:*
+            <CountryDropdown
+              name="country"
+              value={this.state.country}
+              whitelist={['US']}
+              labelType="short"
+              valueType="short"
+              onChange={(val) => this.handleDropDown(val)}
+              style={{
+                marginLeft: 15,
+                width: 200,
+                height: 30,
+                fontSize: 15,
+              }}
+            />
+            {formErrors.country && (
+              <p className="error-message">{formErrors.country}</p>
+            )}
+          </label>
+        </div>
+
         <br />
-        <label>
-          State*
-          <RegionDropdown
-            name="region"
-            country={this.state.country}
-            value={this.state.region}
-            countryValueType="short"
-            labelType="short"
-            valueType="short"
-            onChange={(val, name) => this.handleDropDown(val, name)}
-          />
-          {formErrors.region && (
-            <p className="error-message">{formErrors.region}</p>
-          )}
-        </label>
+        <div className="region-dropdown">
+          <label className="country-region-dropdown-label">
+            State:*
+            <RegionDropdown
+              name="region"
+              country={this.state.country}
+              value={this.state.region}
+              countryValueType="short"
+              labelType="short"
+              valueType="short"
+              onChange={(val, name) => this.handleDropDown(val, name)}
+              style={{
+                marginLeft: 32,
+                width: 200,
+                height: 30,
+                fontSize: 15,
+              }}
+            />
+            {formErrors.region && (
+              <p className="error-message">{formErrors.region}</p>
+            )}
+          </label>
+        </div>
 
         <TextField
           required
@@ -306,39 +320,42 @@ export class CheckoutForm extends React.Component {
         />
         {formErrors.zip && <p className="error-message">{formErrors.zip}</p>}
 
-        <h2>Edit I.P. Address.</h2>
-        <ConnectedIpList
-          ipAddress={ipAddress}
-          validateForm={this.validateForm}
-        />
+        <div className="ip-form">
+          <h2>Edit I.P. Address.</h2>
+          <ConnectedIpList
+            ipAddress={ipAddress}
+            validateForm={this.validateForm}
+          />
+        </div>
 
-        <h2>Payment Information.</h2>
-        <CardElement
-          id="card-element"
-          options={{
-            style: {
-              base: {
-                color: '#32325d',
-                fontFamily: 'Arial, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
+        <div className="payment-form">
+          <h2>Payment Information.</h2>
+          <CardElement
+            id="card-element"
+            options={{
+              style: {
+                base: {
                   color: '#32325d',
+                  fontFamily: 'Arial, sans-serif',
+                  fontSmoothing: 'antialiased',
+                  fontSize: '16px',
+                  '::placeholder': {
+                    color: '#32325d',
+                  },
+                },
+                invalid: {
+                  color: '#fa755a',
+                  iconColor: '#fa755a',
                 },
               },
-              invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a',
-              },
-            },
-          }}
-          name="cardElement"
-          onChange={this.handleChange}
-        />
+            }}
+            name="cardElement"
+            onChange={this.handleChange}
+          />
+        </div>
+
         <button
-          // fullWidth
           disabled={processing || disabled || notValid || succeeded}
-          // variant="outlined"
           id="payment-submit-btn"
           type="submit"
         >
@@ -358,7 +375,7 @@ export class CheckoutForm extends React.Component {
             Payment has been successfully processed!
           </p>
         )}
-        <FormErrors formErrors={this.state.formErrors} />
+        {/* <FormErrors formErrors={this.state.formErrors} /> */}
       </form>
     )
   }

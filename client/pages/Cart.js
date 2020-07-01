@@ -98,9 +98,11 @@ export class Cart extends React.Component {
           )
         } else {
           return (
-            <div id="empty-cart">
-              <h1 className="empty-cart">Your cart is empty... </h1>
-              {/* <img src="/images/sad-flower.png"></img> */}
+            <div className="empty-cart">
+              <h1 className="empty-cart-headline">Your cart is empty... </h1>
+              <Link className="empty-cart-shop" to="/shop#shop">
+                Back to Shop
+              </Link>
             </div>
           )
         }

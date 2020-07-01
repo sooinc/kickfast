@@ -73,7 +73,7 @@ a.ccheckout-items-backBtn:active {
   margin: 50px 0px 50px 30px;
 }
 
-#payment-form {
+#billing-form {
   border-right: 1px solid #2a2828;
   border-top: 2px solid #2a2828;
   border-bottom: 2px solid #2a2828;
@@ -82,6 +82,26 @@ a.ccheckout-items-backBtn:active {
   min-height: 600px;
   width: 600px;
   padding: 40px 60px 40px 60px;
+}
+
+.country-dropdown {
+  margin-bottom: 10px;
+}
+.region-dropdown {
+  margin-bottom: 15px;
+}
+
+.country-region-dropdown-label {
+  font-family: 'roboto';
+  color: #2a2828;
+}
+
+.ip-form {
+  margin-top: 20px;
+}
+
+.payment-form {
+  margin-top: 15px;
 }
 
 #payment-submit-btn {
@@ -205,18 +225,21 @@ a.ccheckout-items-backBtn:active {
 .error-message1 {
   color: red;
   font-size: 12px;
-  font-family: 'roboto';
+  font-family: 'Roboto';
   margin-top: 12px;
   margin-left: 12px;
 }
 
 .result-message {
-  line-height: 22px;
+  color: green;
   font-size: 16px;
+  line-height: 20px;
+  margin-top: 12px;
+  text-align: center;
   font-family: 'Roboto';
 }
 .result-message a {
-  color: rgb(89, 111, 214);
+  color: rgb(105, 115, 134);
   font-weight: 600;
   text-decoration: none;
   font-family: 'Roboto';
@@ -224,8 +247,8 @@ a.ccheckout-items-backBtn:active {
 .hidden {
   display: none;
 }
-#card-error {
-  color: rgb(105, 115, 134);
+.card-error {
+  color: red;
   font-size: 16px;
   line-height: 20px;
   margin-top: 12px;

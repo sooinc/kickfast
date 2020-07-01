@@ -44,7 +44,7 @@ class IpList extends React.Component {
       fieldValidateErrors.ipAddress = ''
       this.setState({newIpDisable: false})
     } else if (!newIp) {
-      fieldValidateErrors.ipAddress = 'is invalid'
+      fieldValidateErrors.ipAddress = 'I.P. address is invalid.'
       this.setState({newIpDisable: true})
     } else {
       this.setState({newIpDisable: false})
