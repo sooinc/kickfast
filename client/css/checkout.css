@@ -1,16 +1,93 @@
 .checkout {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  height: auto;
+  min-height: 700px;
+  font-family: 'merriweather';
+  color: #2a2828;
 }
 
 .checkout-form {
-  flex-basis: 60%;
+  display: flex;
+  width: 600px;
+  margin: 50px 0px 50px 30px;
 }
 
+#payment-form {
+  border-right: 2px solid #2a2828;
+  border-top: 4px solid #2a2828;
+  border-bottom: 4px solid #2a2828;
+  border-left: 4px solid #2a2828;
+  height: auto;
+  min-height: 600px;
+  width: 600px;
+  padding: 40px 60px 40px 60px;
+}
+
+.checkout-items {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: auto;
+  min-height: 600px;
+  margin: 50px 30px 50px 0px;
+  padding: 40px 40px 70px 40px;
+  border-left: 2px solid #2a2828;
+  border-top: 4px solid #2a2828;
+  border-bottom: 4px solid #2a2828;
+  border-right: 4px solid #2a2828;
+  border-radius: 5px;
+}
+
+.checkout-items-total {
+  display: flex;
+  /* justify-content: flex-st; */
+  align-items: center;
+  margin: 0px 0px 0px 15px;
+}
+
+.checkout-items-totalprice {
+  width: 85px;
+  margin-left: 15px;
+  font-size: 30px;
+}
+
+a.checkout-items-backBtn:link,
+a.checkout-items-backBtn:visited {
+  display: inline-block;
+  width: 100px;
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #d3d3d3;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Roboto';
+}
+
+a.checkout-items-backBtn:hover,
+a.ccheckout-items-backBtn:active {
+  width: 100px;
+  background-color: #e2b4bd;
+  color: white;
+}
+
+/*-----------------------------*/
+.error-message {
+  color: red;
+  font-size: 12px;
+  font-family: 'roboto';
+  margin-top: 5px;
+}
+/*-----------------------------*/
+
 .cart-items {
-  flex-basis: 40%;
   border: 1px solid #191716;
-  height: 400px;
+
+  height: auto;
+  min-height: 600px;
 }
 
 .result-message {
@@ -41,9 +118,9 @@
   background: white;
   box-sizing: border-box;
 }
-#payment-request-button {
+/* #payment-request-button {
   margin-bottom: 32px;
-}
+} */
 
 /* spinner/processing state, errors */
 .spinner,

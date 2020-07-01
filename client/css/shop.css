@@ -6,7 +6,8 @@
 }
 
 .home {
-  height: 500px;
+  height: auto;
+  min-height: 500px;
   width: 90%;
   background-color: #e2b4bd;
   margin-top: 40px;
@@ -38,7 +39,8 @@
 }
 
 .shop {
-  height: 500px;
+  height: auto;
+  min-height: 500px;
   width: 90%;
   border: 2px solid black;
   margin-top: 40px;
@@ -101,7 +103,8 @@ a.proxy-tile-link:active {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 500px;
+  height: auto;
+  min-height: 500px;
   width: 90%;
   margin-left: 40px;
 }

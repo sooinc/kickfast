@@ -30,7 +30,7 @@ export class Cart extends React.Component {
             <div className="cart">
               <div className="cartTile-container">
                 <div className="cartTile-header">
-                  <h1>Your Shopping Cart</h1>
+                  <h1>Shopping Cart.</h1>
                 </div>
                 {cartItems.map((item) => (
                   <CartTile item={item} showControls={true} key={item.id} />
@@ -38,59 +38,57 @@ export class Cart extends React.Component {
               </div>
 
               <div className="cart-total">
-                <h2 className="cart-total-inside">Subtotal</h2>
-                <h3 className="cart-total-inside">
-                  ${this.total().toFixed(2)}
-                </h3>
+                <div className="cart-total-header">
+                  <div className="cart-total-subtotal">
+                    <h2>Subtotal.</h2>
+                  </div>
+                  <div className="cart-total-price">
+                    <h3>${this.total().toFixed(2)}</h3>
+                  </div>
+                </div>
 
                 {this.props.user.id ? (
-                  <div>
-                    {/* <p>
-                      Email for Receipt Confirmation: {this.props.user.email}
-                    </p>
-                    <Link to="/home">To Edit Email</Link> */}
-                    <div>
-                      <Link
-                        to={{
-                          pathname: '/checkout',
-                          state: {
-                            cartItems: cartItems,
-                          },
-                        }}
-                        className="able"
-                      >
-                        Proceed To Checkout
-                      </Link>
-                    </div>
+                  <div className="cart-total-loggedin">
+                    <Link
+                      to={{
+                        pathname: '/checkout',
+                        state: {
+                          cartItems: cartItems,
+                        },
+                      }}
+                      className="cart-total-link"
+                    >
+                      Proceed to Checkout
+                    </Link>
                   </div>
                 ) : (
-                  <div>
-                    {/* <Link to="/signup">Signup</Link> */}
-                    <Link
-                      to={{
-                        pathname: '/signup',
-                        state: {
-                          from: 'cart',
-                        },
-                      }}
-                    >
-                      Signup
-                    </Link>
-                    <p>or</p>
-                    <Link
-                      to={{
-                        pathname: '/login',
-                        state: {
-                          from: 'cart',
-                        },
-                      }}
-                    >
-                      Login
-                    </Link>
-                    {/* <Link to="login">Login</Link> */}
-                    <div>
-                      <Link to={null} className="disable">
-                        Proceed To Checkout
+                  <div className="cart-total-loggedout">
+                    <p className="cart-total-loggedout-text">
+                      To proceed to checkout:
+                    </p>
+                    <div className="cart-total-loggedout-inner">
+                      <Link
+                        to={{
+                          pathname: '/signup',
+                          state: {
+                            from: 'cart',
+                          },
+                        }}
+                        className="cart-total-link"
+                      >
+                        Sign Up
+                      </Link>
+                      <p>or</p>
+                      <Link
+                        to={{
+                          pathname: '/login',
+                          state: {
+                            from: 'cart',
+                          },
+                        }}
+                        className="cart-total-link"
+                      >
+                        Login
                       </Link>
                     </div>
                   </div>

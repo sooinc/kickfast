@@ -8,6 +8,9 @@ import {getConfirmation} from '../store/checkout'
 import {FormErrors} from '../components/form-validation/checkout-form-errors'
 import ConnectedIpList from '../components/checkout-form-ip'
 
+import TextField from '@material-ui/core/TextField'
+import {Button} from '@material-ui/core'
+
 export class CheckoutForm extends React.Component {
   constructor() {
     super()
@@ -183,183 +186,178 @@ export class CheckoutForm extends React.Component {
     } = this.state
 
     return (
-      <div className="checkout">
-        <div className="checkout-form">
-          <form id="payment-form" onSubmit={this.handleSubmit}>
-            <h2>Billing Information</h2>
-            <label>
-              Name*
-              <input
-                type="text"
-                name="name"
-                value={this.state.name}
-                onChange={this.handleFormChange}
-              />
-              {formErrors.name && (
-                <p className="error-message">{formErrors.name}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              Email*
-              <input
-                type="text"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleFormChange}
-              />
-              {formErrors.email && (
-                <p className="error-message">{formErrors.email}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              Address: Line1*
-              <input
-                type="text"
-                name="line1"
-                value={this.state.line1}
-                onChange={this.handleFormChange}
-              />
-              {formErrors.line1 && (
-                <p className="error-message">{formErrors.line1}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              Address: Line2
-              <input
-                type="text"
-                name="line2"
-                value={this.state.line2}
-                onChange={this.handleFormChange}
-              />
-              {formErrors.line2 && (
-                <p className="error-message">{formErrors.line2}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              City*
-              <input
-                type="text"
-                name="city"
-                value={this.state.city}
-                onChange={this.handleFormChange}
-              />
-              {formErrors.city && (
-                <p className="error-message">{formErrors.city}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              Country*
-              <CountryDropdown
-                name="country"
-                value={this.state.country}
-                whitelist={['US']}
-                labelType="short"
-                valueType="short"
-                onChange={(val) => this.handleDropDown(val)}
-              />
-              {formErrors.country && (
-                <p className="error-message">{formErrors.country}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              State*
-              <RegionDropdown
-                name="region"
-                country={this.state.country}
-                value={this.state.region}
-                countryValueType="short"
-                labelType="short"
-                valueType="short"
-                onChange={(val, name) => this.handleDropDown(val, name)}
-              />
-              {formErrors.region && (
-                <p className="error-message">{formErrors.region}</p>
-              )}
-            </label>
-            <br />
-            <label>
-              Zip*
-              <input
-                type="text"
-                name="zip"
-                value={this.state.zip}
-                onChange={this.handleFormChange}
-              />
-              {formErrors.zip && (
-                <p className="error-message">{formErrors.zip}</p>
-              )}
-            </label>
-            <br />
+      <form id="payment-form" onSubmit={this.handleSubmit}>
+        <h2>Billing Information.</h2>
+        <TextField
+          required
+          fullWidth
+          id="outlined-size-normal"
+          variant="outlined"
+          margin="normal"
+          label="Name"
+          name="name"
+          type="text"
+          value={this.state.name}
+          onChange={this.handleFormChange}
+        />
+        {formErrors.name && <p className="error-message">{formErrors.name}</p>}
 
-            <h2>Confirm IP Address</h2>
-            <ConnectedIpList
-              ipAddress={ipAddress}
-              validateForm={this.validateForm}
-            />
-            <br />
+        <TextField
+          required
+          fullWidth
+          id="outlined-size-normal"
+          variant="outlined"
+          margin="normal"
+          label="Email"
+          name="email"
+          type="text"
+          value={this.state.email}
+          onChange={this.handleFormChange}
+        />
+        {formErrors.email && (
+          <p className="error-message">{formErrors.email}</p>
+        )}
 
-            <h2>Payment Information</h2>
-            <CardElement
-              id="card-element"
-              options={{
-                style: {
-                  base: {
-                    color: '#32325d',
-                    fontFamily: 'Arial, sans-serif',
-                    fontSmoothing: 'antialiased',
-                    fontSize: '16px',
-                    '::placeholder': {
-                      color: '#32325d',
-                    },
-                  },
-                  invalid: {
-                    color: '#fa755a',
-                    iconColor: '#fa755a',
-                  },
+        <TextField
+          required
+          fullWidth
+          id="outlined-size-normal"
+          variant="outlined"
+          margin="normal"
+          label="Address: Line 1"
+          name="line1"
+          type="text"
+          value={this.state.line1}
+          onChange={this.handleFormChange}
+        />
+        {formErrors.line1 && <p className="error-message">{formErrors.line}</p>}
+
+        <TextField
+          fullWidth
+          id="outlined-size-normal"
+          variant="outlined"
+          margin="normal"
+          label="Address: Line 2"
+          name="line2"
+          type="text"
+          value={this.state.line2}
+          onChange={this.handleFormChange}
+        />
+        {formErrors.line2 && (
+          <p className="error-message">{formErrors.line2}</p>
+        )}
+
+        <TextField
+          required
+          fullWidth
+          id="outlined-size-normal"
+          variant="outlined"
+          margin="normal"
+          label="City"
+          name="city"
+          type="text"
+          value={this.state.city}
+          onChange={this.handleFormChange}
+        />
+        {formErrors.city && <p className="error-message">{formErrors.city}</p>}
+
+        <label>
+          Country*
+          <CountryDropdown
+            name="country"
+            value={this.state.country}
+            whitelist={['US']}
+            labelType="short"
+            valueType="short"
+            onChange={(val) => this.handleDropDown(val)}
+          />
+          {formErrors.country && (
+            <p className="error-message">{formErrors.country}</p>
+          )}
+        </label>
+        <br />
+        <label>
+          State*
+          <RegionDropdown
+            name="region"
+            country={this.state.country}
+            value={this.state.region}
+            countryValueType="short"
+            labelType="short"
+            valueType="short"
+            onChange={(val, name) => this.handleDropDown(val, name)}
+          />
+          {formErrors.region && (
+            <p className="error-message">{formErrors.region}</p>
+          )}
+        </label>
+
+        <TextField
+          required
+          fullWidth
+          id="outlined-size-normal"
+          variant="outlined"
+          margin="normal"
+          label="Zip Code"
+          name="zip"
+          type="text"
+          value={this.state.zip}
+          onChange={this.handleFormChange}
+        />
+        {formErrors.zip && <p className="error-message">{formErrors.zip}</p>}
+
+        <h2>Edit IP Address.</h2>
+        <ConnectedIpList
+          ipAddress={ipAddress}
+          validateForm={this.validateForm}
+        />
+
+        <h2>Payment Information.</h2>
+        <CardElement
+          id="card-element"
+          options={{
+            style: {
+              base: {
+                color: '#32325d',
+                fontFamily: 'Arial, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                  color: '#32325d',
                 },
-              }}
-              name="cardElement"
-              onChange={this.handleChange}
-            />
-            <button
-              disabled={processing || disabled || notValid || succeeded}
-              id="submit"
-              type="submit"
-            >
-              <span id="button-text">
-                {processing ? (
-                  <div className="spinner" id="spinner"></div>
-                ) : (
-                  'Pay'
-                )}
-              </span>
-            </button>
+              },
+              invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a',
+              },
+            },
+          }}
+          name="cardElement"
+          onChange={this.handleChange}
+        />
+        <button
+          disabled={processing || disabled || notValid || succeeded}
+          id="submit"
+          type="submit"
+        >
+          <span id="button-text">
+            {processing ? <div className="spinner" id="spinner"></div> : 'Pay'}
+          </span>
+        </button>
 
-            {error && (
-              <div className="card-error" role="alert">
-                {error}
-              </div>
-            )}
+        {error && (
+          <div className="card-error" role="alert">
+            {error}
+          </div>
+        )}
 
-            {succeeded && (
-              <p
-                className={
-                  succeeded ? 'result-message' : 'result-message-hidden'
-                }
-              >
-                Payment has been successfully processed!
-              </p>
-            )}
-          </form>
-          <FormErrors formErrors={this.state.formErrors} />
-        </div>
-      </div>
+        {succeeded && (
+          <p className={succeeded ? 'result-message' : 'result-message-hidden'}>
+            Payment has been successfully processed!
+          </p>
+        )}
+        <FormErrors formErrors={this.state.formErrors} />
+      </form>
     )
   }
 }

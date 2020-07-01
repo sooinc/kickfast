@@ -15,6 +15,7 @@ class ProxyTile extends React.Component {
 
   handleAddToCart(event, id) {
     event.preventDefault()
+
     this.props.addToCartDispatch(id, this.state.quantity)
   }
 

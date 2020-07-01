@@ -49,15 +49,28 @@ export class Checkout extends React.Component {
             )}
           </div> */}
         </div>
-        <div className="cart-items">
+        <div className="checkout-items">
+          <h2>Order Summary.</h2>
           {cartItems
             ? cartItems.map((item) => (
-                <CartTile item={item} showControls={false} key={item.id} />
+                <CartTile
+                  // classname="checkout-items-list"
+                  item={item}
+                  showControls={false}
+                  key={item.id}
+                />
               ))
             : null}
-          <h2>Total</h2>
-          <p>{this.total().toFixed(2)}</p>
-          <Link to="/cart">Back</Link>
+          <div className="checkout-items-total">
+            <h2>Total.</h2>
+            <p className="checkout-items-totalprice">
+              ${this.total().toFixed(2)}
+            </p>
+          </div>
+
+          <Link className="checkout-items-backBtn" to="/cart">
+            Back
+          </Link>
         </div>
       </div>
     )

@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  height: 500px;
+  height: auto;
+  min-height: 500px;
   font-family: 'merriweather';
   color: #2a2828;
 }

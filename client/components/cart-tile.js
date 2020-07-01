@@ -1,8 +1,10 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-
 import {addToCart, deleteCartItem} from '../store/cart'
+
+import {Button, IconButton} from '@material-ui/core'
+import {Remove, Add} from '@material-ui/icons'
 
 class CartTile extends React.Component {
   constructor() {
@@ -39,50 +41,48 @@ class CartTile extends React.Component {
       <div className="cartItem-container">
         <div className="cartItem-image">
           <img
-            src="https://images-na.ssl-images-amazon.com/images/I/41CyuoxrPvL._AC_SY355_.jpg"
-            alt="smiley face"
-            width="90"
-            height="90"
+            className="proxy-tile-image"
+            src={item.image}
+            alt={item.name}
+            width="120"
+            height="110"
           />
         </div>
         <div className="cartItem-name-price">
           <Link to={`/shop/${item.id}`}>{item.name}</Link>
-          <p>
-            {price}
-            {unitPrice}
-          </p>
+          <p className="cartItem-price">{price}</p>
+          <p className="cartItem-unitprice">{unitPrice}</p>
         </div>
         {showControls ? (
           <div className="cartItem-controls-container">
             <div className="cartItem-controls-quantity">
-              <label>Quantity</label>
-              <button
+              <div className="cartItem-qty-label">
+                <label>Quantity:</label>
+              </div>
+              <IconButton
                 id={item.id}
-                className="quantityBtn"
-                type="button"
                 onClick={this.handleDecrease}
                 disabled={quantity <= 1}
               >
-                -
-              </button>
-              <p>{quantity}</p>
-              <button
-                id={item.id}
-                className="quantityBtn"
-                type="button"
-                onClick={this.handleIncrease}
-              >
-                +
-              </button>
+                <Remove />
+              </IconButton>
+              <div className="cartItem-qty">
+                <p>{quantity}</p>
+              </div>
+              <IconButton id={item.id} onClick={this.handleIncrease}>
+                <Add />
+              </IconButton>
             </div>
             <div className="cartItem-controls-delete">
-              <button
+              <Button
+                variant="outlined"
+                size="medium"
                 className="deleteBtn"
                 type="button"
                 onClick={() => this.props.deleteCartItemDispatch(item.id)}
               >
                 Remove From Cart
-              </button>
+              </Button>
             </div>
           </div>
         ) : (
