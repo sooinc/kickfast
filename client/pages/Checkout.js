@@ -53,12 +53,7 @@ export class Checkout extends React.Component {
           <h2>Order Summary.</h2>
           {cartItems
             ? cartItems.map((item) => (
-                <CartTile
-                  // classname="checkout-items-list"
-                  item={item}
-                  showControls={false}
-                  key={item.id}
-                />
+                <CartTile item={item} showControls={false} key={item.id} />
               ))
             : null}
           <div className="checkout-items-total">

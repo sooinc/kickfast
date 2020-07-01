@@ -260,7 +260,7 @@ export class CheckoutForm extends React.Component {
           onChange={this.handleFormChange}
         />
         {formErrors.city && <p className="error-message">{formErrors.city}</p>}
-
+        <br />
         <label>
           Country*
           <CountryDropdown
@@ -306,7 +306,7 @@ export class CheckoutForm extends React.Component {
         />
         {formErrors.zip && <p className="error-message">{formErrors.zip}</p>}
 
-        <h2>Edit IP Address.</h2>
+        <h2>Edit I.P. Address.</h2>
         <ConnectedIpList
           ipAddress={ipAddress}
           validateForm={this.validateForm}
@@ -336,8 +336,10 @@ export class CheckoutForm extends React.Component {
           onChange={this.handleChange}
         />
         <button
+          // fullWidth
           disabled={processing || disabled || notValid || succeeded}
-          id="submit"
+          // variant="outlined"
+          id="payment-submit-btn"
           type="submit"
         >
           <span id="button-text">

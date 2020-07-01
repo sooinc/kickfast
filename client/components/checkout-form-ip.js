@@ -3,6 +3,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {addingIp, removingIp} from '../store/user'
 
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded'
+import TextField from '@material-ui/core/TextField'
+import {IconButton, Button} from '@material-ui/core'
+
 class IpList extends React.Component {
   constructor() {
     super()
@@ -59,9 +63,10 @@ class IpList extends React.Component {
     this.setState({newIp: ''})
   }
 
-  handleDelete = async (event) => {
+  handleDelete = async (event, ip) => {
     event.preventDefault()
-    await this.props.removingIp(event.target.value)
+    console.log(ip)
+    await this.props.removingIp(ip)
     this.props.validateForm()
     this.setState({formErrors: {ipAddress: ' '}})
   }
@@ -71,37 +76,48 @@ class IpList extends React.Component {
     let ipAddresses = ipAddress ? ipAddress : []
     let {newIp, newIpDisable, formErrors} = this.state
     return (
-      <div>
-        <ul>
-          {ipAddresses.map((ip) => {
-            return (
-              <li key={ip}>
-                {ip}
-                <button type="button" value={ip} onClick={this.handleDelete}>
-                  X
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-        <input
-          id="newIp"
-          name="newIp"
-          type="text"
-          value={newIp}
-          onChange={this.handleChange}
-        />
-        <button
-          id="addNewIp"
-          type="button"
-          onClick={this.handleAdd}
-          disabled={newIpDisable}
-        >
-          Add
-        </button>
+      <div className="edit-ip-container">
+        <div className="edit-ip-input">
+          <TextField
+            id="outlined-size-normal"
+            variant="outlined"
+            margin="normal"
+            label="I.P. Address"
+            helperText="Add up to 3."
+            name="newIp"
+            type="text"
+            value={newIp}
+            onChange={this.handleChange}
+          />
+          <div className="edit-ip-input-btn">
+            <Button
+              fullWidth
+              variant="outlined"
+              size="large"
+              type="submit"
+              id="addNewIp"
+              onClick={this.handleAdd}
+              disabled={newIpDisable}
+            >
+              Add
+            </Button>
+          </div>
 
+          <div className="edit-ip-list">
+            {ipAddresses.map((ip) => {
+              return (
+                <div key={ip}>
+                  <IconButton onClick={(event) => this.handleDelete(event, ip)}>
+                    <DeleteRoundedIcon />
+                  </IconButton>
+                  {ip}
+                </div>
+              )
+            })}
+          </div>
+        </div>
         {formErrors.ipAddress && (
-          <p className="error-message">{formErrors.ipAddress}</p>
+          <p className="error-message1">{formErrors.ipAddress}</p>
         )}
       </div>
     )

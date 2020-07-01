@@ -8,22 +8,13 @@
   color: #2a2828;
 }
 
-.checkout-form {
-  display: flex;
-  width: 600px;
-  margin: 50px 0px 50px 30px;
-}
+/*-----------------------------*/
 
-#payment-form {
-  border-right: 2px solid #2a2828;
-  border-top: 4px solid #2a2828;
-  border-bottom: 4px solid #2a2828;
-  border-left: 4px solid #2a2828;
+/* .cart-items {
+  border: 1px solid #191716;
   height: auto;
   min-height: 600px;
-  width: 600px;
-  padding: 40px 60px 40px 60px;
-}
+} */
 
 .checkout-items {
   display: flex;
@@ -33,16 +24,15 @@
   min-height: 600px;
   margin: 50px 30px 50px 0px;
   padding: 40px 40px 70px 40px;
-  border-left: 2px solid #2a2828;
-  border-top: 4px solid #2a2828;
-  border-bottom: 4px solid #2a2828;
-  border-right: 4px solid #2a2828;
+  border-left: 1px solid #2a2828;
+  border-top: 2px solid #2a2828;
+  border-bottom: 2px solid #2a2828;
+  border-right: 2px solid #2a2828;
   border-radius: 5px;
 }
 
 .checkout-items-total {
   display: flex;
-  /* justify-content: flex-st; */
   align-items: center;
   margin: 0px 0px 0px 15px;
 }
@@ -65,6 +55,7 @@ a.checkout-items-backBtn:visited {
   text-align: center;
   text-decoration: none;
   font-family: 'Roboto';
+  text-transform: uppercase;
 }
 
 a.checkout-items-backBtn:hover,
@@ -75,40 +66,81 @@ a.ccheckout-items-backBtn:active {
 }
 
 /*-----------------------------*/
-.error-message {
-  color: red;
-  font-size: 12px;
+
+.checkout-form {
+  display: flex;
+  width: 600px;
+  margin: 50px 0px 50px 30px;
+}
+
+#payment-form {
+  border-right: 1px solid #2a2828;
+  border-top: 2px solid #2a2828;
+  border-bottom: 2px solid #2a2828;
+  border-left: 2px solid #2a2828;
+  height: auto;
+  min-height: 600px;
+  width: 600px;
+  padding: 40px 60px 40px 60px;
+}
+
+#payment-submit-btn {
+  margin: 15px 15px 15px 38.5px;
+  background: #e2b4bd;
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  border-radius: 5px;
+  border: 0;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: block;
+  transition: all 0.2s ease;
+  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+  width: 400px;
+  text-transform: uppercase;
+}
+#payment-submit-btn:hover {
+  filter: contrast(115%);
+}
+#payment-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/*-----------------------------*/
+
+.edit-ip-container {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 60px;
+}
+.edit-ip-input {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 60px;
+}
+
+.edit-ip-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 15px;
+  margin-right: 25px;
   font-family: 'roboto';
-  margin-top: 5px;
+}
+
+.edit-ip-input-btn {
+  margin-left: 15px;
+  margin-right: 30px;
+  width: 60px;
 }
 /*-----------------------------*/
 
-.cart-items {
-  border: 1px solid #191716;
-
-  height: auto;
-  min-height: 600px;
-}
-
-.result-message {
-  line-height: 22px;
-  font-size: 16px;
-}
-.result-message a {
-  color: rgb(89, 111, 214);
-  font-weight: 600;
-  text-decoration: none;
-}
-.hidden {
-  display: none;
-}
-#card-error {
-  color: rgb(105, 115, 134);
-  font-size: 16px;
-  line-height: 20px;
-  margin-top: 12px;
-  text-align: center;
-}
 #card-element {
   border-radius: 4px 4px 0 0;
   padding: 12px;
@@ -118,9 +150,6 @@ a.ccheckout-items-backBtn:active {
   background: white;
   box-sizing: border-box;
 }
-/* #payment-request-button {
-  margin-bottom: 32px;
-} */
 
 /* spinner/processing state, errors */
 .spinner,
@@ -169,4 +198,37 @@ a.ccheckout-items-backBtn:active {
   transform-origin: 0px 10.2px;
   -webkit-animation: loading 2s infinite ease;
   animation: loading 2s infinite ease;
+}
+
+/*-----------------------------*/
+
+.error-message1 {
+  color: red;
+  font-size: 12px;
+  font-family: 'roboto';
+  margin-top: 12px;
+  margin-left: 12px;
+}
+
+.result-message {
+  line-height: 22px;
+  font-size: 16px;
+  font-family: 'Roboto';
+}
+.result-message a {
+  color: rgb(89, 111, 214);
+  font-weight: 600;
+  text-decoration: none;
+  font-family: 'Roboto';
+}
+.hidden {
+  display: none;
+}
+#card-error {
+  color: rgb(105, 115, 134);
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 12px;
+  text-align: center;
+  font-family: 'Roboto';
 }
