@@ -1,9 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-
 import {getConfirmedOrder} from '../store/checkout'
 import {me} from '../store/user'
+import CartTile from '../components/cart-tile'
+import '../css/confirmation.css'
 
 class Confirmation extends React.Component {
   componentDidMount() {
@@ -35,33 +36,45 @@ class Confirmation extends React.Component {
         )
       case 'done':
         return (
-          <div>
-            <h1>Hey {user.name},</h1>
+          <div className="confirmation">
+            <h1>Hi&nbsp;{user.name}!</h1>
             <h3>
               Thanks for shopping at KickFast. Please check your email (
-              {order.billingEmail}) for your receipt!
+              {order.billingEmail}) for your receipt.
             </h3>
-            <h3>Order Confirmation Number:&nbsp;{order.id}</h3>
-            <h3>For I.P. Address:</h3>
-            {user.ipAddress.map((ip) => {
-              return <p key={ip}>-{ip}</p>
-            })}
-            {order.proxies.map((item) => (
-              <div key={item.id} id="confirmation-tile">
-                <ul>
-                  {/* <img src={item.image}></img> */}
-                  <li>{item.name}</li>
-                  <p>Quantity: {item.orderItem.quantity}</p>
-                  <p>
-                    Subtotal: ${item.price * item.orderItem.quantity.toFixed(2)}{' '}
-                  </p>
-                </ul>
+            <h3>Order Confirmation.&nbsp;&nbsp;#{order.id}</h3>
+            <div className="confirmation-ip">
+              <h3>For I.P. Address.&nbsp;&nbsp;</h3>
+              {user.ipAddress
+                ? user.ipAddress.map((ip, idx) => {
+                    if (idx === user.ipAddress.length - 1) {
+                      return <p key={ip}>{ip}</p>
+                    } else {
+                      return <p key={ip}>{ip},</p>
+                    }
+                  })
+                : null}
+            </div>
+            <div className="confirmation-items">
+              {order.proxies.map((item) => (
+                <CartTile item={item} showControls={false} key={item.id} />
+              ))}
+              <div className="confirmation-items-total">
+                <h2>Total.</h2>
+                <p className="confirmation-items-totalprice">
+                  {' '}
+                  ${this.total(order.proxies)}
+                </p>
               </div>
-            ))}
-            <div>
-              <h3>Total: ${this.total(order.proxies)}</h3>
-              <Link to="/shop">Return to Shop</Link>&nbsp;<p>or</p>&nbsp;
-              <Link to="/home">View your Account</Link>
+            </div>
+            <div className="confirmation-links-container">
+              <Link className="confirmation-link-shop" to="/shop">
+                Return to Shop
+              </Link>
+              <p>or</p>
+              <Link className="confirmation-link-account" to="/home">
+                Go to your Account
+              </Link>
             </div>
           </div>
         )

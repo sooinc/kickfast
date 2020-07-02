@@ -1,0 +1,95 @@
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: auto;
+  min-height: 400px;
+  margin: 50px 250px 50px 250px;
+  font-family: 'merriweather';
+  color: #2a2828;
+}
+
+.confirmation-ip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirmation-ip p {
+  margin-right: 10px;
+}
+
+.confirmation-links-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a.confirmation-link-shop:link,
+a.confirmation-link-shop:visited {
+  height: 20px;
+  width: 120px;
+  margin-right: 15px;
+  padding: 5px 10px;
+  border-bottom: 1px solid #2a2828;
+  border-radius: 0px;
+  color: #2a2828;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Roboto';
+}
+
+a.confirmation-link-shop:hover,
+a.confirmation-link-shop:active {
+  background-color: #e2b4bd;
+  color: white;
+  border-bottom: 1px solid #e2b4bd;
+}
+
+a.confirmation-link-account:link,
+a.confirmation-link-account:visited {
+  height: 20px;
+  width: 150px;
+  margin-left: 15px;
+  padding: 5px 10px;
+  border-bottom: 1px solid #2a2828;
+  border-radius: 0px;
+  color: #2a2828;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Roboto';
+}
+
+a.confirmation-link-account:hover,
+a.confirmation-link-account:active {
+  background-color: #e2b4bd;
+  color: white;
+  border-bottom: 1px solid #e2b4bd;
+}
+
+.confirmation-items {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: auto;
+  min-height: 100px;
+  margin: 30px 30px 30px 0px;
+  padding: 40px 40px 0px 40px;
+  border-left: 2px solid #2a2828;
+  border-top: 2px solid #2a2828;
+  border-bottom: 2px solid #2a2828;
+  border-right: 2px solid #2a2828;
+  border-radius: 5px;
+}
+
+.confirmation-items-total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.confirmation-items-totalprice {
+  width: 85px;
+  margin-left: 15px;
+  font-size: 30px;
+}

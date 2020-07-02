@@ -40,7 +40,7 @@ export const UserHome = (props) => {
   return (
     <div className="userhome">
       <div className="account-info">
-        <h1>Welcome, {name}!</h1>
+        <h1>Welcome,&nbsp;{name}!</h1>
         <h4>Email:&nbsp;&nbsp;{email}</h4>
         <div className="ip-info">
           <h4>I.P. Address(es):</h4>
