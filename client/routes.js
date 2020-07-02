@@ -28,6 +28,7 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route exact path="/" component={ConnectedShop} />
         <Route exact path="/shop" component={ConnectedShop} />
+        <Route exact path="/shop#shop" component={ConnectedShop} />
         <Route exact path="/shop/:proxyId" component={ConnectedSingleShop} />
         <Route exact path="/cart" component={ConnectedCart} />
         <Route exact path="/checkout" component={ConnectedCheckout} />

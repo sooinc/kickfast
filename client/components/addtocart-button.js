@@ -1,11 +1,11 @@
 import React from 'react'
 import {Button} from '@material-ui/core'
-// import {useToasts} from 'react-toast-notifications'
+import {useToasts} from 'react-toast-notifications'
 
 const AddToCartButton = (props) => {
   let {productId, singleProduct, handleAddToCart, className} = props
 
-  // const {addToast} = useToasts()
+  const {addToast} = useToasts()
   return (
     <div>
       <Button
@@ -14,16 +14,15 @@ const AddToCartButton = (props) => {
         className={className}
         id={productId}
         type="button"
-        onClick={
-          (event) => handleAddToCart(event, productId)
-          // addToast(
-          //   `${singleProduct.toUpperCase()} has been added to your cart!`,
-          //   {
-          //     appearance: 'success',
-          //     autoDismiss: true
-          //   },
-          //   handleAddToCart(event)
-          // )
+        onClick={(event) =>
+          addToast(
+            `${singleProduct.toUpperCase()} has been added to your cart!`,
+            {
+              appearance: 'success',
+              autoDismiss: true,
+            },
+            handleAddToCart(event, productId)
+          )
         }
       >
         Add To Cart

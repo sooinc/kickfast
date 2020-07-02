@@ -47,7 +47,7 @@ export const UserHome = (props) => {
             ? ipAddress.map((ip) => {
                 return <li key={ip}>{ip}</li>
               })
-            : null}
+            : 'N/A'}
         </ul>
         <h2>Active Proxy:</h2>
       </div>
