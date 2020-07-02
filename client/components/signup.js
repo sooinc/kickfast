@@ -27,6 +27,11 @@ const Signup = (props) => {
     <div className="autho-container">
       <form className="autho-form" onSubmit={handleSubmit} name="signup">
         <h2>Create an Account.</h2>
+        <div className="pure-controls">
+          {error && error.response.data.includes('Failed') && (
+            <span className="error-message">{error.response.data}</span>
+          )}
+        </div>
         <div className="pure-control-group">
           <TextField
             fullWidth
@@ -80,11 +85,6 @@ const Signup = (props) => {
           >
             Sign Up
           </Button>
-        </div>
-        <div className="pure-controls">
-          {error && error.response && (
-            <span className="error-message">{error.response.data}</span>
-          )}
         </div>
       </form>
     </div>

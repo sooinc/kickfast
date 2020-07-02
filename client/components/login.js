@@ -17,7 +17,6 @@ const Login = (props) => {
     const path = props.location.state ? `/${props.location.state.from}` : null
     await props.login(email, password, path)
     await props.fetchCart()
-    // dispatch(login(email, password)).then(() => dispatch(fetchCart()))
   }
 
   return (
@@ -25,7 +24,7 @@ const Login = (props) => {
       <form className="autho-form" onSubmit={handleSubmit} name="login">
         <h2>Welcome Back!</h2>
         <div className="pure-controls">
-          {error && error.response && (
+          {error && error.response.data.includes('Wrong') && (
             <span className="error-message">{error.response.data}</span>
           )}
         </div>

@@ -15,7 +15,7 @@ export function validateEmail(values, compare) {
 }
 
 //needing to check if the oldPassword matches
-//and if the newpassword matches the newpassword2 should be in backend
+//and if the newpassword matches the newpassword2 should be in backend as well
 export function validatePassword(values) {
   let errors = {}
 

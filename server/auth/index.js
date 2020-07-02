@@ -9,11 +9,11 @@ router.post('/login', async (req, res, next) => {
       where: {email: req.body.email.toLowerCase()},
     })
     if (!user) {
-      console.log('No such user found:', req.body.email)
-      res.status(401).send('Wrong username and/or password')
+      console.log('No such email found:', req.body.email)
+      res.status(401).send('Wrong email and/or password')
     } else if (!user.correctPassword(req.body.password)) {
       console.log('Incorrect password for user:', req.body.email)
-      res.status(401).send('Wrong username and/or password')
+      res.status(401).send('Wrong email and/or password')
     } else {
       req.login(user, (err) => (err ? next(err) : res.json(user)))
       if (req.session.cartId) {
@@ -30,7 +30,6 @@ router.post('/signup', async (req, res, next) => {
     const user = await User.create(req.body)
     req.login(user, (err) => (err ? next(err) : res.json(user)))
     if (req.session.cartId) {
-      console.log('inside signup')
       saveToUser(req)
     }
   } catch (err) {
@@ -50,15 +49,18 @@ router.put('/edit-email', async (req, res, next) => {
     const user = await User.findByPk(req.user.id)
 
     if (newEmail === user.email) {
-      res.status(401).send('Same as previous email.')
+      res.status(401).send('Same as current email.')
     } else {
       await user.update({email: newEmail})
-      res.status(201).send(user)
+      // res.status(201).send(user)
+      res
+        .status(201)
+        .send({user: user, message: 'Email has been successfully updated!'})
     }
   } catch (err) {
     console.log('this is err name', err.name)
     if (err.name === 'SequelizeUniqueConstraintError') {
-      res.status(401).send('Update Failed: User already exists in system.')
+      res.status(401).send('Update Failed: User is already exists in system.')
     } else if (err.name === 'SequelizeValidationError') {
       res.status(401).send('Update Failed: Email is not a valid email.')
     } else {
@@ -77,7 +79,10 @@ router.put('/edit-password', async (req, res, next) => {
     if (user.correctPassword(oldPW)) {
       if (newPW.length >= 6 && newPW === newPW2) {
         await user.update({password: newPW})
-        res.status(201).send(user)
+        res.status(201).send({
+          user: user,
+          message: 'Password has been successfully updated!',
+        })
       } else {
         res.status(401).send('Update Failed: Something went wrong.')
       }

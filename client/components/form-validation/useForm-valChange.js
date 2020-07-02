@@ -7,6 +7,8 @@ const useForm = (validate, callback, compare = null) => {
   const [isEvaluating, setIsEvaluating] = useState(false)
   const [isSucceeded, setIsSucceeded] = useState(false)
 
+  //isSucceeded only indicates front-end validation. if true, it clears the input.
+  //there can still be an error (or success) from the back-end (refer to emailForm)
   useEffect(() => {
     if (isSucceeded) {
       for (let key in values) {
@@ -18,12 +20,13 @@ const useForm = (validate, callback, compare = null) => {
     }
   }, [isSucceeded])
 
-  //Listens to changes in values. if they are runs it thru validate to setError
-  useEffect(() => {
-    if (Object.keys(values).length > 0) {
-      setErrors(validate(values, compare))
-    }
-  }, [values])
+  //we know the submit is able only if it passes validation so we can call callback here
+  const handleSubmit = (event) => {
+    if (event) event.preventDefault()
+    callback()
+
+    setIsSucceeded(true)
+  }
 
   //listens to any changes to error; if there are no keys in error object, set the button disable to false
   //NOTE: because error starts with 0 keys, we must also check to see if isEvaluating is set to true
@@ -35,13 +38,12 @@ const useForm = (validate, callback, compare = null) => {
     }
   }, [errors])
 
-  //we know the submit is able only if it passes validation so we can call callback here
-  const handleSubmit = (event) => {
-    if (event) event.preventDefault()
-    callback()
-
-    setIsSucceeded(true)
-  }
+  //Listens to changes in values. if they are runs it thru validate to setError
+  useEffect(() => {
+    if (Object.keys(values).length > 0) {
+      setErrors(validate(values, compare))
+    }
+  }, [values])
 
   const handleChange = (event) => {
     event.persist()
@@ -64,6 +66,7 @@ const useForm = (validate, callback, compare = null) => {
     values,
     errors,
     isDisabled,
+    isSucceeded,
   }
 }
 

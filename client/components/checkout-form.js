@@ -382,7 +382,7 @@ export class CheckoutForm extends React.Component {
 }
 
 const stateToProps = (state) => ({
-  user: state.user,
+  user: state.user.user,
   error: state.checkout.error,
   status: state.checkout.status,
 })

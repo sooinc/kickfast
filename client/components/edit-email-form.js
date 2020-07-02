@@ -1,54 +1,62 @@
-import React, {useState} from 'react'
+/* eslint-disable complexity */
+import React from 'react'
 import {connect} from 'react-redux'
 import useForm from './form-validation/useForm-valChange'
 import {validateEmail} from './form-validation/auth-form-errors'
 import {editEmail} from '../store/user'
 
+import TextField from '@material-ui/core/TextField'
+import {Button} from '@material-ui/core'
+
 const EmailForm = (props) => {
-  const {
-    values,
-    errors,
-    isDisabled,
-    isSucceeded,
-    handleChange,
-    handleSubmit,
-  } = useForm(validateEmail, editEmailCB, props.email)
-  const {error} = props
-  // const [succeeded, setSucceeded] = useState(false)
+  const {values, errors, isDisabled, handleChange, handleSubmit} = useForm(
+    validateEmail,
+    editEmailCB,
+    props.email
+  )
+  const {error, success} = props
 
   async function editEmailCB() {
     console.log('final', values)
-    await props.editEmail(values.email)
     console.log('error', error)
-    console.log('isSucceeded', isSucceeded)
-    // if (error && error.response) {
-    //   setSucceeded(false)
-    // } else {
-    //   setSucceeded(true)
-    // }
+    await props.editEmail(values.email)
   }
 
   return (
     <div>
-      <form id="edit-account" onSubmit={handleSubmit}>
-        <label>
-          Email*
-          <input
-            name="email"
-            type="text"
-            value={values.email || ''}
-            onChange={handleChange}
-          />
-          {errors.email && <p className="error-message">{errors.email}</p>}
-        </label>
-        <button name="submit" type="submit" disabled={isDisabled || false}>
+      <form className="edit-form" onSubmit={handleSubmit}>
+        <TextField
+          required
+          fullWidth
+          id="outlined-size-normal"
+          variant="outlined"
+          margin="normal"
+          label="New Email"
+          name="email"
+          type="text"
+          value={values.email || ''}
+          onChange={handleChange}
+        />
+        {errors.email && <p className="error-message">{errors.email}</p>}
+        <Button
+          variant="outlined"
+          size="large"
+          name="submit"
+          type="submit"
+          disabled={isDisabled || false}
+        >
           Submit Changes
-        </button>
-        {console.log('isSucceeded', isSucceeded)}
-        {isSucceeded && <p>Email has been successfully updated!</p>}
+        </Button>
+
         {error && error.response ? (
-          <span className="pure-form-message">{error.response.data}</span>
+          <span className="error-message">{error.response.data}</span>
         ) : null}
+
+        {success && (
+          <p className={success ? 'result-message' : 'result-message-hidden'}>
+            {success ? success : null}
+          </p>
+        )}
       </form>
     </div>
   )
@@ -56,6 +64,7 @@ const EmailForm = (props) => {
 
 const mapState = (state) => ({
   error: state.user.error,
+  success: state.user.success,
 })
 
 const mapDispatch = (dispatch) => ({

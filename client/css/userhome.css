@@ -1,0 +1,38 @@
+.userhome {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: auto;
+  min-height: 500px;
+  margin: 50px 50px 50px 70px;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-info-buttons {
+  display: flex;
+}
+
+.edit-form {
+  height: auto;
+  min-height: 150px;
+  width: 500px;
+  margin-right: 70px;
+  border: 2px solid #2a2828;
+}
+
+.error-message {
+  margin-left: 15px;
+  margin-top: 5px;
+  color: red;
+  font-size: 12px;
+  font-family: 'roboto';
+}

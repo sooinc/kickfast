@@ -74,7 +74,7 @@ class Confirmation extends React.Component {
 }
 
 const stateToProps = (state) => ({
-  user: state.user,
+  user: state.user.user,
   status: state.checkout.status,
   order: state.checkout.confirmedOrder,
 })

@@ -6,17 +6,30 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+
 /**
  * ACTION CREATORS
  */
-export const getUser = (user, error) => ({type: GET_USER, user, error})
+export const getUser = (user, success, error) => ({
+  type: GET_USER,
+  user,
+  success,
+  error,
+})
+
 export const removeUser = () => ({type: REMOVE_USER})
 
-const defaultUser = {}
+/**
+ * INITIAL STATE
+ */
+const defaultUser = {
+  user: {},
+}
 
 /**
  * THUNK CREATORS
  */
+
 export const me = () => async (dispatch) => {
   try {
     const res = await axios.get('/auth/me')
@@ -32,7 +45,7 @@ export const login = (email, password, redirect = null) => {
     try {
       res = await axios.post(`/auth/login`, {email, password})
     } catch (authError) {
-      return dispatch(getUser(null, authError))
+      return dispatch(getUser(null, null, authError))
     }
 
     try {
@@ -40,7 +53,7 @@ export const login = (email, password, redirect = null) => {
       if (redirect) {
         history.push(redirect)
       } else {
-        history.push('/shop')
+        history.push('/userhome')
       }
     } catch (dispatchOrHistoryErr) {
       console.error(dispatchOrHistoryErr)
@@ -54,7 +67,7 @@ export const signup = (name, email, password, redirect = null) => {
     try {
       res = await axios.post(`/auth/signup`, {name, email, password})
     } catch (authError) {
-      return dispatch(getUser(null, authError))
+      return dispatch(getUser(null, null, authError))
     }
     try {
       dispatch(getUser(res.data))
@@ -62,7 +75,7 @@ export const signup = (name, email, password, redirect = null) => {
       if (redirect) {
         history.push(redirect)
       } else {
-        history.push('/shop')
+        history.push('/userhome')
       }
     } catch (dispatchOrHistoryErr) {
       console.error(dispatchOrHistoryErr)
@@ -75,10 +88,10 @@ export const editEmail = (email) => async (dispatch) => {
   try {
     res = await axios.put(`/auth/edit-email`, {email})
   } catch (authError) {
-    return dispatch(getUser(null, authError))
+    return dispatch(getUser(null, null, authError))
   }
   try {
-    dispatch(getUser(res.data))
+    dispatch(getUser(res.data.user, res.data.message))
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -93,10 +106,10 @@ export const editPassword = (oldPW, newPW, newPW2) => async (dispatch) => {
       newPW2,
     })
   } catch (authError) {
-    return dispatch(getUser(null, authError))
+    return dispatch(getUser(null, null, authError))
   }
   try {
-    dispatch(getUser(res.data))
+    dispatch(getUser(res.data.user, res.data.message))
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -108,7 +121,7 @@ export const addingIp = (newIp) => {
       const {data} = await axios.put('/auth/addIp', {newIp})
       dispatch(getUser(data))
     } catch (authError) {
-      dispatch(getUser(null, authError))
+      dispatch(getUser(null, null, authError))
     }
   }
 }
@@ -119,26 +132,10 @@ export const removingIp = (newIp) => {
       const {data} = await axios.put('/auth/removeIp', {newIp})
       dispatch(getUser(data))
     } catch (authError) {
-      dispatch(getUser(null, authError))
+      dispatch(getUser(null, null, authError))
     }
   }
 }
-
-// export const auth = (email, password, method) => async dispatch => {
-//   let res
-//   try {
-//     res = await axios.post(`/auth/${method}`, {email, password})
-//   } catch (authError) {
-//     return dispatch(getUser({error: authError}))
-//   }
-
-//   try {
-//     dispatch(getUser(res.data))
-//     history.push('/home')
-//   } catch (dispatchOrHistoryErr) {
-//     console.error(dispatchOrHistoryErr)
-//   }
-// }
 
 export const logout = () => async (dispatch) => {
   try {
@@ -154,9 +151,23 @@ export default function (state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
       if (!action.error) {
-        return action.user
+        if (!action.success) {
+          return {
+            ...state,
+            user: action.user,
+            success: null,
+            error: null,
+          }
+        } else {
+          return {
+            ...state,
+            user: action.user,
+            success: action.success,
+            error: null,
+          }
+        }
       } else {
-        return {...state, error: action.error}
+        return {...state, error: action.error, success: null}
       }
     case REMOVE_USER:
       return defaultUser

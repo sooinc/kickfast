@@ -2,6 +2,9 @@ import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import EmailForm from './edit-email-form'
 import PasswordForm from './edit-password-form'
+import {me} from '../store/user'
+import '../css/userhome.css'
+
 import {Button} from '@material-ui/core'
 
 export const UserHome = (props) => {
@@ -9,7 +12,8 @@ export const UserHome = (props) => {
   const [showEditPassword, setShowEditPassword] = useState(false)
   const {name, email, ipAddress} = props.user
 
-  const handleShowEmail = () => {
+  const handleShowEmail = async () => {
+    await props.me()
     if (showEditPassword) {
       setShowEditPassword(false)
       setShowEditEmail(true)
@@ -20,7 +24,8 @@ export const UserHome = (props) => {
     }
   }
 
-  const handleShowPassword = () => {
+  const handleShowPassword = async () => {
+    await props.me()
     if (showEditEmail) {
       setShowEditEmail(false)
       setShowEditPassword(true)
@@ -32,11 +37,11 @@ export const UserHome = (props) => {
   }
 
   return (
-    <div>
-      <div>
-        <h2>Welcome, {name}!</h2>
+    <div className="userhome">
+      <div className="account-info">
+        <h1>Welcome, {name}!</h1>
         <h4>Email:&nbsp;{email}</h4>
-        <h4>IP Addresses:</h4>
+        <h4>I.P. Address(es):</h4>
         <ul>
           {ipAddress
             ? ipAddress.map((ip) => {
@@ -44,47 +49,31 @@ export const UserHome = (props) => {
               })
             : null}
         </ul>
+        <h2>Active Proxy:</h2>
       </div>
 
-      <div>
-        <Button
-          name="Edit"
-          type="button"
-          onClick={handleShowEmail}
-          variant="outlined"
-          color="primary"
-        >
-          Edit Email
-        </Button>
-        <Button
-          name="Edit"
-          type="button"
-          onClick={handleShowPassword}
-          variant="outlined"
-          color="primary"
-        >
-          Edit Password
-        </Button>
-
+      <div className="edit-info">
+        <div className="edit-info-buttons">
+          <Button variant="outlined" type="button" onClick={handleShowEmail}>
+            Edit Email
+          </Button>
+          <Button variant="outlined" type="button" onClick={handleShowPassword}>
+            Edit Password
+          </Button>
+        </div>
         {showEditEmail ? <EmailForm email={email} /> : null}
         {showEditPassword ? <PasswordForm /> : null}
-
-        {/* <div className="pure-controls">
-          {console.log('this is error', props.error)}
-          {props.error && props.error.response && (
-            <span className="pure-form-message">
-              {props.error.response.data}
-            </span>
-          )}
-        </div> */}
       </div>
     </div>
   )
 }
 
 const mapState = (state) => ({
-  user: state.user,
-  // error: state.user.error,
+  user: state.user.user,
 })
 
-export default connect(mapState, null)(UserHome)
+const mapDispatch = (dispatch) => ({
+  me: () => dispatch(me()),
+})
+
+export default connect(mapState, mapDispatch)(UserHome)
