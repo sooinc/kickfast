@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import EmailForm from './edit-email-form'
 import PasswordForm from './edit-password-form'
 import {me} from '../store/user'
+import ProgressBar from './progress-bar'
 import '../css/userhome.css'
 
 import {Button} from '@material-ui/core'
@@ -40,16 +41,21 @@ export const UserHome = (props) => {
     <div className="userhome">
       <div className="account-info">
         <h1>Welcome, {name}!</h1>
-        <h4>Email:&nbsp;{email}</h4>
-        <h4>I.P. Address(es):</h4>
-        <ul>
-          {ipAddress
-            ? ipAddress.map((ip) => {
-                return <li key={ip}>{ip}</li>
-              })
-            : 'N/A'}
-        </ul>
-        <h2>Active Proxy:</h2>
+        <h4>Email:&nbsp;&nbsp;{email}</h4>
+        <div className="ip-info">
+          <h4>I.P. Address(es):</h4>
+          <div className="ip-list-info">
+            {ipAddress
+              ? ipAddress.map((ip) => {
+                  return <p key={ip}>- {ip}</p>
+                })
+              : 'N/A'}
+          </div>
+        </div>
+        <h2 className="proxy-info">Active Proxy</h2>
+        <h3>1 Gig - 30 days: &nbsp;&nbsp;65% complete</h3>
+        <ProgressBar width={500} percent={0.65} />
+        <h5>Expires: 8/29/20</h5>
       </div>
 
       <div className="edit-info">

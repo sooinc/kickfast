@@ -1,0 +1,16 @@
+.progress-bar-marker {
+  border-right: 2px solid #2a2828;
+  height: 120px;
+}
+
+.progress-bar {
+  background-color: #f0f0f0;
+  border-radius: 4rem;
+}
+
+.progress {
+  background-color: #e2b4bd;
+  height: 100px;
+  border-radius: 3rem;
+  transition: width 1s ease 0.5s;
+}

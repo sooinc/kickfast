@@ -107,10 +107,10 @@ class IpList extends React.Component {
             {ipAddresses.map((ip) => {
               return (
                 <div key={ip}>
+                  {ip}
                   <IconButton onClick={(event) => this.handleDelete(event, ip)}>
                     <DeleteRoundedIcon />
                   </IconButton>
-                  {ip}
                 </div>
               )
             })}
