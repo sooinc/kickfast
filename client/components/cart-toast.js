@@ -13,10 +13,6 @@ const CartToast = ({appearance, children}) => (
       color: 'white',
       fontFamily: 'roboto',
       fontSize: 15,
-      // transitionProperty: 'width',
-      // transitionDuration: 0.5,
-      // transitionTimingFunction: 'ease-in',
-      // transitionDelay: 0.5,
     }}
   >
     {children}

@@ -1,9 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
-import '../css/shop.css'
-import {fetchAllProxy} from '../store/shop'
 import ProxyTile from '../components/proxy-tile'
+import {fetchAllProxy} from '../store/shop'
+import '../css/shop.css'
 
 export class Shop extends React.Component {
   async componentDidMount() {

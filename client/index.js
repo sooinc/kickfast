@@ -5,10 +5,10 @@ import {Router} from 'react-router-dom'
 import history from './history'
 import store from './store'
 import App from './app'
-import {ToastProvider} from 'react-toast-notifications'
-import CartToast from './components/cart-toast'
-
 import './index.css'
+
+import CartToast from './components/cart-toast'
+import {ToastProvider} from 'react-toast-notifications'
 
 ReactDOM.render(
   <Provider store={store}>

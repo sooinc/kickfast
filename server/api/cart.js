@@ -1,6 +1,6 @@
 const router = require('express').Router({mergeParams: true})
-const {Proxy} = require('../db/models')
 const {getCart, getOrCreateCart, updateQuantity} = require('../util')
+const {Proxy} = require('../db/models')
 
 module.exports = router
 

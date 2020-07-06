@@ -1,11 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
-import '../css/shop.css'
-import {fetchSingleProxy} from '../store/shop'
-import {addToCart} from '../store/cart'
 import AddToCartButton from '../components/addtocart-button'
 import QuantityDropdown from '../components/quantity-dropdown'
+import {fetchSingleProxy} from '../store/shop'
+import {addToCart} from '../store/cart'
+import '../css/shop.css'
 
 class SingleShop extends React.Component {
   constructor() {

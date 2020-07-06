@@ -1,13 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {ElementsConsumer} from '@stripe/react-stripe-js'
-
-import {fetchCart} from '../store/cart'
-import {checkout} from '../store/checkout'
-import CartTile from '../components/cart-tile'
 import CheckoutForm from '../components/checkout-form'
+import CartTile from '../components/cart-tile'
+import {checkout} from '../store/checkout'
+import {fetchCart} from '../store/cart'
 import '../css/checkout.css'
+
+import {ElementsConsumer} from '@stripe/react-stripe-js'
 
 export class Checkout extends React.Component {
   componentDidMount() {

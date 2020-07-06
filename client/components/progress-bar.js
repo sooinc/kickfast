@@ -3,7 +3,7 @@ import '../css/progressbar.css'
 
 const ProgressBar = ({width, percent}) => {
   const [value, setValue] = React.useState(0)
-  let half = 0.5 * width
+  // let half = 0.5 * width
 
   React.useEffect(() => {
     setValue(percent * width)

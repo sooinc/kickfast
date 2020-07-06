@@ -1,8 +1,9 @@
+const router = require('express').Router({mergeParams: true})
+const {getCart} = require('../util')
+const {Order, Proxy} = require('../db/models')
+
 const {stripeSK} = require('../../secrets') //stripePK
 const stripe = require('stripe')(stripeSK)
-const router = require('express').Router({mergeParams: true})
-const {Order, Proxy} = require('../db/models')
-const {getCart} = require('../util')
 
 module.exports = router
 

@@ -2,14 +2,13 @@
 /* eslint-disable camelcase */
 import React from 'react'
 import {connect} from 'react-redux'
+import {getConfirmation} from '../store/checkout'
+import ConnectedIpList from '../components/checkout-form-ip'
+// import {FormErrors} from '../components/form-validation/checkout-form-errors'
+
 import {CardElement} from '@stripe/react-stripe-js'
 import {CountryDropdown, RegionDropdown} from 'react-country-region-selector'
-import {getConfirmation} from '../store/checkout'
-import {FormErrors} from '../components/form-validation/checkout-form-errors'
-import ConnectedIpList from '../components/checkout-form-ip'
-
 import TextField from '@material-ui/core/TextField'
-import {Button} from '@material-ui/core'
 
 export class CheckoutForm extends React.Component {
   constructor() {
@@ -168,7 +167,7 @@ export class CheckoutForm extends React.Component {
         this.setState({error: null})
         this.setState({processing: false})
         this.setState({succeeded: true})
-        //confirmation - cart fulfilled. req cart deleted. billingEmail added to order detail
+        //confirmation - cart fulfilled. req cart deleted. billingEmail added to order detail.
         await this.props.getConfirmationDispatch(email)
         console.log('Successful!')
       }
@@ -290,8 +289,6 @@ export class CheckoutForm extends React.Component {
               country={this.state.country}
               value={this.state.region}
               countryValueType="short"
-              // labelType="short"
-              // valueType="short"
               onChange={(val, name) => this.handleDropDown(val, name)}
               style={{
                 marginLeft: 32,

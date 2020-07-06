@@ -1,6 +1,7 @@
 import React from 'react'
-import {Button} from '@material-ui/core'
+
 import {useToasts} from 'react-toast-notifications'
+import {Button} from '@material-ui/core'
 
 const AddToCartButton = (props) => {
   let {productId, singleProduct, handleAddToCart, className} = props

@@ -1,3 +1,3 @@
 # KickFast
 
-E-commerce site for IP Proxy
+E-commerce site for I.P. Proxy

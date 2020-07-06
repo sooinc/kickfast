@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
+import CartTile from '../components/cart-tile'
 import {getConfirmedOrder} from '../store/checkout'
 import {me} from '../store/user'
-import CartTile from '../components/cart-tile'
 import '../css/confirmation.css'
 
 class Confirmation extends React.Component {

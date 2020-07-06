@@ -1,10 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-
-import '../css/shop.css'
-import {addToCart} from '../store/cart'
 import AddToCartButton from './addtocart-button'
+import {addToCart} from '../store/cart'
+import '../css/shop.css'
 
 class ProxyTile extends React.Component {
   constructor() {

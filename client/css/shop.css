@@ -94,10 +94,6 @@ a.proxy-tile-link:active {
   color: black;
 }
 
-/* .proxy-tile-addtocart {
-
-} */
-
 .single-proxy-container {
   display: flex;
   flex-direction: row;
