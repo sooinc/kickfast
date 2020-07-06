@@ -13,7 +13,7 @@ import './index.css'
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <ToastProvider components={{Toast: CartToast}} placement="bottom-right">
+      <ToastProvider components={{Toast: CartToast}} placement="top-center">
         <App />
       </ToastProvider>
     </Router>

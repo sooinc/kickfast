@@ -4,10 +4,11 @@ const CartToast = ({appearance, children}) => (
   <div
     style={{
       width: 300,
-      height: 30,
-      padding: 15,
-      marginBottom: 120,
+      height: 25,
+      padding: 10,
+      marginTop: 95,
       borderRadius: 5,
+      boxShadow: '1px 1px 2px 2px gray',
       background: appearance === 'success' ? '#e2b4bd' : 'red',
       color: 'white',
       fontFamily: 'roboto',

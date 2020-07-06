@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {NavHashLink as NavLink} from 'react-router-hash-link'
+import CartIcon from './cart-icon'
 import {logout} from '../store'
+import {fetchCart} from '../store/cart'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({isLoggedIn, numOfItems, dispatchLogout}) => (
   <nav>
     <div className="nav-left">
       <div className="nav-left-header">
@@ -23,12 +25,14 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             <Link to="/userhome">Account</Link>
           </div>
           <div className="nav-right-links">
-            <a href="#" onClick={handleClick}>
+            <a href="#" onClick={dispatchLogout}>
               Logout
             </a>
           </div>
           <div className="nav-right-links">
-            <Link to="/cart">Cart</Link>
+            <Link to="/cart">
+              <CartIcon itemCount={numOfItems} />
+            </Link>
           </div>
         </div>
       ) : (
@@ -44,7 +48,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             <Link to="/login">Login</Link>
           </div>
           <div className="nav-right-links">
-            <Link to="/cart">Cart</Link>
+            <Link to="/cart">
+              <CartIcon itemCount={numOfItems} />
+            </Link>
           </div>
         </div>
       )}
@@ -52,20 +58,23 @@ const Navbar = ({handleClick, isLoggedIn}) => (
   </nav>
 )
 
-/**
- * CONTAINER
- */
+const totalItemQty = (products) => {
+  return products.reduce((sum, currentItem) => {
+    return currentItem.orderItem.quantity + sum
+  }, 0)
+}
+
 const mapState = (state) => {
   return {
     isLoggedIn: !!state.user.user.id,
+    numOfItems: totalItemQty(state.cart.products),
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    handleClick() {
-      dispatch(logout())
-    },
+    dispatchLogout: () => dispatch(logout()),
+    fetchCart: () => dispatch(fetchCart()),
   }
 }
 
@@ -75,6 +84,5 @@ export default connect(mapState, mapDispatch)(Navbar)
  * PROP TYPES
  */
 Navbar.propTypes = {
-  handleClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
 }

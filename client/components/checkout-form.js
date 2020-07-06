@@ -264,7 +264,7 @@ export class CheckoutForm extends React.Component {
             <CountryDropdown
               name="country"
               value={this.state.country}
-              whitelist={['US']}
+              priorityOptions={['US', 'CA']}
               labelType="short"
               valueType="short"
               onChange={(val) => this.handleDropDown(val)}
@@ -290,8 +290,8 @@ export class CheckoutForm extends React.Component {
               country={this.state.country}
               value={this.state.region}
               countryValueType="short"
-              labelType="short"
-              valueType="short"
+              // labelType="short"
+              // valueType="short"
               onChange={(val, name) => this.handleDropDown(val, name)}
               style={{
                 marginLeft: 32,
