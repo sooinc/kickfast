@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /projects/kickfast
+  - source: /project/kickfast
+    destination: /temp/kickfast-deploy
 # hooks:
 #   BeforeInstall:
 #     - location: scripts/install_dependencies.sh
