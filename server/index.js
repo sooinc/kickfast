@@ -8,6 +8,8 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const db = require('./db')
 const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 80
+const https = require('https')
+const http = require('http')
 const app = express()
 module.exports = app
 
@@ -95,13 +97,15 @@ const createApp = () => {
 
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
-  const server = app.listen(PORT, () =>
-    console.log(`Mixing it up on port
+  // const server = app.listen(PORT, () =>
+  //   console.log(`Mixing it up on port
 
-     http://localhost:${PORT}
+  //    http://localhost:${PORT}
 
-     `)
-  )
+  //    `)
+  // )
+  http.createServer(app).listen(80)
+  https.createServer(app).listen(443)
 }
 
 const syncDb = () => db.sync()
