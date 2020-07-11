@@ -9,7 +9,7 @@
   "scripts": {
     "build-client": "webpack",
     "build-client-watch": "webpack -w",
-    "deploy": "script/deploy",
+    "heroku-deploy": "script/deploy",
     "lint": "eslint ./ --ignore-path .gitignore",
     "lint-fix": "npm run lint -- --fix",
     "prepare": "if [ -d .git ]; then npm-merge-driver install; fi",
@@ -44,6 +44,7 @@
     "@material-ui/icons": "^4.9.1",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.5.0",
+    "aws-sdk": "^2.713.0",
     "axios": "^0.19.0",
     "compression": "^1.7.3",
     "connect-session-sequelize": "^6.0.0",
