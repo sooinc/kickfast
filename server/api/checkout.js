@@ -25,7 +25,6 @@ router.post('/', async (req, res, next) => {
   try {
     const {currency = 'usd'} = req.body //keeping this for now but nothing in req.body
     const cart = await getCart(req)
-
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
       amount: calculateOrderAmount(cart.proxies),
