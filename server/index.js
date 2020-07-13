@@ -90,6 +90,14 @@ const startListening = (port) => {
 
      http://localhost:${port}
 
+     or
+
+     http://3.19.178.177:${port}
+
+     or
+
+     http://kickfast-proxy.com:${port}
+
      `)
   )
 }
