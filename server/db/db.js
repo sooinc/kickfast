@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const pkg = require('../../package.json')
-const {getSecret} = require('../../fetchSecrets')
+const {databaseURL} = require('../../secrets')
 
 const databaseName = pkg.name + (process.env.NODE_ENV === 'test' ? '-test' : '')
 
@@ -14,10 +14,8 @@ if (process.env.NODE_ENV !== 'production') {
     after('close database connection', () => db.close())
   }
 } else {
-  getSecret(`/kickfast/databaseURL`).then((value) => {
-    db = new Sequelize(value, {
-      logging: false,
-    })
+  db = new Sequelize(databaseURL, {
+    logging: false,
   })
 }
 
